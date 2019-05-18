@@ -1,0 +1,71 @@
+﻿body {
+    /*background-color: lightyellow;*/ /* colore sfondo */
+    background-image: url("Immagini/bg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#canvas {
+    border: 2px solid black;
+    border-radius: 25px;
+}
+
+#menu {
+    border: 2px solid;
+    border-radius: 10px;
+    position: absolute;
+    top: 8px;
+    left: 1140px;
+    width: 100px;
+    height: 500px;
+    /*background-color: sandybrown; */ /* colore menu */
+    background-image: url("Immagini/menu.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#rect_img {
+    width: 95%;
+    height: auto;
+    position: absolute;
+    left: 2%;
+    top: 1%;
+}
+
+#line_img {
+    width: 95%;
+    height: auto;
+    position: absolute;
+    left: 2%;
+    top: 20%;
+}
+
+#rhombus_img {
+    width: 95%;
+    height: 20%;
+    position: absolute;
+    left: 2%;
+    top: 25%;
+}
+
+#parallelogram_img {
+    width: 95%;
+    height: 20%;
+    position: absolute;
+    left: 2%;
+    top: 45%;
+}
+
+#coordinates {
+    position: absolute;
+    left: 130px;
+    top: 520px;
+}
+
+#typeObject {
+    position: absolute;
+    left: 190px;
+    top: 510px;
+}
