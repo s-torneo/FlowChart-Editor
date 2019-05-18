@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+    <title>FlowChart Editor</title>
+    <link href="Style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="Script.js"></script>
+</head>
+<body>
+    <canvas id="canvas" width=1120 height=500>
+        <img src="Immagini/trash.png" id="trash" />
+    </canvas>
+    <div id="menu">
+        <img src="Immagini/rettangolo.png" id="rect_img" />
+        <img src="Immagini/linea.png" id="line_img" />
+        <img src="Immagini/rombo.png" id="rhombus_img" />
+        <img src="Immagini/parallelogramma.png" id="parallelogram_img" />
+    </div>
+    <form name="grid">
+        <label> Grid <input type="checkbox" name="choice" onchange="Choice()"></label>
+        <input type="number" name="quantity" min="1" max="5" onchange="Quantity()" value="1">
+        <div id="coordinates"></div>
+        <div id="typeObject"></div>
+    </form>
+</body>
+</html>
