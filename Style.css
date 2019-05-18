@@ -1,9 +1,9 @@
 ﻿body {
-    /*background-color: lightyellow;*/ /* colore sfondo */
-    background-image: url("Immagini/bg.jpg");
+    background-color: lightyellow; /* colore sfondo */
+    /*background-image: url("Immagini/bg.jpg");
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover;*/
 }
 
 #canvas {
