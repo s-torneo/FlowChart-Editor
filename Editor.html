@@ -6,20 +6,26 @@
     <script type="text/javascript" src="Script.js"></script>
 </head>
 <body>
-    <canvas id="canvas" width=1120 height=500>
-    <img src="Immagini/trash.png" id="trash"/>
-    </canvas>
-    <div id="menu">
+    <div id="myBox">
+        <canvas id="canvas" width=1110 height=800>
+            <img src="Immagini/trash.png" id="trash" />
+        </canvas>
+    </div>
+    <div id="menu_vertical">
         <img src="Immagini/rettangolo.png" id="rect_img" />
         <img src="Immagini/linea.png" id="line_img" />
         <img src="Immagini/rombo.png" id="rhombus_img" />
         <img src="Immagini/parallelogramma.png" id="parallelogram_img" />
+        <img src="Immagini/ellisse.png" id="ellipse_img" />
     </div>
-    <form name="grid">
-        <label> Grid <input type="checkbox" name="choice" onchange="Choice()"></label>
-        <input type="number" name="quantity" min="1" max="5" onchange="Quantity()" value="1">
+    <div id="menu_horizontal">
+        <br>
+        <form name="grid">
+            <label> Grid <input type="checkbox" name="choice" onchange="Choice()"></label>
+            <input type="number" name="quantity" min="1" max="5" onchange="Quantity()" value="1" style="width: 30px;">
+        </form>
         <div id="coordinates"></div>
         <div id="typeObject"></div>
-    </form>
+    </div>
 </body>
 </html>

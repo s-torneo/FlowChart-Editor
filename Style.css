@@ -1,25 +1,37 @@
 ﻿body {
-    /*background-color: lightyellow;*/ /* colore sfondo */
-    background-image: url("Immagini/bg.jpg");
+    background-color: silver; /* colore sfondo */
+    /*background-image: url("Immagini/bg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;*/
+}
+
+#canvas {
+    border: 3px solid black;
+    /*border-radius: 25px;*/
+}
+
+#menu_vertical {
+    border: 1px solid;
+    border-radius: 10px;
+    position: absolute;
+    top: 8px;
+    left: 1140px;
+    width: 120px;
+    height: 570px;
+    /*background-color: sandybrown; */ /* colore menu */
+    background-image: url("Immagini/menu.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#canvas {
-    border: 2px solid black;
-    border-radius: 25px;
-}
-
-#menu {
-    border: 2px solid;
+#menu_horizontal {
+    border: 1px solid;
     border-radius: 10px;
-    position: absolute;
-    top: 8px;
-    left: 1140px;
-    width: 100px;
-    height: 500px;
-    /*background-color: sandybrown; */ /* colore menu */
+    width: 1128px;
+    height: 50px;
+    /*background-color: sandybrown;*/  /* colore menu */
     background-image: url("Immagini/menu.jpg");
     background-position: center;
     background-repeat: no-repeat;
@@ -58,14 +70,51 @@
     top: 45%;
 }
 
+#ellipse_img {
+    width: 95%;
+    height: 20%;
+    position: absolute;
+    left: 2%;
+    top: 65%;
+}
+
 #coordinates {
     position: absolute;
-    left: 130px;
-    top: 520px;
+    left: 150px;
+    top: 550px;
 }
 
 #typeObject {
     position: absolute;
-    left: 190px;
-    top: 510px;
+    left: 240px;
+    top: 550px;
+}
+
+/* Box styles */
+#myBox {
+    border: none;
+    font: 24px/36px sans-serif;
+    width: 1130px;
+    height: 520px;
+    overflow: scroll;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: black;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #999;
 }
