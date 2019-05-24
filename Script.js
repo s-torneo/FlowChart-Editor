@@ -6,37 +6,31 @@ var choice = false; // = true => grid, else false
 var dim = 10; //indicate the dimension of the grid's squares
 var trashX = 1075, trashY = 467, trashW = 30, trashH = 30; //size and position of trash used to delete element on canvas
 
-function Menu() {
-    document.getElementById("rect_img").onclick = function () { myClick("rectangle") };
-    document.getElementById("line_img").onclick = function () { myClick("line") };
-    document.getElementById("rhombus_img").onclick = function () { myClick("rhombus") };
-    document.getElementById("parallelogram_img").onclick = function () { myClick("parallelogram") };
-    document.getElementById("ellipse_img").onclick = function () { myClick("ellipse") };
-    document.getElementById("rect_img").onmouseover = function () { myOver() };
-    document.getElementById("line_img").onmouseover = function () { myOver() };
-    document.getElementById("rhombus_img").onmouseover = function () { myOver() };
-    document.getElementById("parallelogram_img").onmouseover = function () { myOver() };
-    document.getElementById("ellipse_img").onmouseover = function () { myOver() };
-    document.getElementById("rect_img").onmouseout = function () { myOut() };
-    document.getElementById("line_img").onmouseout = function () { myOut() };
-    document.getElementById("rhombus_img").onmouseout = function () { myOut() };
-    document.getElementById("parallelogram_img").onmouseout = function () { myOut() };
-    document.getElementById("ellipse_img").onmouseout = function () { myOut() };
-    document.getElementById("myBox").onmouseup = function () { draw() };
-    document.getElementById("myBox").onwheel = function () { draw() }; // on wheel is the event associated at the wheel's (of mouse) move
-}
+/*********/
+var lineOffset = 4;
+var anchrSize = 2;
 
-// handle onclick events
-function myClick(t) {
-    selected = t;
-}
+var mousedown = false;
+var clickedArea = { box: -1, pos: 'o' };
+var x1 = -1;
+var y1 = -1;
+var x2 = -1;
+var y2 = -1;
 
-function myOver(t) {
-    document.body.style.cursor = "pointer";
-}
+var boxes = [];
+var tmpBox = null;
+/********/
 
-function myOut(t) {
-    document.body.style.cursor = "default";
+var trashY_actual = 467, endY = 767;
+//draw trash
+function drawTrash() {
+    const image = document.getElementById('trash');
+    var rid = document.getElementById("myBox").scrollTop;
+    trashY_act = trashY + rid;
+    if (trashY_act > (HEIGHT - 40))
+        ctx.drawImage(image, trashX, endY, trashW, trashH);
+    else
+        ctx.drawImage(image, trashX, trashY + rid, trashW, trashH);
 }
 
 function drawGrid() {
@@ -60,186 +54,6 @@ function drawGrid() {
         ctx.lineTo(bw + p, 0.5 + x + p);
     }
     ctx.closePath();
-    ctx.stroke();
-    choice = true;
-}
-
-function Choice() {
-    if (grid.choice.checked)
-        drawGrid();
-    else {
-        choice = false;
-        draw();
-    }
-}
-
-function Quantity() {
-    dim = document.getElementsByName("quantity")[0].value * 10;
-    clear();
-    draw();
-}
-
-function init() {
-    // get canvas related references
-    canvas = document.getElementById("canvas");
-    ctx = canvas.getContext("2d");
-    BB = canvas.getBoundingClientRect();
-    offsetX = BB.left;
-    offsetY = BB.top;
-    WIDTH = canvas.width;
-    HEIGHT = canvas.height;
-    // drag related variables
-    dragok = false;
-    // listen for mouse events
-    canvas.onmousedown = myDown;
-    canvas.onmouseup = myUp;
-    canvas.onmousemove = myMove;
-    // call to draw the scene
-    draw();
-    Menu();
-}
-
-function newRect(px, py) {
-    //check if position of new rectangle go over the canvas
-    if (px > WIDTH)
-        return;
-    nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, fill: "white", isDragging: false, id: "rectangle" });
-    draw();
-}
-
-function newLine(px, py) {
-    if (px > WIDTH)
-        return;
-    nodes.push({ x: px, y: py, width: px + 40, isDragging: false, id: "line" });
-    draw();
-}
-
-function newRhombus(px, py) {
-    //check if position of new rhombus go over the canvas
-    if (px > WIDTH)
-        return;
-    nodes.push({ x: px - 15, y: py, radius: 50, fill: "white", width: 50, height: 50, isDragging: false, id: "rhombus" });
-    draw();
-}
-
-function newParallelogram(px, py) {
-    //check if position of new rhombus go over the canvas
-    if (px > WIDTH)
-        return;
-    nodes.push({ x: px, y: py, fill: "white", width: 100, height: 70, isDragging: false, id: "parallelogram" });
-    draw();
-}
-
-function newEllipse(px, py) {
-    //check if position of new rhombus go over the canvas
-    if (px > WIDTH)
-        return;
-    nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, fill: "white", isDragging: false, id: "ellipse" });
-    draw();
-}
-
-function insideParallelogram(r, mx, my) {
-    return (mx > (r.x + 22) && mx < (r.x + r.width + 20) && my < r.y && my > (r.y - (r.height - 20)));
-}
-
-function insideLine(r, mx, my) {
-    return (mx > r.x && mx < r.width && Math.abs(my - r.y) < 4);
-}
-
-//( x - x_c )^2 / a^2 + ( y - y_c )^2 / b^2 < 1
-function insideEllipse(r, mx, my) {
-    var eq = (Math.pow((mx - r.x), 2) / Math.pow(r.radiusX, 2)); // radiusX è il semiasse orizzontale
-    var eq2 = (Math.pow((my - r.y), 2) / Math.pow(r.radiusY, 2)); // radiusY è il semiasse verticale
-    return (eq + eq2) < 1;
-}
-
-function insideRect(r, mx, my) {
-    return (mx > r.x && mx < r.x + r.width && my > r.y && my < r.y + r.height);
-}
-
-//check if mouse is inside a rhombus
-function insideRhombus(r, mx, my) {
-    var centerX = ((r.x + r.radius) + (r.x - r.radius)) / 2;
-    var centerY = ((r.y) + (r.y)) / 2;
-    var dx = Math.abs(mx - centerX);
-    var dy = Math.abs(my - centerY);
-    var d = dx / r.width + dy / r.height;
-    return d <= 1;
-}
-
-//draw a single polygon
-function drawRhombus(r) {
-    /*var sides = 4;
-    var a = ((Math.PI * 2) / sides);
-    ctx.beginPath();
-    ctx.save();
-    ctx.translate(r.x, r.y);
-    ctx.moveTo(r.radius, 0);
-    for (var i = 1; i < sides; i++) {
-        ctx.lineTo(r.radius * Math.cos(a * i), r.radius * Math.sin(a * i));
-    }
-    ctx.closePath();
-    ctx.stroke();
-    ctx.restore();*/
-    ctx.beginPath();
-    ctx.moveTo(r.x, r.y + r.radius); // Top
-    ctx.lineTo(r.x - r.radius, r.y); // Left
-    ctx.lineTo(r.x, r.y - r.radius); // Bottom
-    ctx.lineTo(r.x + r.radius, r.y); // Right
-    //ctx.lineTo(r.x, r.y + r.radius); // Back to Top
-    ctx.closePath();
-    ctx.stroke();
-}
-
-// draw a single parallelogram
-function drawParallelogram(r) {
-    ctx.beginPath();
-    ctx.moveTo(r.x, r.y);
-    ctx.lineTo(r.x + r.width, r.y);
-    ctx.lineTo(r.x + r.height + 60, r.y - 50);
-    ctx.lineTo(r.x + r.height + 60 - r.width, r.y - 50);
-    // ctx.lineTo(r.x + r.height + 50 - r.width, r.y - 50 + r.height);
-    ctx.closePath();
-    ctx.stroke();
-}
-
-// draw a single line
-function drawLine(l) {
-    ctx.beginPath();  //inizio il percorso
-    ctx.moveTo(l.x, l.y);  //mi sposto senza disegnare
-    ctx.lineTo(l.width, l.y); //disegno una linea dal punto (l.x, l.y) al punto (l.width,l.y)
-    ctx.stroke();
-}
-
-// draw a single rect
-function drawRect(x, y, w, h) {
-    ctx.beginPath();
-    ctx.rect(x, y, w, h);
-}
-
-// draw a single ellipse
-function drawEllipse(r) {
-    ctx.beginPath();
-    ctx.ellipse(r.x, r.y, r.radiusY, r.radiusX, Math.PI / 2, 0, 2 * Math.PI);
-    ctx.stroke();
-}
-
-var trashY_actual = 467, endY = 767;
-//draw trash
-function drawTrash() {
-    const image = document.getElementById('trash');
-    var rid = document.getElementById("myBox").scrollTop;
-    trashY_act = trashY + rid;
-    if (trashY_act > (HEIGHT - 40))
-        ctx.drawImage(image, trashX, endY, trashW, trashH);
-    else
-        ctx.drawImage(image, trashX, trashY + rid, trashW, trashH);
-}
-
-// draw border
-function border(width, color) {
-    ctx.lineWidth = width;
-    ctx.strokeStyle = "black";
     ctx.stroke();
 }
 
@@ -269,229 +83,119 @@ function draw() {
             drawParallelogram(r);
         else if (r.id == "ellipse")
             drawEllipse(r);
-        border(2, "black");
     }
     drawTrash();
+    /*for (var i = 0; i < boxes.length; i++) {
+        drawBoxOn(boxes[i]);
+    }
+    if (clickedArea.box == -1) {
+        tmpBox = newBox(x1, y1, x2, y2);
+        if (tmpBox != null) {
+            drawBoxOn(tmpBox);
+        }
+    }*/
 }
 
-// handle mousedown events
-function myDown(e) {
-    // tell the browser we're handling this mouse event
-    e.preventDefault();
-    e.stopPropagation();
-    // get the current mouse position
-    var mx = parseInt(e.clientX - offsetX);
-    var my = parseInt(e.clientY - offsetY) + document.getElementById("myBox").scrollTop;
-    //new object if i have press central key of mouse
-    for (var i = 0; i < nodes.length; i++) {
-        var r = nodes[i];
-        if (e.button == 1) {
-            if (r.id == "rectangle") {
-                if (insideRect(r, mx, my))
-                    newRect(mx + 50, my);
-            }
-            else if (r.id == "line") {
-                if (insideLine(r, mx, my))
-                    newLine(mx + 50, my);
-            }
-            else if (r.id == "parallelogram") {
-                if (insideParallelogram(r, mx, my))
-                    newParallelogram(mx + 50, my);
-            }
-            else if (r.id == "ellipse") {
-                if (insideEllipse(r, mx, my))
-                    newEllipse(mx + 50, my);
-            }
-            else if (r.id == "rhombus") {
-                if (insideRhombus(r, mx, my))
-                    newRhombus(mx + 100, my);
-            }
-            draw();
-        }
-    }
-    // test each rect to see if mouse is inside
+function init() {
+    // get canvas related references
+    canvas = document.getElementById("canvas");
+    ctx = canvas.getContext("2d");
+    BB = canvas.getBoundingClientRect();
+    offsetX = BB.left;
+    offsetY = BB.top;
+    WIDTH = canvas.width;
+    HEIGHT = canvas.height;
+    // drag related variables
     dragok = false;
-    for (var i = 0; i < nodes.length; i++) {
-        var r = nodes[i];
-        if (r.id == "parallelogram") {
-            if (insideParallelogram(r, mx, my)) {
-                dragok = true;
-                r.isDragging = true;
-                ChangeCursor("move", r.id);
-            }
-        }
-        else if (r.id == "rectangle") {
-            if (insideRect(r, mx, my)) {
-                // if yes, set that rects isDragging=true
-                dragok = true;
-                r.isDragging = true;
-                ChangeCursor("move", r.id);
-            }
-        }
-        else if (r.id == "line") {
-            if (insideLine(r, mx, my)) {
-                dragok = true;
-                r.isDragging = true;
-                ChangeCursor("move", r.id);
-            }
-        }
-        else if (r.id == "rhombus") {
-            if (insideRhombus(r, mx, my)) {
-                dragok = true;
-                r.isDragging = true;
-                ChangeCursor("move", r.id);
-            }
-        }
-        else if (r.id == "ellipse") {
-            if (insideEllipse(r, mx, my)) {
-                dragok = true;
-                r.isDragging = true;
-                ChangeCursor("move", r.id);
-            }
-        }
-    }
-    // save the current mouse position
-    startX = mx;
-    startY = my;
+    // listen for mouse events
+    canvas.onmousedown = myDown;
+    canvas.onmouseup = myUp;
+    canvas.onmousemove = myMove;
+    canvas.onmouseout = MyOut;
+    canvas.ondblclick = myDoubleClick;
+    // call to draw the scene
+    draw();
+    Menu();
 }
 
-
-// handle mouseup events
-function myUp(e) {
-    // tell the browser we're handling this mouse event
-    e.preventDefault();
-    e.stopPropagation();
-    var mx = parseInt(e.clientX - offsetX);
-    var my = parseInt(e.clientY - offsetY) + document.getElementById("myBox").scrollTop;
-    //check if i have selected an object from menu
-    if (selected != null) {
-        if (selected == "rectangle")
-            newRect(mx, my);
-        else if (selected == "line")
-            newLine(mx, my);
-        else if (selected == "rhombus")
-            newRhombus(mx, my);
-        else if (selected == "parallelogram")
-            newParallelogram(mx, my);
-        else if (selected == "ellipse")
-            newEllipse(mx, my);
-        selected = null;
-        draw();
-        return;
+function findCurrentArea(x, y) {
+    for (var i = 0; i < boxes.length; i++) {
+        var box = boxes[i];
+        xCenter = box.x1 + (box.x2 - box.x1) / 2;
+        yCenter = box.y1 + (box.y2 - box.y1) / 2;
+        if (box.x1 - lineOffset < x && x < box.x1 + lineOffset) {
+            if (box.y1 - lineOffset < y && y < box.y1 + lineOffset) {
+                return { box: i, pos: 'tl' };
+            } else if (box.y2 - lineOffset < y && y < box.y2 + lineOffset) {
+                return { box: i, pos: 'bl' };
+            } else if (yCenter - lineOffset < y && y < yCenter + lineOffset) {
+                return { box: i, pos: 'l' };
+            }
+        } else if (box.x2 - lineOffset < x && x < box.x2 + lineOffset) {
+            if (box.y1 - lineOffset < y && y < box.y1 + lineOffset) {
+                return { box: i, pos: 'tr' };
+            } else if (box.y2 - lineOffset < y && y < box.y2 + lineOffset) {
+                return { box: i, pos: 'br' };
+            } else if (yCenter - lineOffset < y && y < yCenter + lineOffset) {
+                return { box: i, pos: 'r' };
+            }
+        } else if (xCenter - lineOffset < x && x < xCenter + lineOffset) {
+            if (box.y1 - lineOffset < y && y < box.y1 + lineOffset) {
+                return { box: i, pos: 't' };
+            } else if (box.y2 - lineOffset < y && y < box.y2 + lineOffset) {
+                return { box: i, pos: 'b' };
+            } else if (box.y1 - lineOffset < y && y < box.y2 + lineOffset) {
+                return { box: i, pos: 'i' };
+            }
+        } else if (box.x1 - lineOffset < x && x < box.x2 + lineOffset) {
+            if (box.y1 - lineOffset < y && y < box.y2 + lineOffset) {
+                return { box: i, pos: 'i' };
+            }
+        }
     }
-    // clear all the dragging flags
-    dragok = false;
-    for (var i = 0; i < nodes.length; i++) {
-        nodes[i].isDragging = false;
-    }
-    ChangeCursor("default", "");
+    return { box: -1, pos: 'o' };
 }
 
-// show coordinates of mouse
-function WriteCoordinates(mx, my) {
-    var text = mx + "," + my;
-    document.getElementById("coordinates").innerHTML = text;
+function newBox(x1, y1, x2, y2) {
+    boxX1 = x1 < x2 ? x1 : x2;
+    boxY1 = y1 < y2 ? y1 : y2;
+    boxX2 = x1 > x2 ? x1 : x2;
+    boxY2 = y1 > y2 ? y1 : y2;
+    if (boxX2 - boxX1 > lineOffset * 2 && boxY2 - boxY1 > lineOffset * 2) {
+        return {
+            x1: boxX1,
+            y1: boxY1,
+            x2: boxX2,
+            y2: boxY2,
+            lineWidth: 1,
+            color: 'DeepSkyBlue'
+        };
+    } else {
+        return null;
+    }
 }
 
-// show the object where mouse is on and change the mouse's icon
-function ChangeCursor(val, name) {
-    if (val == "move")
-        document.getElementById("typeObject").innerHTML = "It is a " + name;
-    else
-        document.getElementById("typeObject").innerHTML = "";
-    document.body.style.cursor = val;
+function drawBoxOn(box) {
+    xCenter = box.x1 + (box.x2 - box.x1) / 2;
+    yCenter = box.y1 + (box.y2 - box.y1) / 2;
+
+    ctx.strokeStyle = box.color;
+    ctx.fillStyle = box.color;
+
+    ctx.rect(box.x1, box.y1, (box.x2 - box.x1), (box.y2 - box.y1));
+    ctx.lineWidth = box.lineWidth;
+    ctx.stroke();
+
+    ctx.fillRect(box.x1 - anchrSize, box.y1 - anchrSize, 2 * anchrSize, 2 * anchrSize);
+    ctx.fillRect(box.x1 - anchrSize, yCenter - anchrSize, 2 * anchrSize, 2 * anchrSize);
+    ctx.fillRect(box.x1 - anchrSize, box.y2 - anchrSize, 2 * anchrSize, 2 * anchrSize);
+    ctx.fillRect(xCenter - anchrSize, box.y1 - anchrSize, 2 * anchrSize, 2 * anchrSize);
+    ctx.fillRect(xCenter - anchrSize, yCenter - anchrSize, 2 * anchrSize, 2 * anchrSize);
+    ctx.fillRect(xCenter - anchrSize, box.y2 - anchrSize, 2 * anchrSize, 2 * anchrSize);
+    ctx.fillRect(box.x2 - anchrSize, box.y1 - anchrSize, 2 * anchrSize, 2 * anchrSize);
+    ctx.fillRect(box.x2 - anchrSize, yCenter - anchrSize, 2 * anchrSize, 2 * anchrSize);
+    ctx.fillRect(box.x2 - anchrSize, box.y2 - anchrSize, 2 * anchrSize, 2 * anchrSize);
 }
 
-// handle mouse moves
-function myMove(e) {
-    // tell the browser we're handling this mouse event
-    e.preventDefault();
-    e.stopPropagation();
-    // get the current mouse position
-    var mx = parseInt(e.clientX - offsetX);
-    var my = parseInt(e.clientY - offsetY) + document.getElementById("myBox").scrollTop;
-    // if we're dragging anything...
-    if (dragok) {
-        // calculate the distance the mouse has moved
-        // since the last mousemove
-        var dx = mx - startX;
-        var dy = my - startY;
-        // move each rect that isDragging
-        // by the distance the mouse has moved
-        // since the last mousemove
-        for (var i = 0; i < nodes.length; i++) {
-            var r = nodes[i];
-            if (r.isDragging) {
-                r.x += dx;
-                r.y += dy;
-                if (r.id == "line")
-                    r.width += dx;
-                // check if a polygon is inside the "trash"
-                if (mx > trashX && mx < trashX + trashW && my > trashY_act && my < trashY_act + trashH) {
-                    // if yes, delete it
-                    nodes.splice(i, 1);
-                    ChangeCursor("default", "");
-                }
-            }
-        }
-        // redraw the scene with the new rect positions
-        draw();
-        // reset the starting mouse position for the next mousemove
-        startX = mx;
-        startY = my;
-    }
-    for (var i = 0; i < nodes.length; i++) {
-        var r = nodes[i];
-        if (r.id == "parallelogram") {
-            if (insideParallelogram(r, mx, my)) {
-                WriteCoordinates(mx, my);
-                ChangeCursor("move", r.id);
-                return;
-            }
-        }
-        else if (r.id == "rectangle") {
-            if (insideRect(r, mx, my)) {
-                WriteCoordinates(mx, my);
-                ChangeCursor("move", r.id);
-                return;
-            }
-        }
-        else if (r.id == "line") {
-            if (insideLine(r, mx, my)) {
-                WriteCoordinates(mx, my);
-                ChangeCursor("move", r.id);
-                return;
-            }
-        }
-        else if (r.id == "rhombus") {
-            if (insideRhombus(r, mx, my)) {
-                WriteCoordinates(mx, my);
-                ChangeCursor("move", r.id);
-                return;
-            }
-        }
-        else if (r.id == "ellipse") {
-            if (insideEllipse(r, mx, my)) {
-                WriteCoordinates(mx, my);
-                ChangeCursor("move", r.id);
-                return;
-            }
-        }
-        ChangeCursor("default", "");
-    }
-    WriteCoordinates(mx, my);
-}
-/*function Click(e) {
-    if (!textarea) {
-        textarea = document.createElement('textarea');
-        textarea.className = 'info';
-        document.body.appendChild(textarea);
-    }
-    var mx = parseInt(e.clientX - offsetX);
-    var my = parseInt(e.clientY - offsetY);
-    textarea.value = "x: " + mx + " y: " + my;
-    textarea.style.top = e.clientY + 'px';
-    textarea.style.left = e.clientX + 'px';
-}*/
 
 window.onload = init;
