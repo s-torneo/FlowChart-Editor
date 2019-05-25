@@ -41,4 +41,6 @@ function Choice() {
 
 function Quantity() {
     dim = document.getElementsByName("quantity")[0].value * 10;
+    if (choice)
+        draw();
 }

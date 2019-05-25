@@ -57,6 +57,7 @@ function myDown(e) {
                 dragok = true;
                 r.isDragging = true;
                 ChangeCursor("move", r.id);
+                CheckResizeRect(r, mx, my);
             }
         }
         else if (r.id == "line") {
@@ -84,14 +85,6 @@ function myDown(e) {
     // save the current mouse position
     startX = mx;
     startY = my;
-
-    /***********************************/
-    mousedown = true;
-    clickedArea = findCurrentArea(e.offsetX, e.offsetY);
-    x1 = e.offsetX;
-    y1 = e.offsetY;
-    x2 = e.offsetX;
-    y2 = e.offsetY;
 }
 
 
@@ -124,26 +117,6 @@ function myUp(e) {
         nodes[i].isDragging = false;
     }
     ChangeCursor("default", "");
-    /*****************/
-    if (clickedArea.box == -1 && tmpBox != null) {
-        boxes.push(tmpBox);
-    } else if (clickedArea.box != -1) {
-        var selectedBox = boxes[clickedArea.box];
-        if (selectedBox.x1 > selectedBox.x2) {
-            var previousX1 = selectedBox.x1;
-            selectedBox.x1 = selectedBox.x2;
-            selectedBox.x2 = previousX1;
-        }
-        if (selectedBox.y1 > selectedBox.y2) {
-            var previousY1 = selectedBox.y1;
-            selectedBox.y1 = selectedBox.y2;
-            selectedBox.y2 = previousY1;
-        }
-    }
-    clickedArea = { box: -1, pos: 'o' };
-    tmpBox = null;
-    mousedown = false;
-    console.log(boxes);
 }
 
 // show coordinates of mouse
@@ -152,11 +125,13 @@ function WriteCoordinates(mx, my) {
     document.getElementById("coordinates").innerHTML = text;
 }
 
+var resize = false;
+
 // show the object where mouse is on and change the mouse's icon
 function ChangeCursor(val, name) {
     if (val == "move")
         document.getElementById("typeObject").innerHTML = "It is a " + name;
-    else
+    else 
         document.getElementById("typeObject").innerHTML = "";
     document.body.style.cursor = val;
 }
@@ -183,6 +158,8 @@ function myMove(e) {
             if (r.isDragging) {
                 r.x += dx;
                 r.y += dy;
+                if (insideRect(r,mx,my))
+                    ResizeRect(r, dx, dy);
                 // check if a polygon is inside the "trash"
                 if (mx > trashX && mx < trashX + trashW && my > trashY_act && my < trashY_act + trashH) {
                     // if yes, delete it
@@ -217,9 +194,9 @@ function myMove(e) {
                 drawCircle(r, r.width / 2, 0);
                 drawCircle(r, r.width / 2, r.height);
                 WriteCoordinates(mx, my);
+                //document.getElementById("typeObject").innerHTML = mx + " - " + (r.x + r.width) + " ----------------- " + my + " - " + (r.y + (r.height / 2));
                 ChangeCursor("move", r.id);
-                /*if (mx == r.x && my == (r.y + (r.height / 2)))
-                    document.write("first point");*/
+                CheckResizeRect(r, mx, my);
                 return;
             }
         }
@@ -258,75 +235,4 @@ function myMove(e) {
         draw(); //redraw in order that i delete the points on the border of polygon
     }
     WriteCoordinates(mx, my);
-
-    /**********************/
-    if (mousedown && clickedArea.box == -1) {
-        x2 = e.offsetX;
-        y2 = e.offsetY;
-        draw();
-    } else if (mousedown && clickedArea.box != -1) {
-        x2 = e.offsetX;
-        y2 = e.offsetY;
-        xOffset = x2 - x1;
-        yOffset = y2 - y1;
-        x1 = x2;
-        y1 = y2;
-
-        if (clickedArea.pos == 'i' ||
-            clickedArea.pos == 'tl' ||
-            clickedArea.pos == 'l' ||
-            clickedArea.pos == 'bl') {
-            boxes[clickedArea.box].x1 += xOffset;
-        }
-        if (clickedArea.pos == 'i' ||
-            clickedArea.pos == 'tl' ||
-            clickedArea.pos == 't' ||
-            clickedArea.pos == 'tr') {
-            boxes[clickedArea.box].y1 += yOffset;
-        }
-        if (clickedArea.pos == 'i' ||
-            clickedArea.pos == 'tr' ||
-            clickedArea.pos == 'r' ||
-            clickedArea.pos == 'br') {
-            boxes[clickedArea.box].x2 += xOffset;
-        }
-        if (clickedArea.pos == 'i' ||
-            clickedArea.pos == 'bl' ||
-            clickedArea.pos == 'b' ||
-            clickedArea.pos == 'br') {
-            boxes[clickedArea.box].y2 += yOffset;
-        }
-        draw();
-    }
-}
-/*function Click(e) {
-    if (!textarea) {
-        textarea = document.createElement('textarea');
-        textarea.className = 'info';
-        document.body.appendChild(textarea);
-    }
-    var mx = parseInt(e.clientX - offsetX);
-    var my = parseInt(e.clientY - offsetY);
-    textarea.value = "x: " + mx + " y: " + my;
-    textarea.style.top = e.clientY + 'px';
-    textarea.style.left = e.clientX + 'px';
-}*/
-
-function MyOut(e) {
-    if (clickedArea.box != -1) {
-        var selectedBox = boxes[clickedArea.box];
-        if (selectedBox.x1 > selectedBox.x2) {
-            var previousX1 = selectedBox.x1;
-            selectedBox.x1 = selectedBox.x2;
-            selectedBox.x2 > previousX1;
-        }
-        if (selectedBox.y1 > selectedBox.y2) {
-            var previousY1 = selectedBox.y1;
-            selectedBox.y1 = selectedBox.y2;
-            selectedBox.y2 > previousY1;
-        }
-    }
-    mousedown = false;
-    clickedArea = { box: -1, pos: 'o' };
-    tmpBox = null;
 }

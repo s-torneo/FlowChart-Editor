@@ -2,7 +2,7 @@ function newRect(px, py) {
     //check if position of new rectangle go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, fill: "white", isDragging: false, id: "rectangle" });
+    nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, fill: "white", isDragging: false, resize: -1, id: "rectangle" });
     draw();
 }
 
@@ -37,26 +37,30 @@ function newEllipse(px, py) {
     draw();
 }
 
+//check if mouse's pointer is inside a parallelogram
 function insideParallelogram(r, mx, my) {
     return (mx > (r.x + 22) && mx < (r.x + r.width + 20) && my < r.y && my > (r.y - (r.height - 20)));
 }
 
+//check if mouse's pointer is on a line
 function insideLine(r, mx, my) {
     return (mx > r.x && mx < (r.width+r.x) && Math.abs(my - r.y) < 4);
 }
 
-//( x - x_c )^2 / a^2 + ( y - y_c )^2 / b^2 < 1
+//check if mouse's pointer is inside an ellipse
 function insideEllipse(r, mx, my) {
+    //( x - x_c )^2 / a^2 + ( y - y_c )^2 / b^2 < 1
     var eq = (Math.pow((mx - r.x), 2) / Math.pow(r.radiusX, 2)); // radiusX è il semiasse orizzontale
     var eq2 = (Math.pow((my - r.y), 2) / Math.pow(r.radiusY, 2)); // radiusY è il semiasse verticale
     return (eq + eq2) < 1;
 }
 
+//check if mouse's pointer is inside a rectangle
 function insideRect(r, mx, my) {
-    return (mx > r.x && mx < r.x + r.width && my > r.y && my < r.y + r.height);
+    return (mx > r.x && mx < (r.x + r.width + 10) && my > r.y && my < (r.y + r.height + 10));
 }
 
-//check if mouse is inside a rhombus
+//check if mouse's pointer is inside a rhombus
 function insideRhombus(r, mx, my) {
     var centerX = ((r.x + r.radius) + (r.x - r.radius)) / 2;
     var centerY = ((r.y) + (r.y)) / 2;
@@ -73,7 +77,7 @@ function border(width, color) {
     ctx.stroke();
 }
 
-//draw a single polygon
+// draw a single rhombus
 function drawRhombus(r) {
     /*var sides = 4;
     var a = ((Math.PI * 2) / sides);
@@ -120,7 +124,7 @@ function drawLine(l) {
     border(2, "black");
 }
 
-// draw a single rect
+// draw a single recta ngle
 function drawRect(x, y, w, h) {
     ctx.beginPath();
     ctx.rect(x, y, w, h);
@@ -143,4 +147,39 @@ function drawCircle(r, posx, posy) {
     border(1, "black");
     ctx.fillStyle = "blue";
     ctx.fill();
+}
+
+// check the value resize of the polygon and resize it
+function ResizeRect(r, dx, dy) {
+    if (r.resize == 0)
+        r.width -= dx;
+    else if (r.resize == 1)
+        r.width += dx;
+    else if (r.resize == 2)
+        r.height -= dy;
+    else if (r.resize == 3)
+        r.height += dy;
+}
+
+// check if mouse's pointer is on a resizing point
+function CheckResizeRect(r, mx, my) {
+    if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y + (r.height / 2))) < 4) {
+        r.resize = 0;
+        ChangeCursor("e-resize", r.id);
+    }
+    else if (Math.abs(mx - (r.x + r.width)) < 10 && Math.abs(my - (r.y + (r.height / 2))) < 10) {
+        r.resize = 1;
+        ChangeCursor("e-resize", r.id);
+    }
+    else if (Math.abs(mx - (r.x + r.width / 2)) < 4 && Math.abs(my - r.y) < 4) {
+        r.resize = 2;
+        ChangeCursor("ns-resize", r.id);
+    }
+    else if (Math.abs(mx - (r.x + r.width / 2)) < 4 && Math.abs(my - (r.y + r.height)) < 4) {
+        r.resize = 3;
+        ChangeCursor("ns-resize", r.id);
+    }
+    else {
+        r.resize = -1;
+    }
 }
