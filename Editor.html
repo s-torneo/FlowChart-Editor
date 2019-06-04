@@ -11,18 +11,21 @@
 <body>
     <div id="myBox">
         <canvas id="canvas" width=1110 height=800>
-            <img src="Immagini/trash.png" id="trash" />
+            <img src="Images/trash.png" id="trash" />
         </canvas>
     </div>
     <div id="menu_vertical">
-        <img src="Immagini/rettangolo.png" id="rect_img" />
-        <img src="Immagini/linea.png" id="line_img" />
-        <img src="Immagini/rombo.png" id="rhombus_img" />
-        <img src="Immagini/parallelogramma.png" id="parallelogram_img" />
-        <img src="Immagini/ellisse.png" id="ellipse_img" />
+        <div class="menutitle">Objects</div>
+        <ul>
+            <li><img src="Images/rectangle.png" id="rect_img" /></li>
+            <li><img src="Images/line.png" id="line_img" /></li>
+            <li><img src="Images/rhombus.png" id="rhombus_img" /></li>
+            <li><img src="Images/parallelogram.png" id="parallelogram_img" /></li>
+            <li><img src="Images/ellipse.png" id="ellipse_img" /></li>
+        </ul>
     </div>
     <div id="menu_horizontal">
-        <br>
+        <br />
         <form name="grid">
             <label> Grid <input type="checkbox" name="choice" onchange="Choice()"></label>
             <input type="number" name="quantity" min="1" max="5" onchange="Quantity()" value="1" style="width: 30px;">
