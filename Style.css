@@ -4,6 +4,7 @@
 
 #canvas {
     border: 3px solid black;
+    cursor: url('Images/rotate.png');
 }
 
 #menu_horizontal {
@@ -33,11 +34,11 @@
 }
 
 #rhombus_img {
-    width: 100px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     position: absolute;
-    left: 20px;
-    top: 255px;
+    left: 25px;
+    top: 250px;
 }
 
 #parallelogram_img {
@@ -127,12 +128,13 @@
     border-left: 7px solid #1958b7;
 }
 
-#menu_vertical li a:hover {
+#menu_vertical li:hover {
     background-color: #2586d7;
     border-left-color: #1c64d1;
 }
 
 #menu_vertical div.menutitle {
+    text-align: center;
     color: white;
     border-bottom: 1px solid black;
     padding: 1px 0;
