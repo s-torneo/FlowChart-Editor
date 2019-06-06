@@ -1,3 +1,4 @@
+//var input = null, inputr = null;
 function myDoubleClick(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
@@ -11,6 +12,7 @@ function myDoubleClick(e) {
         if (r.id == "rectangle") {
             if (insideRect(r, mx, my))
                 newRect(mx + 50, my);
+            //inputr = r;
         }
         else if (r.id == "line") {
             if (insideLine(r, mx, my))
@@ -27,6 +29,15 @@ function myDoubleClick(e) {
         else if (r.id == "rhombus") {
             if (insideRhombus(r, mx, my))
                 newRhombus(mx + 100, my);
+        }
+        else if (r.id == "text") {
+            if (insideRect(r, mx, my)) {
+                input = document.createElement("input");
+                input.setAttribute('type', 'text');
+                input.setAttribute('name', 'prova');
+                document.getElementById("text").appendChild(input);
+                r.input = true;
+            }
         }
         draw();
     }
@@ -48,15 +59,16 @@ function myDown(e) {
             if (insideParallelogram(r, mx, my)) {
                 dragok = true;
                 r.isDragging = true;
-                ChangeCursor("move", r.id);
+                ChangeCursor("move");
+                CheckResizeParallelogram(r, mx, my);
             }
         }
-        else if (r.id == "rectangle") {
+        else if (r.id == "rectangle" || r.id == "text") {
             if (insideRect(r, mx, my)) {
                 // if yes, set that rects isDragging=true
                 dragok = true;
                 r.isDragging = true;
-                ChangeCursor("move", r.id);
+                ChangeCursor("move");
                 CheckResizeRect(r, mx, my);
             }
         }
@@ -64,7 +76,7 @@ function myDown(e) {
             if (insideLine(r, mx, my)) {
                 dragok = true;
                 r.isDragging = true;
-                ChangeCursor("move", r.id);
+                ChangeCursor("move");
                 CheckResizeLine(r, mx, my);
                 if (insideRotationIcon(r, mx, my))
                     rotateLine(r);
@@ -74,7 +86,7 @@ function myDown(e) {
             if (insideRhombus(r, mx, my)) {
                 dragok = true;
                 r.isDragging = true;
-                ChangeCursor("move", r.id);
+                ChangeCursor("move");
                 CheckResizeRhombus(r, mx, my);
             }
         }
@@ -82,7 +94,7 @@ function myDown(e) {
             if (insideEllipse(r, mx, my)) {
                 dragok = true;
                 r.isDragging = true;
-                ChangeCursor("move", r.id);
+                ChangeCursor("move");
                 CheckResizeEllipse(r, mx, my);
             }
         }
@@ -112,6 +124,8 @@ function myUp(e) {
             newParallelogram(mx, my);
         else if (selected == "ellipse")
             newEllipse(mx, my);
+        else if (selected == "text")
+            newText(mx, my);
         selected = null;
         draw();
         return;
@@ -121,7 +135,7 @@ function myUp(e) {
     for (var i = 0; i < nodes.length; i++) {
         nodes[i].isDragging = false;
     }
-    ChangeCursor("default", "");
+    ChangeCursor("default");
 }
 
 // handle mouse moves
@@ -146,17 +160,18 @@ function myMove(e) {
             if (r.isDragging) {
                 r.x += dx;
                 r.y += dy;
-                if (insideRect(r, mx, my) || insideLine(r, mx, my))
-                    ResizeRect(r, dx, dy);
-                else if (insideRhombus(r, mx, my))
-                    ResizeRhombus(r, dx, dy);
-                else if (insideEllipse(r, mx, my))
-                    ResizeEllipse(r, dx, dy);
+                if (r.id == "text" && r.input && insideRect(r, mx, my)) {
+                    r.text = document.getElementsByName("prova")[0].value;
+                    document.getElementById("text").removeChild(input);
+                    r.input = false;
+                }
+                if (r.resize >= 0)
+                    ResizeShapes(r, mx, my, dx, dy);
                 // check if a polygon is inside the "trash"
                 if (mx > trashX && mx < trashX + trashW && my > trashY_act && my < trashY_act + trashH) {
                     // if yes, delete it
                     nodes.splice(i, 1);
-                    ChangeCursor("default", "");
+                    ChangeCursor("default");
                 }
             }
         }
@@ -172,17 +187,23 @@ function myMove(e) {
             if (insideParallelogram(r, mx, my)) {
                 drawParallelogramPoints(r);
                 WriteCoordinates(mx, my);
-                ChangeCursor("move", r.id);
+                ChangeCursor("move");
+                CheckResizeParallelogram(r, mx, my);
                 return;
             }
         }
-        else if (r.id == "rectangle") {
+        else if (r.id == "rectangle" || r.id == "text") {
             if (insideRect(r, mx, my)) {
+                if (r.id == "text")
+                    r.borderColor = "green";
                 drawRectPoints(r);
                 WriteCoordinates(mx, my);
-                ChangeCursor("move", r.id);
+                ChangeCursor("move");
                 CheckResizeRect(r, mx, my);
                 return;
+            }
+            else if (r.id == "text") {
+                r.borderColor = "white";
             }
         }
         else if (r.id == "line") {
@@ -190,7 +211,7 @@ function myMove(e) {
                 drawRotationIcon(r);
                 drawLinePoints(r);
                 WriteCoordinates(mx, my);
-                ChangeCursor("move", r.id);
+                ChangeCursor("move");
                 CheckResizeLine(r, mx, my);
                 return;
             }
@@ -199,7 +220,7 @@ function myMove(e) {
             if (insideRhombus(r, mx, my)) {
                 drawRhombusPoints(r);
                 WriteCoordinates(mx, my);
-                ChangeCursor("move", r.id);
+                ChangeCursor("move");
                 CheckResizeRhombus(r, mx, my);
                 return;
             }
@@ -208,7 +229,7 @@ function myMove(e) {
             if (insideEllipse(r, mx, my)) {
                 drawEllipsePoints(r);
                 WriteCoordinates(mx, my);
-                ChangeCursor("move", r.id);
+                ChangeCursor("move");
                 CheckResizeEllipse(r, mx, my);
                 return;
             }
@@ -225,11 +246,7 @@ function WriteCoordinates(mx, my) {
     document.getElementById("coordinates").innerHTML = text;
 }
 
-// show the object where mouse is on and change the mouse's icon
-function ChangeCursor(val, name) {
-    /* if (val == "move")
-         document.getElementById("typeObject").innerHTML = "It is a " + name;
-     else 
-         document.getElementById("typeObject").innerHTML = "";*/
+// change the mouse's icon
+function ChangeCursor(val) {
     document.body.style.cursor = val;
 }

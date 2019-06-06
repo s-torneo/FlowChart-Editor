@@ -42,6 +42,12 @@ function drawGrid() {
     ctx.stroke();
 }
 
+// reset the canvas
+function reset() {
+    nodes.splice(0, nodes.length);
+    draw();
+}
+
 // clear the canvas
 function clear() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -68,6 +74,8 @@ function draw() {
             drawParallelogram(r);
         else if (r.id == "ellipse")
             drawEllipse(r);
+        else if (r.id == "text")
+            drawText(r);
     }
     drawTrash();
 }
