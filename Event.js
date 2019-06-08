@@ -34,13 +34,24 @@ function myDoubleClick(e) {
             if (insideRect(r, mx, my)) {
                 input = document.createElement("input");
                 input.setAttribute('type', 'text');
-                input.setAttribute('name', 'prova');
+                input.setAttribute('name', 'text_input');
                 document.getElementById("text").appendChild(input);
                 r.input = true;
             }
         }
         draw();
     }
+}
+
+var initX, initY;
+
+function DragOk(r) {
+    // if yes, set that rects isDragging=true
+    dragok = true;
+    r.isDragging = true;
+    ChangeCursor("move");
+    initX = r.x;
+    initY = r.y;
 }
 
 // handle mousedown events
@@ -57,26 +68,19 @@ function myDown(e) {
         var r = nodes[i];
         if (r.id == "parallelogram") {
             if (insideParallelogram(r, mx, my)) {
-                dragok = true;
-                r.isDragging = true;
-                ChangeCursor("move");
+                DragOk(r);
                 CheckResizeParallelogram(r, mx, my);
             }
         }
         else if (r.id == "rectangle" || r.id == "text") {
             if (insideRect(r, mx, my)) {
-                // if yes, set that rects isDragging=true
-                dragok = true;
-                r.isDragging = true;
-                ChangeCursor("move");
+                DragOk(r);
                 CheckResizeRect(r, mx, my);
             }
         }
         else if (r.id == "line") {
             if (insideLine(r, mx, my)) {
-                dragok = true;
-                r.isDragging = true;
-                ChangeCursor("move");
+                DragOk(r);
                 CheckResizeLine(r, mx, my);
                 if (insideRotationIcon(r, mx, my))
                     rotateLine(r);
@@ -84,17 +88,13 @@ function myDown(e) {
         }
         else if (r.id == "rhombus") {
             if (insideRhombus(r, mx, my)) {
-                dragok = true;
-                r.isDragging = true;
-                ChangeCursor("move");
+                DragOk(r);
                 CheckResizeRhombus(r, mx, my);
             }
         }
         else if (r.id == "ellipse") {
             if (insideEllipse(r, mx, my)) {
-                dragok = true;
-                r.isDragging = true;
-                ChangeCursor("move");
+                DragOk(r);
                 CheckResizeEllipse(r, mx, my);
             }
         }
@@ -161,7 +161,7 @@ function myMove(e) {
                 r.x += dx;
                 r.y += dy;
                 if (r.id == "text" && r.input && insideRect(r, mx, my)) {
-                    r.text = document.getElementsByName("prova")[0].value;
+                    r.text = document.getElementsByName("text_input")[0].value;
                     document.getElementById("text").removeChild(input);
                     r.input = false;
                 }
@@ -169,7 +169,12 @@ function myMove(e) {
                     ResizeShapes(r, mx, my, dx, dy);
                 // check if a polygon is inside the "trash"
                 if (mx > trashX && mx < trashX + trashW && my > trashY_act && my < trashY_act + trashH) {
-                    // if yes, delete it
+                    // if yes, save it in copy with the initial position x e y and then delete it
+                    nodes[i].x = initX;
+                    nodes[i].y = initY;
+                    nodes[i].isDragging = false;
+                    copy.push(nodes[i]);
+                    removed = true;
                     nodes.splice(i, 1);
                     ChangeCursor("default");
                 }

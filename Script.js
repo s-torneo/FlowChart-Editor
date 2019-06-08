@@ -1,5 +1,5 @@
 // get canvas related references
-var canvas, ctx, nodes = [], BB, offsetX, offsetY, WIDTH, HEIGHT;
+var canvas, ctx, nodes = [], copy = [], BB, offsetX, offsetY, WIDTH, HEIGHT;
 // drag related variables
 var dragok, startX, startY;
 var choice = false; // = true => grid, else false
@@ -42,10 +42,37 @@ function drawGrid() {
     ctx.stroke();
 }
 
+// it is used to manage undo, redo and reset operations
+var flag = false, removed = false;
+
 // reset the canvas
 function reset() {
+    for (var i = 0; i < nodes.length; i++)
+        copy.push(nodes[i]);
     nodes.splice(0, nodes.length);
     draw();
+    flag = true;
+}
+
+function undo() {
+    if (nodes.length > 0) {
+        copy.push(nodes[nodes.length - 1]);
+        nodes.pop();
+        draw();
+        removed = false;
+        //flag = false;
+    }
+}
+
+// back to last modify
+function redo() {
+    if (copy.length > 0) {
+        nodes.push(copy[copy.length - 1]);
+        copy.pop();
+        draw();
+        reomved = false;
+        //flag = false;
+    }
 }
 
 // clear the canvas
@@ -78,6 +105,10 @@ function draw() {
             drawText(r);
     }
     drawTrash();
+    /*if (flag && !removed)
+        flag = false;*/
+    if (removed)
+        flag = true;
 }
 
 function init() {

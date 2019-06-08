@@ -2,44 +2,44 @@ function newRect(px, py) {
     //check if position of new rectangle go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, fill: "white", isDragging: false, resize: -1, id: "rectangle" });
+    nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, isDragging: false, resize: -1, id: "rectangle" });
 }
 
 function newLine(px, py) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 40, isDragging: false, resize: -1, /*rotate: 0,*/ id: "line" });
+    nodes.push({ x: px, y: py, width: 40, isDragging: false, resize: -1, rotate: 0, id: "line" });
 }
 
 function newRhombus(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py, radius: 50, fill: "white", width: 50, height: 50, isDragging: false, resize: -1, id: "rhombus" });
+    nodes.push({ x: px - 15, y: py, radius: 50, width: 50, height: 50, isDragging: false, resize: -1, id: "rhombus" });
 }
 
 function newParallelogram(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, fill: "white", width: 100, height: 70, isDragging: false, id: "parallelogram" });
+    nodes.push({ x: px, y: py, width: 100, height: 70, isDragging: false, id: "parallelogram" });
 }
 
 function newEllipse(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, fill: "white", isDragging: false, resize: -1, id: "ellipse" });
+    nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, isDragging: false, resize: -1, id: "ellipse" });
 }
 
 function newRotationIcon(px, py) {
-    nodes.push({ x: px, y: py, width: 10, height: 10, id: "rotate" });
+    nodes.push({ x: px, y: py, width: 10, height: 10, id: "rotate" }); // sistemare ???
 }
 
 function newText(px, py){
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, fill: "white", borderColor: "green", text: "Text", input: false, isDragging: false, resize: -1, id: "text" });
+    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, borderColor: "green", text: "Text", input: false, isDragging: false, resize: -1, id: "text" });
 }
 
 //check if mouse's pointer is inside a parallelogram
@@ -121,11 +121,24 @@ function rotateLine(r) {
     ctx.rotate(Math.PI / 2);  // = 90°
     drawLine(r);
     // translate back
-    //ctx.translate(-centerX, -r.y);
+    ctx.translate(-centerX, -r.y);
     ctx.restore();
     /* else try this solution
     r.rotate += 10;
     draw();*/
+}
+
+// draw a single triangle
+function drawTriangle(r) {
+    ctx.beginPath();
+    ctx.moveTo(r.x, r.y + 5); // Top
+    ctx.lineTo(r.x - 5, r.y); // Left
+    ctx.lineTo(r.x, r.y - 5); // Bottom
+    ctx.closePath();
+    ctx.stroke();
+    border(2, "black");
+    ctx.fillStyle = "black";
+    ctx.fill();
 }
 
 // draw a single line
@@ -134,8 +147,8 @@ function drawLine(r) {
     ctx.moveTo(r.x, r.y);  //mi sposto senza disegnare
     ctx.lineTo(r.x + r.width, r.y /* + r.rotate */); //disegno una linea dal punto (l.x, l.y) al punto (l.width, l.y)
     ctx.stroke();
-    ctx.closePath();
     border(2, "black");
+    drawTriangle(r);
 }
 
 // draw a single rectangle

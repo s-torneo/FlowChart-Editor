@@ -70,17 +70,31 @@
     top: 545px;
 }
 
+#undo_img {
+    width: 25px;
+    position: absolute;
+    left: 280px;
+    top: 545px;
+}
+
+#redo_img {
+    width: 25px;
+    position: absolute;
+    left: 310px;
+    top: 545px;
+}
+
 #text_img {
     width: 25px;
     position: absolute;
-    left: 300px;
+    left: 350px;
     top: 545px;
 }
 
 #text {
     width: 25px;
     position: absolute;
-    left: 350px;
+    left: 380px;
     top: 550px;
 }
 
