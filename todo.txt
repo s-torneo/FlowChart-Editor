@@ -1,0 +1,11 @@
+-sistemare immagini rombo e parallelogramma del menu (cercare immagine migliore)
+-aggiungere selezione e spostamento di pi� elementi
+-ridimensionare parallelogramma e sistemare ridimensionamento del rombo
+-provare a fare lo zoom (magari ridimensiono i poligoni andando a posizionarmi sopra e poi muovo la rotellina del mouse).
+-non permettere lo spostamento del poligono durante il ridimensionamento.
+
+
+/** code saved ***/
+
+r.degrees = (r.degrees + dy) % 360;
+//r.degrees = (r.degrees - dy) % 360;
