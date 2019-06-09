@@ -4,18 +4,64 @@ var canvas, ctx, nodes = [], copy = [], BB, offsetX, offsetY, WIDTH, HEIGHT;
 var dragok, startX, startY;
 var choice = false; // = true => grid, else false
 var dim = 10; //indicate the dimension of the grid's squares
-var trashX = 1075, trashY = 467, trashW = 30, trashH = 30; //size and position of trash used to delete element on canvas
+var trashX = 1065, trashY = 467, trashW = 30, trashH = 30; //size and position of trash used to delete element on canvas
 
-var trashY_actual = 467, endY = 767;
+function aroundTrash(mx, my) {
+    if (Math.abs(mx - trashX) < 100 && Math.abs(my - trashY_actual) < 100) {
+        degrees = 90;
+        draw();
+        setTimeout(function () {
+            degrees = 0;
+            draw();
+        }, 2000);
+    }
+}
+
+function insideTrash(mx, my, i) {
+    if (mx > trashX && mx < trashX + trashW && my > trashY_actual && my < trashY_actual + trashH) {
+        // if yes, save it in copy with the initial position x e y and then delete it
+        nodes[i].x = initX;
+        nodes[i].y = initY;
+        nodes[i].isDragging = false;
+        copy.push(nodes[i]);
+        removed = true;
+        nodes.splice(i, 1);
+        ChangeCursor("default");
+    }
+}
+
+var trashY_actual = 467, endY = 767, endY2 = 743, endY3 = -1080, degrees = 0;
 //draw trash
 function drawTrash() {
-    const image = document.getElementById('trash');
+    const trash_down = document.getElementById('trash_down');
+    const trash_up = document.getElementById('trash_up');
     var rid = document.getElementById("myBox").scrollTop;
-    trashY_act = trashY + rid;
-    if (trashY_act > (HEIGHT - 40))
-        ctx.drawImage(image, trashX, endY, trashW, trashH);
+    trashY_actual = trashY + rid;
+    ctx.save();
+    // move to the center of the canvas
+    ctx.translate(trashW / 2, trashH / 2);
+    // rotate the canvas to the specified degrees
+    ctx.rotate(degrees*Math.PI / 180);
+    // draw trash_up
+    if (degrees == 90) {
+        if (trashY_actual > (HEIGHT - 40))
+            ctx.drawImage(trash_up, trashX - 334, endY3, 20, 10);
+        else
+            ctx.drawImage(trash_up, 431 + rid, -(trashY * 2 + 145), 20, 10);
+    }
+    else {
+        if (trashY_actual > (HEIGHT - 40))
+            ctx.drawImage(trash_up, trashX - 15, endY2, 20, 10);
+        else
+            ctx.drawImage(trash_up, trashX - 15, trashY - 25 + rid, 20, 10);
+    }
+    // we’re done with the rotating so restore the unrotated context
+    ctx.restore();
+    // draw trash_down
+    if (trashY_actual > (HEIGHT - 40))
+        ctx.drawImage(trash_down, trashX, endY, 20,20);
     else
-        ctx.drawImage(image, trashX, trashY + rid, trashW, trashH);
+        ctx.drawImage(trash_down, trashX, trashY + rid, 20,20);
 }
 
 function drawGrid() {
@@ -42,7 +88,7 @@ function drawGrid() {
     ctx.stroke();
 }
 
-// it is used to manage undo, redo and reset operations
+// they are used to manage undo, redo and reset operations
 var flag = false, removed = false;
 
 // reset the canvas
@@ -59,19 +105,14 @@ function undo() {
         copy.push(nodes[nodes.length - 1]);
         nodes.pop();
         draw();
-        removed = false;
-        //flag = false;
     }
 }
 
-// back to last modify
 function redo() {
     if (copy.length > 0) {
         nodes.push(copy[copy.length - 1]);
         copy.pop();
         draw();
-        reomved = false;
-        //flag = false;
     }
 }
 
@@ -105,8 +146,6 @@ function draw() {
             drawText(r);
     }
     drawTrash();
-    /*if (flag && !removed)
-        flag = false;*/
     if (removed)
         flag = true;
 }

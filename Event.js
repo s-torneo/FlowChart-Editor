@@ -1,4 +1,3 @@
-//var input = null, inputr = null;
 function myDoubleClick(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
@@ -12,7 +11,6 @@ function myDoubleClick(e) {
         if (r.id == "rectangle") {
             if (insideRect(r, mx, my))
                 newRect(mx + 50, my);
-            //inputr = r;
         }
         else if (r.id == "line") {
             if (insideLine(r, mx, my))
@@ -133,6 +131,19 @@ function myUp(e) {
     // clear all the dragging flags
     dragok = false;
     for (var i = 0; i < nodes.length; i++) {
+        /*var tempX, tempY;
+        if (nodes[i].isDragging) {
+            tempX = nodes[i].x;
+            tempY = nodes[i].y;
+            nodes[i].x = initX;
+            nodes[i].y = initY;
+            nodes[i].isDragging = false;
+            copy.push(nodes[nodes.length - 1]);
+            nodes[i].x = tempX;
+            nodes[i].y = tempY;
+            flag = true;
+        }
+        else*/
         nodes[i].isDragging = false;
     }
     ChangeCursor("default");
@@ -160,24 +171,19 @@ function myMove(e) {
             if (r.isDragging) {
                 r.x += dx;
                 r.y += dy;
+                // check if the shape is a text's rectangle and if mouse is inside it
                 if (r.id == "text" && r.input && insideRect(r, mx, my)) {
+                    // if yes, get value from input text and delete it
                     r.text = document.getElementsByName("text_input")[0].value;
                     document.getElementById("text").removeChild(input);
                     r.input = false;
                 }
+                // check if a shape can be resized
                 if (r.resize >= 0)
                     ResizeShapes(r, mx, my, dx, dy);
-                // check if a polygon is inside the "trash"
-                if (mx > trashX && mx < trashX + trashW && my > trashY_act && my < trashY_act + trashH) {
-                    // if yes, save it in copy with the initial position x e y and then delete it
-                    nodes[i].x = initX;
-                    nodes[i].y = initY;
-                    nodes[i].isDragging = false;
-                    copy.push(nodes[i]);
-                    removed = true;
-                    nodes.splice(i, 1);
-                    ChangeCursor("default");
-                }
+                // check if a polygon is inside or around the "trash"
+                aroundTrash(mx,my);
+                insideTrash(mx, my, i);
             }
         }
         // redraw the scene with the new rect positions
