@@ -8,7 +8,7 @@ function newRect(px, py) {
 function newLine(px, py) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 40, isDragging: false, resize: -1, rotate: 0, id: "line" });
+    nodes.push({ x: px, y: py, width: 40, isDragging: false, resize: -1, degrees: 0, id: "line" });
 }
 
 function newRhombus(px, py) {
@@ -22,7 +22,7 @@ function newParallelogram(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 100, height: 70, isDragging: false, id: "parallelogram" });
+    nodes.push({ x: px, y: py, width: 100, height: 70, h: 0, isDragging: false, id: "parallelogram" });
 }
 
 function newEllipse(px, py) {
@@ -32,35 +32,68 @@ function newEllipse(px, py) {
     nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, isDragging: false, resize: -1, id: "ellipse" });
 }
 
-function newRotationIcon(px, py) {
-    nodes.push({ x: px, y: py, width: 10, height: 10, id: "rotate" }); // sistemare ???
-}
-
 function newText(px, py){
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, borderColor: "green", text: "Text", input: false, isDragging: false, resize: -1, id: "text" });
+    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, borderColor: "green", text: Math.ceil(23.25), input: false, isDragging: false, resize: -1, id: "text" });
 }
 
 //check if mouse's pointer is inside a parallelogram
 function insideParallelogram(r, mx, my) {
-    return (mx > (r.x + 22) && mx < (r.x + r.width + 20) && my < r.y && my > (r.y - (r.height - 20)));
+    /*ctx.lineTo(r.x + r.width, r.y);
+    var x = r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width);
+    var y = r.height * Math.sin(-45 * Math.PI / 180) + r.y;
+    ctx.lineTo(x, y/*r.x + r.height + 60, r.y - 50*//*);
+    x -= r.width;
+    ctx.lineTo(x, y/*r.x + r.height + 60 - r.width, r.y - 50*///);
+    //ctx.lineTo(r.x + r.height + 50 - r.width, r.y - 50 + r.height); // old version
+    //ctx.closePath();
+    return (mx > r.x && mx < (r.x + r.width) && Math.abs(my - r.y) < 22 /*h*/ /*&& mx < (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width)) && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 45*/);
+    //return (mx > (r.x + 22) && mx < (r.x + r.width + 20) && my < r.y && my > (r.y - (r.height - 20)));
 }
 
+var newx, newy;
 //check if mouse's pointer is on a line
 function insideLine(r, mx, my) {
-    return (mx > r.x && mx < (r.width + r.x) && Math.abs(my - r.y) < 15); // prima era < 4
+    /*ctx.save();
+    ctx.translate(r.x, r.y);
+    ctx.rotate(r.degrees * Math.PI / 180);*/
+    //drawCircle(r, -r.x, -r.y);
+    //drawCircle(r, -r.x + r.width, -r.y);
+    var inside = false;
+    //var x = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
+    //var y = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
+    // if (r.degrees == 0) {
+    /*var x1, y1, x2, y2, angle = r.degrees * Math.PI / 180;
+    x1 = (r.x + r.width / 2) - r.width * Math.cos(angle);
+    y1 = r.y - r.width * Math.sin(angle);
+    x2 = (r.x + r.width / 2) + r.width * Math.cos(angle);
+    y2 = r.y + r.width * Math.sin(angle);*/
+    //if (Math.abs(mx-x) < 50 && /*&& mx < x*/ Math.abs(my - r.y) < 50)
+    if (Math.abs(mx - r.x) < r.width && /*Math.abs(mx - r.x - r.width &&/*&& mx < x*/ Math.abs(my - r.y) < r.width)
+            inside = true;// prima era < 4
+    //}
+    /*else if (r.degrees == 180) {
+        if (mx < r.x + r.width && mx > (r.x - r.width) && Math.abs(my - r.y) < 15)
+            inside = true;// prima era < 4
+    }
+    else if (r.degrees == 90) {
+        if (mx < r.x && mx > (r.x - r.width) && Math.abs(my - r.y) < 15)
+            inside = true;// prima era < 4
+    }*/
+    //ctx.restore();
+    return inside;
 }
 
 function insideRotationIcon(r, mx, my) {
-    return (Math.abs(mx - (r.x + (r.width / 2))) < 15 && Math.abs(my - (r.y - 20)) < 10);
+    return (Math.abs(mx - (r.x +(r.width / 2))) < 15 && Math.abs(my - (r.y - 20)) < 10);
 }
 
 //check if mouse's pointer is inside an ellipse
 function insideEllipse(r, mx, my) {
     //( x - x_c )^2 / a^2 + ( y - y_c )^2 / b^2 < 1
-    var eq = (Math.pow((mx - r.x), 2) / Math.pow(r.radiusX, 2)); // radiusX è il semiasse orizzontale
-    var eq2 = (Math.pow((my - r.y), 2) / Math.pow(r.radiusY, 2)); // radiusY è il semiasse verticale
+    var eq = (Math.pow((mx - r.x), 2) / Math.pow(r.radiusX, 2)); // radiusX ï¿½ il semiasse orizzontale
+    var eq2 = (Math.pow((my - r.y), 2) / Math.pow(r.radiusY, 2)); // radiusY ï¿½ il semiasse verticale
     return (eq + eq2) < 1.3;
 }
 
@@ -104,36 +137,23 @@ function drawParallelogram(r) {
     ctx.beginPath();
     ctx.moveTo(r.x, r.y);
     ctx.lineTo(r.x + r.width, r.y);
-    ctx.lineTo(r.x + r.height + 60, r.y - 50);
-    ctx.lineTo(r.x + r.height + 60 - r.width, r.y - 50);
-    // ctx.lineTo(r.x + r.height + 50 - r.width, r.y - 50 + r.height);
+    var x = r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width);
+    var y = r.height * Math.sin(-45 * Math.PI / 180) + r.y;
+    ctx.lineTo(x, y/*r.x + r.height + 60, r.y - 50*/);
+    x -= r.width;
+    ctx.lineTo(x, y/*r.x + r.height + 60 - r.width, r.y - 50*/);
+    //ctx.lineTo(r.x + r.height + 50 - r.width, r.y - 50 + r.height); // old version
     ctx.closePath();
     ctx.stroke();
     border(2, "black");
 }
 
-function rotateLine(r) {
-    var centerX = r.x + (r.width / 2);
-    ctx.save();
-    // translate to midpoint
-    ctx.translate(centerX, r.y);
-    // rotate some angle (radians)
-    ctx.rotate(Math.PI / 2);  // = 90°
-    drawLine(r);
-    // translate back
-    ctx.translate(-centerX, -r.y);
-    ctx.restore();
-    /* else try this solution
-    r.rotate += 10;
-    draw();*/
-}
-
 // draw a single triangle
 function drawTriangle(r) {
     ctx.beginPath();
-    ctx.moveTo(r.x, r.y + 5); // Top
-    ctx.lineTo(r.x - 5, r.y); // Left
-    ctx.lineTo(r.x, r.y - 5); // Bottom
+    ctx.moveTo(0, 5); // Top
+    ctx.lineTo(-5, 0); // Left
+    ctx.lineTo(0, - 5); // Bottom
     ctx.closePath();
     ctx.stroke();
     border(2, "black");
@@ -143,12 +163,27 @@ function drawTriangle(r) {
 
 // draw a single line
 function drawLine(r) {
-    ctx.beginPath();  //inizio il percorso
-    ctx.moveTo(r.x, r.y);  //mi sposto senza disegnare
-    ctx.lineTo(r.x + r.width, r.y /* + r.rotate */); //disegno una linea dal punto (l.x, l.y) al punto (l.width, l.y)
+    ctx.save();
+    ctx.translate(r.x , r.y);
+    //rotate the canvas to the specified degrees
+    ctx.rotate(r.degrees * Math.PI / 180);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(r.width, 0);
+    //ctx.beginPath();
+    /*var x1, y1, x2, y2, angle = r.degrees * Math.PI / 180;
+    x1 = (r.x + r.width / 2) - r.width * Math.cos(angle);
+    y1 = r.y - r.width * Math.sin(angle);
+    x2 = (r.x + r.width / 2) + r.width * Math.cos(angle);
+    y2 = r.y + r.width * Math.sin(angle);*/
+    //ctx.moveTo(r.x, r.y);
+    //var x = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
+    //var y = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
+    //ctx.lineTo(x, y);
     ctx.stroke();
     border(2, "black");
     drawTriangle(r);
+    ctx.restore();
 }
 
 // draw a single rectangle
@@ -172,7 +207,10 @@ function drawCircle(r, posx, posy) {
     ctx.ellipse(r.x + posx, r.y + posy, 3, 3, Math.PI / 2, 0, 2 * Math.PI);
     ctx.stroke();
     border(1, "black");
-    ctx.fillStyle = "blue";
+    if(r.x + posx == 0 && r.y + posy == 0)
+        ctx.fillStyle = "red";
+    else 
+        ctx.fillStyle = "blue";
     ctx.fill();
 }
 
@@ -216,8 +254,9 @@ function ResizeRect(r, dx, dy) {
             }
         } break;
         case 2: {
-            if (!CheckRectSize(r))
+            if (!CheckRectSize(r)) {
                 r.height -= dy;
+            }
         } break;
         case 3: {
             if (!CheckRectSize(r)) {
@@ -381,16 +420,39 @@ function CheckResizeRect(r, mx, my) {
 
 // check if mouse's pointer is on a resizing point
 function CheckResizeLine(r, mx, my) {
-    if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4) {
-        r.resize = 0;
-        ChangeCursor("e-resize", r.id);
+    if(r.degrees==0){
+        if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4) {
+            r.resize = 0;
+            ChangeCursor("e-resize", r.id);
+        }
+        else if (Math.abs(mx - (r.x + r.width)) < 10 && Math.abs(my - r.y) < 10) {
+            r.resize = 1;
+            ChangeCursor("e-resize", r.id);
+        }
+        else if (Math.abs(mx - (r.x + r.width /2)) < 10 && Math.abs(my - r.y) < 10) {
+            r.resize = 2;
+            ChangeCursor("ns-resize", r.id);
+        }
+        else {
+            r.resize = -1;
+        }
     }
-    else if (Math.abs(mx - (r.x + r.width)) < 10 && Math.abs(my - r.y) < 10) {
-        r.resize = 1;
-        ChangeCursor("e-resize", r.id);
-    }
-    else {
-        r.resize = -1;
+    else if(r.degrees==180){
+        if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4) {
+            r.resize = 1;
+            ChangeCursor("e-resize", r.id);
+        }
+        else if (Math.abs(mx - (r.x - r.width)) < 10 && Math.abs(my - r.y) < 10) {
+            r.resize = 0;
+            ChangeCursor("e-resize", r.id);
+        }
+        else if (Math.abs(mx - (r.x - r.width /2)) < 10 && Math.abs(my - r.y) < 10) {
+            r.resize = 2;
+            ChangeCursor("ns-resize", r.id);
+        }
+        else {
+            r.resize = -1;
+        }
     }
 }
 
@@ -464,11 +526,15 @@ function CheckResizeParallelogram(r, mx, my) {
 }
 
 function drawParallelogramPoints(r) {
-    drawCircle(r, 0, 0);
+    /*drawCircle(r, 0, 0);
     drawCircle(r, r.width, 0);
     drawCircle(r, r.height + 60, -50);
     drawCircle(r, r.height + 60 - r.width, -50);
-    drawCircle(r, (r.width + 35) / 2, -(r.height - 15) / 2); // center
+    drawCircle(r, (r.width + 35) / 2, -(r.height - 15) / 2);*/ // center
+    drawCircle(r, 0, 0);
+    drawCircle(r, r.width, 0);
+    drawCircle(r, -r.x + r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width), -r.y + r.height * Math.sin(-45 * Math.PI / 180) + r.y);
+    drawCircle(r, -r.x + r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width, -r.y + r.height * Math.sin(-45 * Math.PI / 180) + r.y);
 }
 
 function drawRectPoints(r) {
@@ -488,14 +554,21 @@ function drawRectPoints(r) {
 function drawRotationIcon(r) {
     const image = document.getElementById('rotate');
     var rid = document.getElementById("myBox").scrollTop;
-    // var ri = newRotationIcon(r.x + r.width / 2, r.y - 20);
-    ctx.drawImage(image, r.x + r.width / 2, r.y - 20, 10, 10);
+    ctx.save();
+    ctx.translate(r.x, r.y);
+    ctx.rotate(r.degrees * Math.PI / 180);
+    ctx.drawImage(image, r.width / 2, -20, 10, 10);
+    ctx.restore();
 }
 
 function drawLinePoints(r) {
-    drawCircle(r, 0, 0);
-    drawCircle(r, r.width, 0);
-    drawCircle(r, r.width / 2, 0); // center
+    ctx.save();
+    ctx.translate(r.x, r.y);
+    ctx.rotate(r.degrees * Math.PI / 180);
+    drawCircle(r, -r.x, -r.y);
+    drawCircle(r, -r.x + r.width, -r.y);
+    drawCircle(r, -r.x + r.width / 2, -r.y); // center
+    ctx.restore();
 }
 
 function drawRhombusPoints(r) {

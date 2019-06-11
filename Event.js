@@ -1,10 +1,12 @@
+var mx, my;
+
 function myDoubleClick(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
     e.stopPropagation();
     // get the current mouse position
-    var mx = parseInt(e.clientX - offsetX);
-    var my = parseInt(e.clientY - offsetY) + document.getElementById("myBox").scrollTop;
+    mx = parseInt(e.clientX - offsetX);
+    my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
     //new object if i have press central key of mouse
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
@@ -14,7 +16,8 @@ function myDoubleClick(e) {
         }
         else if (r.id == "line") {
             if (insideLine(r, mx, my))
-                newLine(mx + 50, my);
+                r.degrees = (r.degrees + 45) % 360;
+                //newLine(mx + 50, my);
         }
         else if (r.id == "parallelogram") {
             if (insideParallelogram(r, mx, my))
@@ -58,8 +61,8 @@ function myDown(e) {
     e.preventDefault();
     e.stopPropagation();
     // get the current mouse position
-    var mx = parseInt(e.clientX - offsetX);
-    var my = parseInt(e.clientY - offsetY) + document.getElementById("myBox").scrollTop;
+    mx = parseInt(e.clientX - offsetX);
+    my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
     // test each rect to see if mouse is inside
     dragok = false;
     for (var i = 0; i < nodes.length; i++) {
@@ -80,8 +83,11 @@ function myDown(e) {
             if (insideLine(r, mx, my)) {
                 DragOk(r);
                 CheckResizeLine(r, mx, my);
-                if (insideRotationIcon(r, mx, my))
-                    rotateLine(r);
+                if (insideRotationIcon(r, mx, my)) {
+                    r.degrees = (r.degrees + 45)%360;
+                    drawLinePoints(r);
+                    draw();
+                }
             }
         }
         else if (r.id == "rhombus") {
@@ -108,8 +114,8 @@ function myUp(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
     e.stopPropagation();
-    var mx = parseInt(e.clientX - offsetX);
-    var my = parseInt(e.clientY - offsetY) + document.getElementById("myBox").scrollTop;
+    mx = parseInt(e.clientX - offsetX);
+    my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
     //check if i have selected an object from menu
     if (selected != null) {
         if (selected == "rectangle")
@@ -155,8 +161,8 @@ function myMove(e) {
     e.preventDefault();
     e.stopPropagation();
     // get the current mouse position
-    var mx = parseInt(e.clientX - offsetX);
-    var my = parseInt(e.clientY - offsetY) + document.getElementById("myBox").scrollTop;
+    mx = parseInt(e.clientX - offsetX);
+    my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
     // if we're dragging anything...
     if (dragok) {
         // calculate the distance the mouse has moved
@@ -196,7 +202,8 @@ function myMove(e) {
         var r = nodes[i];
         if (r.id == "parallelogram") {
             if (insideParallelogram(r, mx, my)) {
-                drawParallelogramPoints(r);
+                //drawParallelogramPoints(r);
+                drawRect(r.x - 20, r.y + 10, r.width * 1.8, -r.height * 1.3);
                 WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeParallelogram(r, mx, my);
@@ -253,7 +260,7 @@ function myMove(e) {
 
 // show coordinates of mouse
 function WriteCoordinates(mx, my) {
-    var text = mx + "," + my;
+    var text = mx + ", " + my;
     document.getElementById("coordinates").innerHTML = text;
 }
 

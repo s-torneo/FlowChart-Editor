@@ -55,7 +55,7 @@ function drawTrash() {
         else
             ctx.drawImage(trash_up, trashX - 15, trashY - 25 + rid, 20, 10);
     }
-    // we’re done with the rotating so restore the unrotated context
+    // weï¿½re done with the rotating so restore the unrotated context
     ctx.restore();
     // draw trash_down
     if (trashY_actual > (HEIGHT - 40))
