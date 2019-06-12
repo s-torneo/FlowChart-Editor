@@ -1,4 +1,4 @@
-var mx, my;
+var mx, my, input, input_ok = false;
 
 function myDoubleClick(e) {
     // tell the browser we're handling this mouse event
@@ -32,12 +32,13 @@ function myDoubleClick(e) {
                 newRhombus(mx + 100, my);
         }
         else if (r.id == "text") {
-            if (insideRect(r, mx, my)) {
+            if (insideRect(r, mx, my) && !input_ok) {
                 input = document.createElement("input");
                 input.setAttribute('type', 'text');
                 input.setAttribute('name', 'text_input');
                 document.getElementById("text").appendChild(input);
                 r.input = true;
+                input_ok = true;
             }
         }
         draw();
@@ -136,22 +137,8 @@ function myUp(e) {
     }
     // clear all the dragging flags
     dragok = false;
-    for (var i = 0; i < nodes.length; i++) {
-        /*var tempX, tempY;
-        if (nodes[i].isDragging) {
-            tempX = nodes[i].x;
-            tempY = nodes[i].y;
-            nodes[i].x = initX;
-            nodes[i].y = initY;
-            nodes[i].isDragging = false;
-            copy.push(nodes[nodes.length - 1]);
-            nodes[i].x = tempX;
-            nodes[i].y = tempY;
-            flag = true;
-        }
-        else*/
-        nodes[i].isDragging = false;
-    }
+    for (var i = 0; i < nodes.length; i++)
+        nodes[i].isDragging = dragok;
     ChangeCursor("default");
 }
 
@@ -183,6 +170,7 @@ function myMove(e) {
                     r.text = document.getElementsByName("text_input")[0].value;
                     document.getElementById("text").removeChild(input);
                     r.input = false;
+                    input_ok = false; 
                 }
                 // check if a shape can be resized
                 if (r.resize >= 0)
@@ -202,8 +190,7 @@ function myMove(e) {
         var r = nodes[i];
         if (r.id == "parallelogram") {
             if (insideParallelogram(r, mx, my)) {
-                //drawParallelogramPoints(r);
-                drawRect(r.x - 20, r.y + 10, r.width * 1.8, -r.height * 1.3);
+                drawParallelogramPoints(r);
                 WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeParallelogram(r, mx, my);

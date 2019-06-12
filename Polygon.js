@@ -22,7 +22,7 @@ function newParallelogram(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 100, height: 70, h: 0, isDragging: false, id: "parallelogram" });
+    nodes.push({ x: px, y: py, width: 120, height: 70, h: 0, isDragging: false, id: "parallelogram" });
 }
 
 function newEllipse(px, py) {
@@ -32,68 +32,37 @@ function newEllipse(px, py) {
     nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, isDragging: false, resize: -1, id: "ellipse" });
 }
 
-function newText(px, py){
+function newText(px, py) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, borderColor: "green", text: Math.ceil(23.25), input: false, isDragging: false, resize: -1, id: "text" });
+    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, borderColor: "green", text: "Text", input: false, isDragging: false, resize: -1, id: "text" });
 }
 
 //check if mouse's pointer is inside a parallelogram
 function insideParallelogram(r, mx, my) {
-    /*ctx.lineTo(r.x + r.width, r.y);
-    var x = r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width);
-    var y = r.height * Math.sin(-45 * Math.PI / 180) + r.y;
-    ctx.lineTo(x, y/*r.x + r.height + 60, r.y - 50*//*);
-    x -= r.width;
-    ctx.lineTo(x, y/*r.x + r.height + 60 - r.width, r.y - 50*///);
-    //ctx.lineTo(r.x + r.height + 50 - r.width, r.y - 50 + r.height); // old version
-    //ctx.closePath();
-    return (mx > r.x && mx < (r.x + r.width) && Math.abs(my - r.y) < 22 /*h*/ /*&& mx < (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width)) && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 45*/);
-    //return (mx > (r.x + 22) && mx < (r.x + r.width + 20) && my < r.y && my > (r.y - (r.height - 20)));
+    //drawCircle(r, -r.x + r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height / 3, -r.y + r.height * Math.sin(-45 * Math.PI / 180) + r.y + r.height / 3);
+    return (mx > r.x && my > (r.height * Math.sin(-45 * Math.PI / 180) + r.y /*- 5*/) && mx < (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width /*- 20*/)));
 }
 
-var newx, newy;
 //check if mouse's pointer is on a line
 function insideLine(r, mx, my) {
-    /*ctx.save();
-    ctx.translate(r.x, r.y);
-    ctx.rotate(r.degrees * Math.PI / 180);*/
-    //drawCircle(r, -r.x, -r.y);
-    //drawCircle(r, -r.x + r.width, -r.y);
     var inside = false;
     //var x = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
     //var y = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
-    // if (r.degrees == 0) {
-    /*var x1, y1, x2, y2, angle = r.degrees * Math.PI / 180;
-    x1 = (r.x + r.width / 2) - r.width * Math.cos(angle);
-    y1 = r.y - r.width * Math.sin(angle);
-    x2 = (r.x + r.width / 2) + r.width * Math.cos(angle);
-    y2 = r.y + r.width * Math.sin(angle);*/
-    //if (Math.abs(mx-x) < 50 && /*&& mx < x*/ Math.abs(my - r.y) < 50)
     if (Math.abs(mx - r.x) < r.width && /*Math.abs(mx - r.x - r.width &&/*&& mx < x*/ Math.abs(my - r.y) < r.width)
-            inside = true;// prima era < 4
-    //}
-    /*else if (r.degrees == 180) {
-        if (mx < r.x + r.width && mx > (r.x - r.width) && Math.abs(my - r.y) < 15)
-            inside = true;// prima era < 4
-    }
-    else if (r.degrees == 90) {
-        if (mx < r.x && mx > (r.x - r.width) && Math.abs(my - r.y) < 15)
-            inside = true;// prima era < 4
-    }*/
-    //ctx.restore();
+        inside = true;// prima era < 4
     return inside;
 }
 
 function insideRotationIcon(r, mx, my) {
-    return (Math.abs(mx - (r.x +(r.width / 2))) < 15 && Math.abs(my - (r.y - 20)) < 10);
+    return (Math.abs(mx - (r.x + (r.width / 2))) < 15 && Math.abs(my - (r.y - 20)) < 10);
 }
 
 //check if mouse's pointer is inside an ellipse
 function insideEllipse(r, mx, my) {
     //( x - x_c )^2 / a^2 + ( y - y_c )^2 / b^2 < 1
-    var eq = (Math.pow((mx - r.x), 2) / Math.pow(r.radiusX, 2)); // radiusX � il semiasse orizzontale
-    var eq2 = (Math.pow((my - r.y), 2) / Math.pow(r.radiusY, 2)); // radiusY � il semiasse verticale
+    var eq = (Math.pow((mx - r.x), 2) / Math.pow(r.radiusX, 2)); // radiusX is horizontal semi-axis
+    var eq2 = (Math.pow((my - r.y), 2) / Math.pow(r.radiusY, 2)); // radiusY is vertical semi-axis
     return (eq + eq2) < 1.3;
 }
 
@@ -126,8 +95,7 @@ function drawRhombus(r) {
     ctx.lineTo(r.x - r.width, r.y); // Left
     ctx.lineTo(r.x, r.y - r.height); // Bottom
     ctx.lineTo(r.x + r.width, r.y); // Right
-    //ctx.lineTo(r.x, r.y + r.radius); // Back to Top
-    ctx.closePath();
+    ctx.lineTo(r.x, r.y + r.height); // Back to Top
     ctx.stroke();
     border(2, "black");
 }
@@ -139,10 +107,9 @@ function drawParallelogram(r) {
     ctx.lineTo(r.x + r.width, r.y);
     var x = r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width);
     var y = r.height * Math.sin(-45 * Math.PI / 180) + r.y;
-    ctx.lineTo(x, y/*r.x + r.height + 60, r.y - 50*/);
+    ctx.lineTo(x, y);
     x -= r.width;
-    ctx.lineTo(x, y/*r.x + r.height + 60 - r.width, r.y - 50*/);
-    //ctx.lineTo(r.x + r.height + 50 - r.width, r.y - 50 + r.height); // old version
+    ctx.lineTo(x, y);
     ctx.closePath();
     ctx.stroke();
     border(2, "black");
@@ -164,18 +131,13 @@ function drawTriangle(r) {
 // draw a single line
 function drawLine(r) {
     ctx.save();
-    ctx.translate(r.x , r.y);
+    ctx.translate(r.x, r.y);
     //rotate the canvas to the specified degrees
     ctx.rotate(r.degrees * Math.PI / 180);
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(r.width, 0);
     //ctx.beginPath();
-    /*var x1, y1, x2, y2, angle = r.degrees * Math.PI / 180;
-    x1 = (r.x + r.width / 2) - r.width * Math.cos(angle);
-    y1 = r.y - r.width * Math.sin(angle);
-    x2 = (r.x + r.width / 2) + r.width * Math.cos(angle);
-    y2 = r.y + r.width * Math.sin(angle);*/
     //ctx.moveTo(r.x, r.y);
     //var x = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
     //var y = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
@@ -207,14 +169,14 @@ function drawCircle(r, posx, posy) {
     ctx.ellipse(r.x + posx, r.y + posy, 3, 3, Math.PI / 2, 0, 2 * Math.PI);
     ctx.stroke();
     border(1, "black");
-    if(r.x + posx == 0 && r.y + posy == 0)
+    if (r.x + posx == 0 && r.y + posy == 0)
         ctx.fillStyle = "red";
-    else 
+    else
         ctx.fillStyle = "blue";
     ctx.fill();
 }
 
-// draw a single textarea
+// draw a single rectangle of text
 function drawText(r) {
     ctx.beginPath();
     ctx.rect(r.x, r.y, r.width, r.height);
@@ -222,71 +184,74 @@ function drawText(r) {
     ctx.font = "15px Comic Sans MS";
     ctx.fillStyle = "black";
     ctx.textAlign = "center";
-    ctx.fillText(r.text, r.x + r.width / 2, r.y + r.height / 2); 
+    ctx.fillText(r.text, r.x + r.width / 2, r.y + r.height / 2);
 }
 
-// check the size of a rectangle, rhombus or line and return true if the size has been modified
-function CheckRectSize(r) {
+// check the size of a shape (except of an ellipse) and return true if the size has been modified
+function CheckSize(r, value) {
     var t = false;
-    if (r.width <= 20) {
+    if (r.width <= value) {
         r.width++;
         t = true;
     }
-    else if (r.height <= 20) {
+    else if (r.height <= value) {
         r.height++;
         t = true;
     }
     return t;
 }
 
-// check the value resize of a rectangle o a line and resize it
+// check the value resize of a rectangle or a line and resize it
 function ResizeRect(r, dx, dy) {
     switch (r.resize) {
         case 0: {
-            if (!CheckRectSize(r)) // non basta controllare solo questo (se vado veloce mi sballa tutto il rettangolo)
+            if (!CheckSize(r, 20)) // non basta controllare solo questo (se vado veloce mi sballa tutto il rettangolo)
                 r.width -= dx;
         } break;
         case 1: {
-            if (!CheckRectSize(r)) {
+            if (!CheckSize(r, 20)) {
                 r.x -= dx;
                 r.y -= dy;
                 r.width += dx;
             }
         } break;
         case 2: {
-            if (!CheckRectSize(r)) {
+            if (r.id == "line") {
+                r.degrees = (r.degrees + 3)%360;
+            }
+            else if (!CheckSize(r, 20)) {
                 r.height -= dy;
             }
         } break;
         case 3: {
-            if (!CheckRectSize(r)) {
+            if (!CheckSize(r, 20)) {
                 r.x -= dx;
                 r.y -= dy;
                 r.height += dy;
             }
         } break;
         case 4: {
-            if (!CheckRectSize(r)) {
+            if (!CheckSize(r, 20)) {
                 r.width -= dx;
                 r.height -= dy;
             }
         } break;
         case 5: {
-            if (!CheckRectSize(r)) {
+            if (!CheckSize(r, 20)) {
                 r.x -= dx;
                 r.width += dx;
                 r.height -= dy;
             }
         } break;
         case 6: {
-            if (!CheckRectSize(r)) {
+            if (!CheckSize(r, 20)) {
                 r.y -= dy;
                 r.width -= dx;
                 r.height += dy;
             }
         } break;
         case 7: {
-            if (!CheckRectSize(r)) {
+            if (!CheckSize(r,20)) {
                 r.x -= dx;
                 r.y -= dy;
                 r.width += dx;
@@ -301,19 +266,19 @@ function ResizeRhombus(r, dx, dy) {
     r.y -= dy;
     switch (r.resize) {
         case 0: {
-            if (!CheckRectSize(r)) // non basta controllare solo questo (se vado veloce mi sballa tutto il rombo)
+            if (!CheckSize(r,20)) // non basta controllare solo questo (se vado veloce mi sballa tutto il rombo)
                 r.width += dx;
         } break;
         case 1: {
-            if (!CheckRectSize(r))
+            if (!CheckSize(r,20))
                 r.width -= dx;
         } break;
         case 2: {
-            if (!CheckRectSize(r))
+            if (!CheckSize(r,20))
                 r.height += dy;
         } break;
         case 3: {
-            if (!CheckRectSize(r))
+            if (!CheckSize(r,20))
                 r.height -= dy;
         } break;
     }
@@ -357,20 +322,65 @@ function ResizeEllipse(r, dx, dy) {
 
 function ResizeParallelogram(r, dx, dy) {
     switch (r.resize) {
+        case 0: {
+            if (!CheckSize(r,50)) {
+                r.width += dx;
+                r.height += dy;
+            }
+        } break;
         case 1: {
-            //if (!CheckEllipseSize(r))
-            //r.x -= dx;
-            //r.y -= dy;
-            r.width += dx;
-            r.height += dy;
+            if (!CheckSize(r,50)) {
+                r.x -= dx;
+                r.width += dx;
+                r.height += dy;
+            }
+        } break;
+        case 2: {
+            if (!CheckSize(r,50)) 
+                r.height += dy;
+        } break;
+        case 3: {
+            if (!CheckSize(r, 50)) {
+                r.y -= dy;
+                r.width -= dx;
+                r.height -= dy;
+            }
+        } break;
+        case 4: {
+            if (!CheckSize(r, 50)) {
+                r.x -= dx;
+                r.y -= dy;
+                r.height -= dy;
+            }
+        } break;
+        case 5: {
+            if (!CheckSize(r, 50)) {
+                r.x -= dx;
+                r.y -= dy;
+                r.width += dx;
+            }
+        } break;
+        case 6: {
+            if (!CheckSize(r, 50)) {
+                r.x -= dx;
+                r.y -= dy;
+                r.width += dx;
+                r.height -= dy;
+            }
+        } break;
+        case 7: {
+            if (!CheckSize(r, 50))
+                r.width -= dx;
         } break;
     }
 }
 
 // check if mouse inside a shape on one of the resizing points, if yes resize the shape
 function ResizeShapes(r, mx, my, dx, dy) {
-    if (insideRect(r, mx, my) || insideLine(r, mx, my))
-        ResizeRect(r, dx, dy);
+    if (r.id == "rectangle" || r.id == "line" || r.id == "text") {
+        if (insideRect(r, mx, my) || insideLine(r, mx, my))
+            ResizeRect(r, dx, dy);
+    }
     else if (insideRhombus(r, mx, my))
         ResizeRhombus(r, dx, dy);
     else if (insideEllipse(r, mx, my))
@@ -379,162 +389,105 @@ function ResizeShapes(r, mx, my, dx, dy) {
         ResizeParallelogram(r, dx, dy);
 }
 
+// it is called by CheckResize of all shape, to set the number of resizing and change the cursor
+function UtilCheckResize(r, res, type_cursor) {
+    r.resize = res;
+    ChangeCursor(type_cursor);
+}
+
 // check if mouse's pointer is on a resizing point
 function CheckResizeRect(r, mx, my) {
-    if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y + (r.height / 2))) < 4) {
-        r.resize = 0;
-        ChangeCursor("e-resize", r.id);
-    }
-    else if (Math.abs(mx - (r.x + r.width)) < 10 && Math.abs(my - (r.y + (r.height / 2))) < 10) {
-        r.resize = 1;
-        ChangeCursor("e-resize", r.id);
-    }
-    else if (Math.abs(mx - (r.x + r.width / 2)) < 4 && Math.abs(my - r.y) < 4) {
-        r.resize = 2;
-        ChangeCursor("ns-resize", r.id);
-    }
-    else if (Math.abs(mx - (r.x + r.width / 2)) < 10 && Math.abs(my - (r.y + r.height)) < 10) {
-        r.resize = 3;
-        ChangeCursor("ns-resize", r.id);
-    }
-    else if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4) {
-        r.resize = 4;
-        ChangeCursor("nwse-resize", r.id);
-    }
-    else if (Math.abs(mx - (r.x + r.width)) < 4 && Math.abs(my - r.y) < 4) {
-        r.resize = 5;
-        ChangeCursor("nesw-resize", r.id);
-    }
-    else if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y + r.height)) < 4) {
-        r.resize = 6;
-        ChangeCursor("nesw-resize", r.id);
-    }
-    else if (Math.abs(mx - (r.x + r.width)) < 4 && Math.abs(my - (r.y + r.height)) < 4) {
-        r.resize = 7;
-        ChangeCursor("nwse-resize", r.id);
-    }
-    else {
+    if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y + (r.height / 2))) < 4)
+        UtilCheckResize(r, 0, "e-resize");
+    else if (Math.abs(mx - (r.x + r.width)) < 10 && Math.abs(my - (r.y + (r.height / 2))) < 10) 
+        UtilCheckResize(r, 1, "e-resize");
+    else if (Math.abs(mx - (r.x + r.width / 2)) < 4 && Math.abs(my - r.y) < 4)
+        UtilCheckResize(r, 2, "ns-resize");
+    else if (Math.abs(mx - (r.x + r.width / 2)) < 10 && Math.abs(my - (r.y + r.height)) < 10)
+        UtilCheckResize(r, 3, "ns-resize");
+    else if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4) 
+        UtilCheckResize(r, 4, "nwse-resize");
+    else if (Math.abs(mx - (r.x + r.width)) < 4 && Math.abs(my - r.y) < 4) 
+        UtilCheckResize(r, 5, "nesw-resize");
+    else if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y + r.height)) < 4) 
+        UtilCheckResize(r, 6, "nesw-resize");
+    else if (Math.abs(mx - (r.x + r.width)) < 4 && Math.abs(my - (r.y + r.height)) < 4) 
+        UtilCheckResize(r, 7, "nwse-resize");
+    else
         r.resize = -1;
-    }
 }
 
 // check if mouse's pointer is on a resizing point
 function CheckResizeLine(r, mx, my) {
-    if(r.degrees==0){
-        if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4) {
-            r.resize = 0;
-            ChangeCursor("e-resize", r.id);
-        }
-        else if (Math.abs(mx - (r.x + r.width)) < 10 && Math.abs(my - r.y) < 10) {
-            r.resize = 1;
-            ChangeCursor("e-resize", r.id);
-        }
-        else if (Math.abs(mx - (r.x + r.width /2)) < 10 && Math.abs(my - r.y) < 10) {
-            r.resize = 2;
-            ChangeCursor("ns-resize", r.id);
-        }
-        else {
-            r.resize = -1;
-        }
-    }
-    else if(r.degrees==180){
-        if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4) {
-            r.resize = 1;
-            ChangeCursor("e-resize", r.id);
-        }
-        else if (Math.abs(mx - (r.x - r.width)) < 10 && Math.abs(my - r.y) < 10) {
-            r.resize = 0;
-            ChangeCursor("e-resize", r.id);
-        }
-        else if (Math.abs(mx - (r.x - r.width /2)) < 10 && Math.abs(my - r.y) < 10) {
-            r.resize = 2;
-            ChangeCursor("ns-resize", r.id);
-        }
-        else {
-            r.resize = -1;
-        }
-    }
+    if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4)
+        UtilCheckResize(r, 0, "e-resize");
+    else if (Math.abs(mx - (r.x + r.width)) < 10 && Math.abs(my - r.y) < 10) 
+        UtilCheckResize(r, 1, "e-resize");
+    else if (Math.abs(mx - (r.x + r.width / 2)) < 10 && Math.abs(my - r.y) < 10) 
+        UtilCheckResize(r, 2, "ns-resize");
+    else
+        r.resize = -1;
 }
 
 // check if mouse's pointer is on a resizing point
 function CheckResizeRhombus(r, mx, my) {
-    if (Math.abs(mx - (r.x + r.width)) < 4 && Math.abs(my - r.y) < 4) {
-        r.resize = 0;
-        ChangeCursor("e-resize", r.id);
-    }
-    else if (Math.abs(mx - (r.x - r.width)) < 4 && Math.abs(my - r.y) < 4) {
-        r.resize = 1;
-        ChangeCursor("e-resize", r.id);
-    }
-    else if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y + r.height)) < 4) {
-        r.resize = 2;
-        ChangeCursor("ns-resize", r.id);
-    }
-    else if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y - r.height)) < 4) {
-        r.resize = 3;
-        ChangeCursor("ns-resize", r.id);
-    }
-    else {
+    if (Math.abs(mx - (r.x + r.width)) < 4 && Math.abs(my - r.y) < 4) 
+        UtilCheckResize(r, 0, "e-resize");
+    else if (Math.abs(mx - (r.x - r.width)) < 4 && Math.abs(my - r.y) < 4) 
+        UtilCheckResize(r, 1, "e-resize");
+    else if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y + r.height)) < 4) 
+        UtilCheckResize(r, 2, "ns-resize");
+    else if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y - r.height)) < 4) 
+        UtilCheckResize(r, 3, "ns-resize");
+    else
         r.resize = -1;
-    }
 }
 
 // check if mouse's pointer is on a resizing point
 function CheckResizeEllipse(r, mx, my) {
-    if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y + r.radiusY)) < 4) { // point down
-        r.resize = 0;
-        ChangeCursor("ns-resize", r.id);
-    }
-    else if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y - r.radiusY)) < 4) { // point up
-        r.resize = 1;
-        ChangeCursor("ns-resize", r.id);
-    }
-    else if (Math.abs(mx - (r.x + r.radiusX)) < 4 && Math.abs(my - r.y) < 4) { // point dx
-        r.resize = 2;
-        ChangeCursor("e-resize", r.id);
-    }
-    else if (Math.abs(mx - (r.x - r.radiusX)) < 4 && Math.abs(my - r.y) < 4) { // point sx
-        r.resize = 3;
-        ChangeCursor("e-resize", r.id);
-    }
-    else {
+    if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y + r.radiusY)) < 4) // point down
+        UtilCheckResize(r, 0, "ns-resize");
+    else if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y - r.radiusY)) < 4) // point up
+        UtilCheckResize(r, 1, "ns-resize");
+    else if (Math.abs(mx - (r.x + r.radiusX)) < 4 && Math.abs(my - r.y) < 4) // point dx
+        UtilCheckResize(r, 2, "e-resize");
+    else if (Math.abs(mx - (r.x - r.radiusX)) < 4 && Math.abs(my - r.y) < 4) // point sx
+        UtilCheckResize(r, 3, "e-resize");
+    else
         r.resize = -1;
-    }
 }
 
 // check if mouse's pointer is on a resizing point
 function CheckResizeParallelogram(r, mx, my) {
-    if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4) {
-        r.resize = 0;
-        ChangeCursor("nwse-resize", r.id);
-    }
-    else if (Math.abs(mx - (r.x + r.width)) < 4 && Math.abs(my - r.y) < 4) {
-        r.resize = 1;
-        ChangeCursor("nwse-resize", r.id);
-    }
-    else if (Math.abs(mx - (r.x + r.height + 60)) < 4 && Math.abs(my - (r.y - 50)) < 4) {
-        r.resize = 2;
-        ChangeCursor("nesw-resize", r.id);
-    }
-    else if (Math.abs(mx - (r.x + (r.width + 35) / 2)) < 4 && Math.abs(my - (r.y - (r.height - 15) / 2) < 4)) {
-        r.resize = 3;
-        ChangeCursor("nwse-resize", r.id);
-    }
-    else {
+    if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4) 
+        UtilCheckResize(r, 0, "nesw-resize");
+    else if (Math.abs(mx - (r.x + r.width)) < 4 && Math.abs(my - r.y) < 4)
+        UtilCheckResize(r, 1, "nwse-resize");
+    else if (Math.abs(mx - (r.x + r.width / 2)) < 4 && Math.abs(my - r.y) < 4)
+        UtilCheckResize(r, 2, "ns-resize");
+    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width)) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 10) 
+        UtilCheckResize(r, 3, "nwse-resize");
+    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width / 2)) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 20)
+        UtilCheckResize(r, 4, "ns-resize");
+    else if (Math.abs(mx - ((r.height / 2) * Math.cos(-45 * Math.PI / 180) + (r.x + r.width))) < 20 && Math.abs(my - ((r.height / 2) * Math.sin(-45 * Math.PI / 180) + r.y)) < 4)
+        UtilCheckResize(r, 5, "e-resize");
+    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width))) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 15)
+        UtilCheckResize(r, 6, "nesw-resize");
+    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height / 3)) < 4 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y + r.height / 4)) < 15)
+        UtilCheckResize(r, 7, "e-resize");
+    else
         r.resize = -1;
-    }
 }
 
 function drawParallelogramPoints(r) {
-    /*drawCircle(r, 0, 0);
-    drawCircle(r, r.width, 0);
-    drawCircle(r, r.height + 60, -50);
-    drawCircle(r, r.height + 60 - r.width, -50);
-    drawCircle(r, (r.width + 35) / 2, -(r.height - 15) / 2);*/ // center
     drawCircle(r, 0, 0);
+    drawCircle(r, r.width / 2, 0);
     drawCircle(r, r.width, 0);
+    drawCircle(r, -r.x + (r.height / 2) * Math.cos(-45 * Math.PI / 180) + (r.x + r.width), -r.y + (r.height / 2) * Math.sin(-45 * Math.PI / 180) + r.y);
     drawCircle(r, -r.x + r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width), -r.y + r.height * Math.sin(-45 * Math.PI / 180) + r.y);
+    drawCircle(r, -r.x + r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width / 2, -r.y + r.height * Math.sin(-45 * Math.PI / 180) + r.y);
     drawCircle(r, -r.x + r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width, -r.y + r.height * Math.sin(-45 * Math.PI / 180) + r.y);
+    drawCircle(r, -r.x + r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height/3, -r.y + r.height * Math.sin(-45 * Math.PI / 180) + r.y + r.height/3);
 }
 
 function drawRectPoints(r) {
@@ -542,10 +495,10 @@ function drawRectPoints(r) {
     drawCircle(r, r.width, r.height / 2);
     drawCircle(r, r.width / 2, 0);
     drawCircle(r, r.width / 2, r.height);
-    if (r.id != "text")
-        drawCircle(r, r.width / 2, r.height / 2); // center
+    /*if (r.id != "text")
+        drawCircle(r, r.width / 2, r.height / 2); // center*/
     drawCircle(r, 0, 0); // angle sx-up
-    drawCircle(r, 0 + r.width, 0); // angle dx
+    drawCircle(r, r.width, 0); // angle dx
     drawCircle(r, 0, r.height); // angle sx-down
     drawCircle(r, r.width, r.height); // angle dx-down
 }
@@ -567,7 +520,7 @@ function drawLinePoints(r) {
     ctx.rotate(r.degrees * Math.PI / 180);
     drawCircle(r, -r.x, -r.y);
     drawCircle(r, -r.x + r.width, -r.y);
-    drawCircle(r, -r.x + r.width / 2, -r.y); // center
+    //drawCircle(r, -r.x + r.width / 2, -r.y); // center
     ctx.restore();
 }
 
@@ -576,7 +529,7 @@ function drawRhombusPoints(r) {
     drawCircle(r, 0, -r.height);
     drawCircle(r, r.width, 0);
     drawCircle(r, -r.width, 0);
-    drawCircle(r, 0, 0); // center
+    //drawCircle(r, 0, 0); // center
 }
 
 function drawEllipsePoints(r) {
@@ -584,5 +537,5 @@ function drawEllipsePoints(r) {
     drawCircle(r, 0, -r.radiusY);
     drawCircle(r, r.radiusX, 0);
     drawCircle(r, -r.radiusX, 0);
-    drawCircle(r, 0, 0); // center
+    //drawCircle(r, 0, 0); // center
 }
