@@ -1,5 +1,4 @@
-﻿<!doctype html>
-<html>
+﻿<html>
 <head>
     <title>FlowChart Editor</title>
     <link rel="icon" href="Images/favicon.ico" />
@@ -9,18 +8,19 @@
     <script type="text/javascript" src="Polygon.js"></script>
     <script type="text/javascript" src="Event.js"></script>
 </head>
+
 <body>
     <div id="myBox">
         <canvas id="canvas" width=1110 height=800>
-            <img src="Images/trash_up.png" id="trash_up"/>
-            <img src="Images/trash_down.png" id="trash_down"/>
+            <img src="Images/trash_up.png" id="trash_up" />
+            <img src="Images/trash_down.png" id="trash_down" />
             <img src="Images/rotate.png" id="rotate" />
         </canvas>
     </div>
     <div id="menu_vertical">
         <div class="menutitle">Shapes</div>
         <ul>
-            <li><img src="Images/rectangle.png" id="rect_img"/></li>
+            <li><img src="Images/rectangle.png" id="rect_img" /></li>
             <li><img src="Images/line.png" id="line_img" /></li>
             <li><img src="Images/rhombus.png" id="rhombus_img" /></li>
             <li><img src="Images/parallelogram.png" id="parallelogram_img" /></li>
@@ -36,9 +36,12 @@
         <div id="coordinates"></div>
         <img src="Images/reset.png" id="reset_img" title="Reset" />
         <img src="Images/undo.png" id="undo_img" title="Undo" />
-        <img src="Images/redo.png" id="redo_img" title="Redo"/>
-        <div id="text"></div>
+        <img src="Images/redo.png" id="redo_img" title="Redo" />
         <img src="Images/text.png" id="text_img" title="Insert Text" />
+        <div id="text"></div> <!-- this div will contain an input type="text" created in js-->
+        <img src="Images/zoom_in.png" id="zoomin_img" title="Zoom in" />
+        <img src="Images/zoom_out.png" id="zoomout_img" title="Zoom out" />
     </div>
 </body>
+
 </html>

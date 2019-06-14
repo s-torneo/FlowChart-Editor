@@ -87,15 +87,29 @@
 #text_img {
     width: 25px;
     position: absolute;
-    left: 350px;
+    left: 500px;
     top: 545px;
 }
 
 #text {
     width: 25px;
     position: absolute;
-    left: 380px;
+    left: 530px;
     top: 550px;
+}
+
+#zoomin_img {
+    width: 25px;
+    position: absolute;
+    left: 400px;
+    top: 545px;
+}
+
+#zoomout_img {
+    width: 25px;
+    position: absolute;
+    left: 430px;
+    top: 545px;
 }
 
 /* Box styles */

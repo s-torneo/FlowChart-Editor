@@ -8,6 +8,8 @@ function Menu() {
     document.getElementById("reset_img").onclick = function () { reset() };
     document.getElementById("undo_img").onclick = function () {if (!flag) undo(); else { redo(); flag = true; } };
     document.getElementById("redo_img").onclick = function () {if (!flag) redo(); else { undo(); flag = true; } };
+    document.getElementById("zoomin_img").onclick = function () { zoomin() };
+    document.getElementById("zoomout_img").onclick = function () { zoomout() };
     document.getElementById("rect_img").onmouseover = function () { myOver() };
     document.getElementById("line_img").onmouseover = function () { myOver() };
     document.getElementById("rhombus_img").onmouseover = function () { myOver() };
@@ -17,6 +19,8 @@ function Menu() {
     document.getElementById("reset_img").onmouseover = function () { myOver() };
     document.getElementById("undo_img").onmouseover = function () { myOver() };
     document.getElementById("redo_img").onmouseover = function () { myOver() };
+    document.getElementById("zoomin_img").onmouseover = function () { myOver() };
+    document.getElementById("zoomout_img").onmouseover = function () { myOver() };
     document.getElementById("rect_img").onmouseout = function () { myOut() };
     document.getElementById("line_img").onmouseout = function () { myOut() };
     document.getElementById("rhombus_img").onmouseout = function () { myOut() };
@@ -26,6 +30,8 @@ function Menu() {
     document.getElementById("reset_img").onmouseout = function () { myOut() };
     document.getElementById("undo_img").onmouseout = function () { myOut() };
     document.getElementById("redo_img").onmouseout = function () { myOut() };
+    document.getElementById("zoomin_img").onmouseout = function () { myOut() };
+    document.getElementById("zoomout_img").onmouseout = function () { myOut() };
     document.getElementById("myBox").onmouseup = function () { draw() };
     document.getElementById("myBox").onwheel = function () { draw() }; // on wheel is the event associated at the wheel's (of mouse) move
 }

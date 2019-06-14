@@ -5,6 +5,25 @@ var dragok, startX, startY;
 var choice = false; // = true => grid, else false
 var dim = 10; //indicate the dimension of the grid's squares
 var trashX = 1065, trashY = 467, trashW = 30, trashH = 30; //size and position of trash used to delete element on canvas
+var val_scale = 1; // value that indicates how much scale
+
+function zoomin(){
+    if(val_scale < 4)
+        val_scale += 0.5;
+    draw();
+}
+
+function zoomout(){
+    if(val_scale> 0.5)
+        val_scale -= 0.5;
+    draw();
+}
+
+function Scale(r){
+    ctx.save();
+    ctx.translate(r.x, r.y);
+    ctx.scale(val_scale, val_scale);
+}
 
 function aroundTrash(mx, my) {
     if (Math.abs(mx - trashX) < 100 && Math.abs(my - trashY_actual) < 100) {
@@ -55,7 +74,6 @@ function drawTrash() {
         else
             ctx.drawImage(trash_up, trashX - 15, trashY - 25 + rid, 20, 10);
     }
-    // we�re done with the rotating so restore the unrotated context
     ctx.restore();
     // draw trash_down
     if (trashY_actual > (HEIGHT - 40))
