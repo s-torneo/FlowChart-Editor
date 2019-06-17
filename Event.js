@@ -1,4 +1,7 @@
-var mx, my, input, input_ok = false;
+var mx, my, input, input_ok = false, selectionok = false;
+var initX, initY; // initial coordinates, of a shape, used when a shape is in dragging
+var sel_x, sel_y; // initial coordinates of selection's rectangle
+var sel_w = 10, sel_h = 10; // width and height of selection's rectangle
 
 function myDoubleClick(e) {
     // tell the browser we're handling this mouse event
@@ -14,10 +17,10 @@ function myDoubleClick(e) {
             if (insideRect(r, mx, my))
                 newRect(mx + 50, my);
         }
-        else if (r.id == "line") {
+        else if (r.id == "line" || r.id == "arrow") {
             if (insideLine(r, mx, my))
-                r.degrees = (r.degrees + 45) % 360;
-                //newLine(mx + 50, my);
+                //r.degrees = (r.degrees + 45) % 360;
+                newLine(mx + 50, my, r.id);
         }
         else if (r.id == "parallelogram") {
             if (insideParallelogram(r, mx, my))
@@ -45,10 +48,22 @@ function myDoubleClick(e) {
     }
 }
 
-var initX, initY;
+function ManagerSelection(){
+    if(selectionMode){
+        if(selectionok){
+            selectionok = false;
+            newSelection(sel_x,sel_y,sel_w,sel_x);
+        }
+        else{
+            selectionok = true;
+            sel_x = mx;
+            sel_y = my;
+            sel_h = sel_w = 0;
+        }
+    }
+}
 
 function DragOk(r) {
-    // if yes, set that rects isDragging=true
     dragok = true;
     r.isDragging = true;
     ChangeCursor("move");
@@ -66,6 +81,7 @@ function myDown(e) {
     my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
     // test each rect to see if mouse is inside
     dragok = false;
+    ManagerSelection();
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
         if (r.id == "parallelogram") {
@@ -80,12 +96,18 @@ function myDown(e) {
                 CheckResizeRect(r, mx, my);
             }
         }
-        else if (r.id == "line") {
+        else if (r.id == "selection"){
+            if(insideRectSelection(mx,my)){
+                DragOk(r);
+                CheckResizeRect(r, mx, my);
+            }
+        }
+        else if (r.id == "line" || r.id == "arrow") {
             if (insideLine(r, mx, my)) {
                 DragOk(r);
                 CheckResizeLine(r, mx, my);
                 if (insideRotationIcon(r, mx, my)) {
-                    r.degrees = (r.degrees + 45)%360;
+                    r.degrees = (r.degrees + 90)%360;
                     drawLinePoints(r);
                     draw();
                 }
@@ -121,8 +143,8 @@ function myUp(e) {
     if (selected != null) {
         if (selected == "rectangle")
             newRect(mx, my);
-        else if (selected == "line")
-            newLine(mx, my);
+        else if (selected == "line" || selected == "arrow")
+            newLine(mx, my, selected);
         else if (selected == "rhombus")
             newRhombus(mx, my);
         else if (selected == "parallelogram")
@@ -132,6 +154,8 @@ function myUp(e) {
         else if (selected == "text")
             newText(mx, my);
         selected = null;
+        selectionMode = false;
+        selectionok = false;
         draw();
         return;
     }
@@ -150,12 +174,19 @@ function myMove(e) {
     // get the current mouse position
     mx = parseInt(e.clientX - offsetX);
     my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
+    var dx = mx - startX;
+    var dy = my - startY;
+    /*if(selectionok) {
+        if(insideRectSelection(mx, my))
+            ChangeCursor("move");
+        return;
+    }*/
     // if we're dragging anything...
-    if (dragok) {
+    if (dragok || selectionok) {
         // calculate the distance the mouse has moved
         // since the last mousemove
-        var dx = mx - startX;
-        var dy = my - startY;
+        if(selectionok)
+            drawSelection(dx, dy);
         // move each rect that isDragging
         // by the distance the mouse has moved
         // since the last mousemove
@@ -211,7 +242,16 @@ function myMove(e) {
                 r.borderColor = "white";
             }
         }
-        else if (r.id == "line") {
+        else if (r.id == "selection"){
+            if(insideRectSelection(mx,my)){
+                drawRectPoints(r);
+                WriteCoordinates(mx, my);
+                ChangeCursor("move");
+                CheckResizeRect(r, mx, my);
+                return;
+            }
+        }
+        else if (r.id == "line" || r.id == "arrow") {
             if (insideLine(r, mx, my)) {
                 drawRotationIcon(r);
                 drawLinePoints(r);

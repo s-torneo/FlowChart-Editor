@@ -5,10 +5,14 @@ function newRect(px, py) {
     nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, isDragging: false, resize: -1, id: "rectangle" });
 }
 
-function newLine(px, py) {
+function newSelection(px,py,w,h){
+    nodes.push({ x: px, y: py, width: w, height: h, isDragging: false, resize: -1, id: "selection" });
+}
+
+function newLine(px, py, id_v) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 40, isDragging: false, resize: -1, degrees: 0, id: "line" });
+    nodes.push({ x: px, y: py, width: 40, isDragging: false, resize: -1, degrees: 0, id: id_v});
 }
 
 function newRhombus(px, py) {
@@ -47,15 +51,31 @@ function insideParallelogram(r, mx, my) {
 //check if mouse's pointer is on a line
 function insideLine(r, mx, my) {
     var inside = false;
-    var x = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
-    var y = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
-    if (Math.abs(mx - r.x) < r.width && /*Math.abs(mx - r.x - r.width &&/*&& mx < x*/ Math.abs(my - r.y) < r.width)
-        inside = true;// prima era < 4
+    var x1 = r.x, y1 = r.y;
+    var x2 = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
+    var y2 = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
+    if(mx>=x1 && mx<=x2 && Math.abs(my - y1)<20) // 0 
+        inside = true;
+    else if(my>=y1 && my<=y2 && Math.abs(mx - x1)<20) // 90
+        inside = true;
+    else if(mx<=x1 && mx>=x2 && Math.abs(my - y1)<20) // 180
+        inside = true;
+    else if(my<=y1 && my>=y2 && Math.abs(mx - x1)<20) // 270
+        inside = true;
     return inside;
 }
 
 function insideRotationIcon(r, mx, my) {
-    return (Math.abs(mx - (r.x + (r.width / 2))) < 15 && Math.abs(my - (r.y - 20)) < 10);
+    var inside = false;
+    if(Math.abs(mx - (r.x + (r.width / 2))) <= 10 && Math.abs(my - r.y) >= 12)
+        inside = true;
+    else if(Math.abs(my - (r.y + (r.width / 2))) <= 5 && Math.abs(mx - r.x) >= 15)
+        inside = true;
+    else if(Math.abs(mx - (r.x + (r.width / 2))) <= 5 && Math.abs(my - r.y) >= 12)
+        inside = true;
+    else if(Math.abs(my - (r.y - (r.width / 2))) <= 5 && Math.abs(mx - r.x) >= 10)
+        inside = true;
+    return inside;
 }
 
 //check if mouse's pointer is inside an ellipse
@@ -142,13 +162,14 @@ function drawLine(r) {
     ctx.moveTo(0, 0);
     ctx.lineTo(r.width, 0);
     //ctx.beginPath();
-    //ctx.moveTo(r.x, r.y);
-    //var x = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
-    //var y = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
-    //ctx.lineTo(x, y);
+    /*ctx.moveTo(r.x, r.y);
+    var x = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
+    var y = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
+    ctx.lineTo(x, y);*/
     ctx.stroke();
     border(2, "black");
-    drawTriangle(r);
+    if(r.id == "arrow")
+        drawTriangle(r);
     ctx.restore();
 }
 
@@ -156,7 +177,7 @@ function drawLine(r) {
 function drawRect(x, y, w, h) {
     ctx.save();
     ctx.translate(x, y);
-    if(w != WIDTH && h != HEIGHT)
+    //if(w != WIDTH && h != HEIGHT)
         ctx.scale(val_scale, val_scale);
     ctx.beginPath();
     ctx.rect(0, 0, w, h);
@@ -180,10 +201,7 @@ function drawCircle(r, posx, posy) {
     ctx.ellipse(/*r.x + */posx, /*r.y + */posy, 3, 3, Math.PI / 2, 0, 2 * Math.PI);
     ctx.stroke();
     border(1, "black");
-    if (r.x + posx == 0 && r.y + posy == 0)
-        ctx.fillStyle = "red";
-    else
-        ctx.fillStyle = "blue";
+    ctx.fillStyle = "blue";
     ctx.fill();
 }
 
@@ -395,18 +413,71 @@ function ResizeParallelogram(r, dx, dy) {
     }
 }
 
+function ResizeLine(r, dx, dy) {
+    switch (r.resize) {
+        case 0: {
+            if (!CheckSize(r, 20)){
+                r.y -= dy; 
+                if(r.degrees == 180)
+                    r.width += dx;
+                else
+                    r.width -= dx;
+            }
+        } break;
+        case 1: {
+            if (!CheckSize(r, 20)) {
+                r.x -= dx;
+                r.y -= dy;
+                if(r.degrees == 180)
+                    r.width -= dx;
+                else
+                    r.width += dx;
+            }
+        } break;
+        case 2: {
+            if (!CheckSize(r, 20)) {
+                r.x -= dx;
+                if(r.degrees == 270)
+                    r.width += dy;
+                else
+                    r.width -= dy;
+            }
+        } break;
+        case 3: {
+            if (!CheckSize(r, 20)) {
+                r.x -= dx;
+                r.y -= dy;
+                if(r.degrees == 270)
+                    r.width -= dy;
+                else
+                    r.width += dy;
+            }
+        } break;
+    }
+}
+
 // check if mouse inside a shape on one of the resizing points, if yes resize the shape
 function ResizeShapes(r, mx, my, dx, dy) {
-    if (r.id == "rectangle" || r.id == "line" || r.id == "text") {
-        if (insideRect(r, mx, my) || insideLine(r, mx, my))
+    if (r.id == "rectangle" || r.id == "text") {
+        if (insideRect(r, mx, my))
             ResizeRect(r, dx, dy);
     }
-    else if (insideRhombus(r, mx, my))
-        ResizeRhombus(r, dx, dy);
-    else if (insideEllipse(r, mx, my))
-        ResizeEllipse(r, dx, dy);
-    else if (insideParallelogram(r, mx, my))
-        ResizeParallelogram(r, dx, dy);
+    else if(r.id == "line" || r.id == "arrow" ){
+        if(insideLine(r, mx, my))
+            ResizeLine(r, dx, dy);
+    }
+    else if (r.id == "rhombus"){
+        if (insideRhombus(r, mx, my))
+            ResizeRhombus(r, dx, dy);
+    }
+    else if (r.id == "ellipse"){
+        if (insideEllipse(r, mx, my))
+            ResizeEllipse(r, dx, dy);
+    }
+    else if (r.id == "parallelogram"){
+        if (insideParallelogram(r, mx, my))
+            ResizeParallelogram(r, dx, dy);
+    }
 }
 
 // it is called by CheckResize of all shape, to set the number of resizing and change the cursor
@@ -439,14 +510,37 @@ function CheckResizeRect(r, mx, my) {
 
 // check if mouse's pointer is on a resizing point
 function CheckResizeLine(r, mx, my) {
-    if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4)
-        UtilCheckResize(r, 0, "e-resize");
-    else if (Math.abs(mx - (r.x + r.width)) < 10 && Math.abs(my - r.y) < 10) 
-        UtilCheckResize(r, 1, "e-resize");
-    else if (Math.abs(mx - (r.x + r.width / 2)) < 10 && Math.abs(my - r.y) < 10) 
-        UtilCheckResize(r, 2, "ns-resize");
-    else
-        r.resize = -1;
+    var x1 = r.x, y1 = r.y;
+    var x2 = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
+    var y2 = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
+    /*if(mx>=x1 && mx<=x2 && Math.abs(my - y1)<5) // 0 
+        inside = true;
+    else if(my>=y1 && my<=y2 && Math.abs(mx - x1)<5) // 90
+        inside = true;
+    else if(mx<=x1 && mx>=x2 && Math.abs(my - y1)<5) // 180
+        inside = true;
+    else if(my<=y1 && my>=y2 && Math.abs(mx - x1)<5) // 270
+        inside = true;*/
+    switch(r.degrees){
+        case 0 : 
+        case 180: {
+            if (Math.abs(mx - r.x) < 4 && Math.abs(my - r.y) < 4)
+                UtilCheckResize(r, 0, "e-resize");
+            else if (Math.abs(mx - x2) < 4 && Math.abs(my - r.y) < 4) 
+                UtilCheckResize(r, 1, "e-resize");
+            else
+                r.resize = -1;
+        }break;
+        case 90 : 
+        case 270: {
+            if (Math.abs(my - y1) < 4 && Math.abs(mx - x1) < 4)
+                UtilCheckResize(r, 2, "ns-resize");
+            else if (Math.abs(my - y2) < 4 && Math.abs(mx - x1) <4)
+                UtilCheckResize(r, 3, "ns-resize");
+            else
+                r.resize = -1;
+        }break;
+    }
 }
 
 // check if mouse's pointer is on a resizing point
@@ -542,8 +636,8 @@ function drawLinePoints(r) {
     ctx.save();
     ctx.translate(r.x, r.y);
     ctx.rotate(r.degrees * Math.PI / 180);
-    drawCircle(r, -r.x, -r.y);
-    drawCircle(r, -r.x + r.width, -r.y);
+    drawCircle(r, 0, 0);
+    drawCircle(r, r.width, 0);
     //drawCircle(r, -r.x + r.width / 2, -r.y); // center
     ctx.restore();
 }

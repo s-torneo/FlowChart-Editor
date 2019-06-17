@@ -1,6 +1,7 @@
 function Menu() {
     document.getElementById("rect_img").onclick = function () { myClick("rectangle") };
     document.getElementById("line_img").onclick = function () { myClick("line") };
+    document.getElementById("arrow_img").onclick = function () { myClick("arrow") };
     document.getElementById("rhombus_img").onclick = function () { myClick("rhombus") };
     document.getElementById("parallelogram_img").onclick = function () { myClick("parallelogram") };
     document.getElementById("ellipse_img").onclick = function () { myClick("ellipse") };
@@ -10,8 +11,10 @@ function Menu() {
     document.getElementById("redo_img").onclick = function () {if (!flag) redo(); else { undo(); flag = true; } };
     document.getElementById("zoomin_img").onclick = function () { zoomin() };
     document.getElementById("zoomout_img").onclick = function () { zoomout() };
+    document.getElementById("selection_img").onclick = function () { selection() };
     document.getElementById("rect_img").onmouseover = function () { myOver() };
     document.getElementById("line_img").onmouseover = function () { myOver() };
+    document.getElementById("arrow_img").onmouseover = function () { myOver() };
     document.getElementById("rhombus_img").onmouseover = function () { myOver() };
     document.getElementById("parallelogram_img").onmouseover = function () { myOver() };
     document.getElementById("ellipse_img").onmouseover = function () { myOver() };
@@ -21,8 +24,10 @@ function Menu() {
     document.getElementById("redo_img").onmouseover = function () { myOver() };
     document.getElementById("zoomin_img").onmouseover = function () { myOver() };
     document.getElementById("zoomout_img").onmouseover = function () { myOver() };
+    document.getElementById("selection_img").onmouseover = function () { myOver() };
     document.getElementById("rect_img").onmouseout = function () { myOut() };
     document.getElementById("line_img").onmouseout = function () { myOut() };
+    document.getElementById("arrow_img").onmouseout = function () { myOut() };
     document.getElementById("rhombus_img").onmouseout = function () { myOut() };
     document.getElementById("parallelogram_img").onmouseout = function () { myOut() };
     document.getElementById("ellipse_img").onmouseout = function () { myOut() };
@@ -32,6 +37,7 @@ function Menu() {
     document.getElementById("redo_img").onmouseout = function () { myOut() };
     document.getElementById("zoomin_img").onmouseout = function () { myOut() };
     document.getElementById("zoomout_img").onmouseout = function () { myOut() };
+    document.getElementById("selection_img").onmouseout = function () { myOut() };
     document.getElementById("myBox").onmouseup = function () { draw() };
     document.getElementById("myBox").onwheel = function () { draw() }; // on wheel is the event associated at the wheel's (of mouse) move
 }

@@ -30,7 +30,21 @@
     width: 115px;
     position: absolute;
     left: 15px;
-    top: 180px;
+    top: 160px;
+}
+
+#arrow_img {
+    width: 105px;
+    position: absolute;
+    left: 25px;
+    top: 200px;
+}
+
+#triangle_img {
+    width: 22px;
+    position: absolute;
+    left: 10px;
+    top: 191px;
 }
 
 #rhombus_img {
@@ -87,14 +101,14 @@
 #text_img {
     width: 25px;
     position: absolute;
-    left: 500px;
+    left: 580px;
     top: 545px;
 }
 
 #text {
     width: 25px;
     position: absolute;
-    left: 530px;
+    left: 610px;
     top: 550px;
 }
 
@@ -110,6 +124,13 @@
     position: absolute;
     left: 430px;
     top: 545px;
+}
+
+#selection_img {
+    width: 40px;
+    position: absolute;
+    left: 490px;
+    top: 538px;
 }
 
 /* Box styles */
