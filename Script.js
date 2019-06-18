@@ -6,24 +6,6 @@ var choice = false; // = true => grid, else false
 var dim = 10; //indicate the dimension of the grid's squares
 var trashX = 1065, trashY = 467, trashW = 30, trashH = 30; //size and position of trash used to delete element on canvas
 var val_scale = 1; // value that indicates how much scale
-var selectionMode = false; // boolean that indicates if the selection mode is active
-
-function insideRectSelection(x, y){
-    return (x > sel_x && x < (sel_x + sel_w) && y > sel_y && y < (sel_y + sel_h));
-}
-
-function drawSelection(dx,dy){
-    sel_w+=dx;
-    sel_h+=dy;
-    drawRect(sel_x,sel_y,sel_w,sel_h);
-}
-
-function selection(){
-    if(!selectionMode) 
-        selectionMode = true;
-    else
-        selectionMode = false;
-}
 
 function zoomin(){
     if(val_scale < 4)
@@ -54,15 +36,27 @@ function aroundTrash(mx, my) {
     }
 }
 
+function RemoveShape(i){
+    // save it in copy with the initial position x e y and then delete it
+    nodes[i].x = initX;
+    nodes[i].y = initY;
+    nodes[i].isDragging = false;
+    copy.push(nodes[i]);
+    removed = true;
+    nodes.splice(i, 1);
+}
+
 function insideTrash(mx, my, i) {
     if (mx > trashX && mx < trashX + trashW && my > trashY_actual && my < trashY_actual + trashH) {
-        // if yes, save it in copy with the initial position x e y and then delete it
-        nodes[i].x = initX;
-        nodes[i].y = initY;
-        nodes[i].isDragging = false;
-        copy.push(nodes[i]);
-        removed = true;
-        nodes.splice(i, 1);
+        if(selectionMode){
+            for(var i = 0; i < nodes.length; i++){
+                var r = nodes[i];
+                if(insideRectSelection(r.x,r.y) && r.id != "selection" && !selectionok)
+                    RemoveShape(i);
+            }
+        }
+        else
+            RemoveShape(i);
         ChangeCursor("default");
     }
 }
@@ -129,14 +123,21 @@ var flag = false, removed = false;
 
 // reset the canvas
 function reset() {
-    for (var i = 0; i < nodes.length; i++)
-        copy.push(nodes[i]);
+    for (var i = 0; i < nodes.length; i++){
+        if(nodes[i].id != "selection")
+            copy.push(nodes[i]);
+    }
     nodes.splice(0, nodes.length);
     draw();
     flag = true;
+    selectionok = selectionMode = false;
 }
 
 function undo() {
+    if(nodes[nodes.length - 1].id == "selection"){
+        nodes.pop();
+        selectionok = selectionMode = false;
+    }
     if (nodes.length > 0) {
         copy.push(nodes[nodes.length - 1]);
         nodes.pop();
@@ -145,6 +146,10 @@ function undo() {
 }
 
 function redo() {
+    if(copy[copy.length - 1].id == "selection"){
+        copy.pop();
+        selectionok = selectionMode = false;
+    }
     if (copy.length > 0) {
         nodes.push(copy[copy.length - 1]);
         copy.pop();
@@ -180,11 +185,13 @@ function draw() {
             drawEllipse(r);
         else if (r.id == "text")
             drawText(r);
+        else if (r.id == "selection")
+            moveSelection(r);
     }
     drawTrash();
     if (removed)
         flag = true;
-    if(selectionMode)
+    if(selectionok)
         drawSelection(0,0);
 }
 

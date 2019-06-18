@@ -1,7 +1,5 @@
-var mx, my, input, input_ok = false, selectionok = false;
+var mx, my, input, input_ok = false;
 var initX, initY; // initial coordinates, of a shape, used when a shape is in dragging
-var sel_x, sel_y; // initial coordinates of selection's rectangle
-var sel_w = 10, sel_h = 10; // width and height of selection's rectangle
 
 function myDoubleClick(e) {
     // tell the browser we're handling this mouse event
@@ -10,7 +8,7 @@ function myDoubleClick(e) {
     // get the current mouse position
     mx = parseInt(e.clientX - offsetX);
     my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
-    //new object if i have press central key of mouse
+    //new shape if you press on a shape twice
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
         if (r.id == "rectangle") {
@@ -19,7 +17,6 @@ function myDoubleClick(e) {
         }
         else if (r.id == "line" || r.id == "arrow") {
             if (insideLine(r, mx, my))
-                //r.degrees = (r.degrees + 45) % 360;
                 newLine(mx + 50, my, r.id);
         }
         else if (r.id == "parallelogram") {
@@ -48,27 +45,14 @@ function myDoubleClick(e) {
     }
 }
 
-function ManagerSelection(){
-    if(selectionMode){
-        if(selectionok){
-            selectionok = false;
-            newSelection(sel_x,sel_y,sel_w,sel_x);
-        }
-        else{
-            selectionok = true;
-            sel_x = mx;
-            sel_y = my;
-            sel_h = sel_w = 0;
-        }
-    }
-}
-
 function DragOk(r) {
     dragok = true;
     r.isDragging = true;
     ChangeCursor("move");
     initX = r.x;
     initY = r.y;
+    if(r.id != "selection")
+        RemoveSelection();
 }
 
 // handle mousedown events
@@ -97,10 +81,8 @@ function myDown(e) {
             }
         }
         else if (r.id == "selection"){
-            if(insideRectSelection(mx,my)){
+            if(insideRectSelection(mx,my))
                 DragOk(r);
-                CheckResizeRect(r, mx, my);
-            }
         }
         else if (r.id == "line" || r.id == "arrow") {
             if (insideLine(r, mx, my)) {
@@ -176,11 +158,6 @@ function myMove(e) {
     my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
     var dx = mx - startX;
     var dy = my - startY;
-    /*if(selectionok) {
-        if(insideRectSelection(mx, my))
-            ChangeCursor("move");
-        return;
-    }*/
     // if we're dragging anything...
     if (dragok || selectionok) {
         // calculate the distance the mouse has moved
@@ -192,7 +169,11 @@ function myMove(e) {
         // since the last mousemove
         for (var i = 0; i < nodes.length; i++) {
             var r = nodes[i];
-            if (r.isDragging) {
+            if(insideRectSelection(r.x,r.y) && r.id != "selection" && !selectionok){
+                r.x += dx;
+                r.y += dy;
+            }
+            else if (r.isDragging) {
                 r.x += dx;
                 r.y += dy;
                 // check if the shape is a text's rectangle and if mouse is inside it
@@ -217,6 +198,8 @@ function myMove(e) {
         startX = mx;
         startY = my;
     }
+    // check the number of shape inside selection's rectangle and if the number is 0 => delete it
+    ShapeInsideSelection();
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
         if (r.id == "parallelogram") {
@@ -244,10 +227,8 @@ function myMove(e) {
         }
         else if (r.id == "selection"){
             if(insideRectSelection(mx,my)){
-                drawRectPoints(r);
                 WriteCoordinates(mx, my);
                 ChangeCursor("move");
-                CheckResizeRect(r, mx, my);
                 return;
             }
         }

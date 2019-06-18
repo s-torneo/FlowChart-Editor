@@ -5,10 +5,6 @@ function newRect(px, py) {
     nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, isDragging: false, resize: -1, id: "rectangle" });
 }
 
-function newSelection(px,py,w,h){
-    nodes.push({ x: px, y: py, width: w, height: h, isDragging: false, resize: -1, id: "selection" });
-}
-
 function newLine(px, py, id_v) {
     if (px > WIDTH)
         return;
