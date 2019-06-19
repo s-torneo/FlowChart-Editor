@@ -41,6 +41,7 @@ function RemoveShape(i){
     nodes[i].x = initX;
     nodes[i].y = initY;
     nodes[i].isDragging = false;
+    nodes[i].isSelected = false;
     copy.push(nodes[i]);
     removed = true;
     nodes.splice(i, 1);
@@ -134,10 +135,6 @@ function reset() {
 }
 
 function undo() {
-    if(nodes[nodes.length - 1].id == "selection"){
-        nodes.pop();
-        selectionok = selectionMode = false;
-    }
     if (nodes.length > 0) {
         copy.push(nodes[nodes.length - 1]);
         nodes.pop();
@@ -146,10 +143,6 @@ function undo() {
 }
 
 function redo() {
-    if(copy[copy.length - 1].id == "selection"){
-        copy.pop();
-        selectionok = selectionMode = false;
-    }
     if (copy.length > 0) {
         nodes.push(copy[copy.length - 1]);
         copy.pop();

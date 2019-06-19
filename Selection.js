@@ -6,12 +6,16 @@ function newSelection(px,py,w,h){
     nodes.push({ x: px, y: py, width: w, height: h, isDragging: false, id: "selection" });
 }
 
-function ShapeInsideSelection(){
+function ShapeInsideSelection(flag){
+    // flag is used to know if ShapeInsideSelection is called from ManagerSelection or myMove
     var shape = 0;
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
-        if(insideRectSelection(r.x,r.y) && r.id != "selection")
+        if(insideRectSelection(r.x,r.y) && r.id != "selection"){
             shape++;
+            if(!flag)
+                r.isSelected = true;
+        }
     }
     if(!shape)
         RemoveSelection();
@@ -48,6 +52,7 @@ function moveSelection(r){
 function RemoveSelection(){
     for(var i = 0; i < nodes.length; i++){
         if(nodes[i].id == "selection"){
+            nodes[i].isSelected = false;
             nodes.splice(i,1);
             selectionok = false;
         }
@@ -69,7 +74,7 @@ function ManagerSelection(){
         if(selectionok){
             selectionok = false;
             // check the number of shape inside selection's rectangle and if the number is 0 => delete it
-            if(ShapeInsideSelection())
+            if(ShapeInsideSelection(0))
                 newSelection(sel_x,sel_y,sel_w,sel_h);
             selected = null;
         }

@@ -169,7 +169,7 @@ function myMove(e) {
         // since the last mousemove
         for (var i = 0; i < nodes.length; i++) {
             var r = nodes[i];
-            if(insideRectSelection(r.x,r.y) && r.id != "selection" && !selectionok){
+            if(insideRectSelection(r.x,r.y) && r.id != "selection" && !selectionok && r.isSelected){
                 r.x += dx;
                 r.y += dy;
             }
@@ -199,7 +199,7 @@ function myMove(e) {
         startY = my;
     }
     // check the number of shape inside selection's rectangle and if the number is 0 => delete it
-    ShapeInsideSelection();
+    ShapeInsideSelection(1);
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
         if (r.id == "parallelogram") {
