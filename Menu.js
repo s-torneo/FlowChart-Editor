@@ -12,6 +12,8 @@ function Menu() {
     document.getElementById("zoomin_img").onclick = function () { zoomin() };
     document.getElementById("zoomout_img").onclick = function () { zoomout() };
     document.getElementById("selection_img").onclick = function () { selection() };
+    document.getElementById("download_img").onclick = function () { download("editor.json") };
+    document.getElementById("upload_img").onclick = function () { upload("editor.json") };
     document.getElementById("rect_img").onmouseover = function () { myOver() };
     document.getElementById("line_img").onmouseover = function () { myOver() };
     document.getElementById("arrow_img").onmouseover = function () { myOver() };
@@ -25,6 +27,8 @@ function Menu() {
     document.getElementById("zoomin_img").onmouseover = function () { myOver() };
     document.getElementById("zoomout_img").onmouseover = function () { myOver() };
     document.getElementById("selection_img").onmouseover = function () { myOver() };
+    document.getElementById("download_img").onmouseover = function () { myOver() };
+    document.getElementById("upload_img").onmouseover = function () { myOver() };
     document.getElementById("rect_img").onmouseout = function () { myOut() };
     document.getElementById("line_img").onmouseout = function () { myOut() };
     document.getElementById("arrow_img").onmouseout = function () { myOut() };
@@ -38,6 +42,8 @@ function Menu() {
     document.getElementById("zoomin_img").onmouseout = function () { myOut() };
     document.getElementById("zoomout_img").onmouseout = function () { myOut() };
     document.getElementById("selection_img").onmouseout = function () { myOut() };
+    document.getElementById("download_img").onmouseout = function () { myOut() };
+    document.getElementById("upload_img").onmouseout = function () { myOut() };
     document.getElementById("myBox").onmouseup = function () { draw() };
     document.getElementById("myBox").onwheel = function () { draw() }; // on wheel is the event associated at the wheel's (of mouse) move
 }
@@ -67,4 +73,35 @@ function Quantity() {
     dim = document.getElementsByName("quantity")[0].value * 10;
     if (choice)
         draw();
+}
+
+function upload(file){
+    var input=document.createElement('input');
+    input.type="file";
+    var element = document.getElementById('target_div').appendChild(input);
+    element.style.display = 'none';
+    element.click();
+    document.body.removeChild(element);
+    /*var reader = new FileReader();
+    reader.onload = function(event) {
+        var testo = event.target.result;
+        document.getElementById("contenuto").innerHTML = testo;
+    };*/
+    reader.readAsText(file);
+    /*var text = '[{"x":408,"y":256,"width":110,"height":60,"isDragging":false,"isSelected":false,"resize":-1,"initX":0,"initY":0,"id":"rectangle"}]';
+        var json = JSON.parse(text);
+        for(var i=0;i<json.length;i++)
+            nodes.push(json[i]);
+        draw();*/
+}
+    
+function download(filename) {
+    var data = JSON.stringify(nodes); // Serializzazione
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
 }

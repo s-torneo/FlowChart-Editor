@@ -13,8 +13,12 @@ function ShapeInsideSelection(flag){
         var r = nodes[i];
         if(insideRectSelection(r.x,r.y) && r.id != "selection"){
             shape++;
-            if(!flag)
+            if(!flag){
+                r.initX = r.x;
+                r.initY = r.y;
                 r.isSelected = true;
+                //r.isDragging = false;
+            }
         }
     }
     if(!shape)
@@ -52,10 +56,10 @@ function moveSelection(r){
 function RemoveSelection(){
     for(var i = 0; i < nodes.length; i++){
         if(nodes[i].id == "selection"){
-            nodes[i].isSelected = false;
             nodes.splice(i,1);
             selectionok = false;
         }
+        nodes[i].isSelected = false;
     }
     draw();
 }

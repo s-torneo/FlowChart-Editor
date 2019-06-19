@@ -38,8 +38,8 @@ function aroundTrash(mx, my) {
 
 function RemoveShape(i){
     // save it in copy with the initial position x e y and then delete it
-    nodes[i].x = initX;
-    nodes[i].y = initY;
+    nodes[i].x =  nodes[i].initX;
+    nodes[i].y = nodes[i].initY;
     nodes[i].isDragging = false;
     nodes[i].isSelected = false;
     copy.push(nodes[i]);
@@ -52,7 +52,7 @@ function insideTrash(mx, my, i) {
         if(selectionMode){
             for(var i = 0; i < nodes.length; i++){
                 var r = nodes[i];
-                if(insideRectSelection(r.x,r.y) && r.id != "selection" && !selectionok)
+                if(insideRectSelection(r.x,r.y) && r.id != "selection" && !selectionok && r.isSelected)
                     RemoveShape(i);
             }
         }
@@ -121,7 +121,7 @@ function drawGrid() {
 
 // they are used to manage undo, redo and reset operations
 var flag = false, removed = false;
-
+  
 // reset the canvas
 function reset() {
     for (var i = 0; i < nodes.length; i++){

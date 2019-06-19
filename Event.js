@@ -1,5 +1,6 @@
-var mx, my, input, input_ok = false;
-var initX, initY; // initial coordinates, of a shape, used when a shape is in dragging
+
+var mx, my; // indicate the coordinates of mouse
+var input, input_ok = false; // used to manage the input text mode
 
 function myDoubleClick(e) {
     // tell the browser we're handling this mouse event
@@ -49,8 +50,8 @@ function DragOk(r) {
     dragok = true;
     r.isDragging = true;
     ChangeCursor("move");
-    initX = r.x;
-    initY = r.y;
+    r.initX = r.x;
+    r.initY = r.y;
     if(r.id != "selection")
         RemoveSelection();
 }

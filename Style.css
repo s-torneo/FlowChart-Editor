@@ -101,15 +101,29 @@
 #text_img {
     width: 25px;
     position: absolute;
-    left: 580px;
+    left: 680px;
     top: 545px;
 }
 
 #text {
     width: 25px;
     position: absolute;
-    left: 610px;
+    left: 710px;
     top: 550px;
+}
+
+#download_img {
+    width: 25px;
+    position: absolute;
+    left: 580px;
+    top: 547px;
+}
+
+#upload_img {
+    width: 25px;
+    position: absolute;
+    left: 610px;
+    top: 547px;
 }
 
 #zoomin_img {
