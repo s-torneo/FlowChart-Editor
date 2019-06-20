@@ -9,8 +9,6 @@ function Menu() {
     document.getElementById("reset_img").onclick = function () { reset() };
     document.getElementById("undo_img").onclick = function () {if (!flag) undo(); else { redo(); flag = true; } };
     document.getElementById("redo_img").onclick = function () {if (!flag) redo(); else { undo(); flag = true; } };
-    document.getElementById("zoomin_img").onclick = function () { zoomin() };
-    document.getElementById("zoomout_img").onclick = function () { zoomout() };
     document.getElementById("selection_img").onclick = function () { selection() };
     document.getElementById("download_img").onclick = function () { download("editor.json") };
     document.getElementById("upload_img").onclick = function () { upload() };
@@ -23,9 +21,7 @@ function Menu() {
     document.getElementById("text_img").onmouseover = function () { myOver() };
     document.getElementById("reset_img").onmouseover = function () { myOver() };
     document.getElementById("undo_img").onmouseover = function () { myOver() };
-    document.getElementById("redo_img").onmouseover = function () { myOver() };
-    document.getElementById("zoomin_img").onmouseover = function () { myOver() };
-    document.getElementById("zoomout_img").onmouseover = function () { myOver() };
+    document.getElementById("redo_img").onmouseover = function () { myOver() }
     document.getElementById("selection_img").onmouseover = function () { myOver() };
     document.getElementById("download_img").onmouseover = function () { myOver() };
     document.getElementById("upload_img").onmouseover = function () { myOver() };
@@ -39,8 +35,6 @@ function Menu() {
     document.getElementById("reset_img").onmouseout = function () { myOut() };
     document.getElementById("undo_img").onmouseout = function () { myOut() };
     document.getElementById("redo_img").onmouseout = function () { myOut() };
-    document.getElementById("zoomin_img").onmouseout = function () { myOut() };
-    document.getElementById("zoomout_img").onmouseout = function () { myOut() };
     document.getElementById("selection_img").onmouseout = function () { myOut() };
     document.getElementById("download_img").onmouseout = function () { myOut() };
     document.getElementById("upload_img").onmouseout = function () { myOut() };
@@ -77,6 +71,7 @@ function Quantity() {
 
 function upload(file){
     nodes.splice(0,nodes.length);
+    copy.splice(0,copy.length);
     var input = document.createElement('input');
     input.type = "file";
     input.accept = ".json";
