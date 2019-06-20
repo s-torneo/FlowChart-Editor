@@ -2,40 +2,40 @@ function newRect(px, py) {
     //check if position of new rectangle go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, isDragging: false, resize: -1, id: "rectangle" });
+    nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "rectangle" });
 }
 
 function newLine(px, py, id_v) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 40, isDragging: false, resize: -1, degrees: 0, id: id_v});
+    nodes.push({ x: px, y: py, width: 40, isDragging: false, isSelected: false, resize: -1, degrees: 0, initX: 0, initY: 0,  id: id_v});
 }
 
 function newRhombus(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py, radius: 50, width: 50, height: 50, isDragging: false, resize: -1, id: "rhombus" });
+    nodes.push({ x: px - 15, y: py, radius: 50, width: 50, height: 50, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0,  id: "rhombus" });
 }
 
 function newParallelogram(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 120, height: 70, h: 0, isDragging: false, id: "parallelogram" });
+    nodes.push({ x: px, y: py, width: 120, height: 70, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0,  id: "parallelogram" });
 }
 
 function newEllipse(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, isDragging: false, resize: -1, id: "ellipse" });
+    nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0,  id: "ellipse" });
 }
 
 function newText(px, py) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, borderColor: "green", text: "Text", input: false, isDragging: false, resize: -1, id: "text" });
+    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, borderColor: "green", text: "Text", input: false, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0,  id: "text" });
 }
 
 //check if mouse's pointer is inside a parallelogram
