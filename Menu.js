@@ -13,7 +13,7 @@ function Menu() {
     document.getElementById("zoomout_img").onclick = function () { zoomout() };
     document.getElementById("selection_img").onclick = function () { selection() };
     document.getElementById("download_img").onclick = function () { download("editor.json") };
-    document.getElementById("upload_img").onclick = function () { upload("editor.json") };
+    document.getElementById("upload_img").onclick = function () { upload() };
     document.getElementById("rect_img").onmouseover = function () { myOver() };
     document.getElementById("line_img").onmouseover = function () { myOver() };
     document.getElementById("arrow_img").onmouseover = function () { myOver() };
@@ -76,23 +76,25 @@ function Quantity() {
 }
 
 function upload(file){
-    var input=document.createElement('input');
-    input.type="file";
-    var element = document.getElementById('target_div').appendChild(input);
+    nodes.splice(0,nodes.length);
+    var input = document.createElement('input');
+    input.type = "file";
+    input.accept = ".json";
+    var element = document.getElementById('input_div').appendChild(input);
     element.style.display = 'none';
     element.click();
-    document.body.removeChild(element);
-    /*var reader = new FileReader();
-    reader.onload = function(event) {
-        var testo = event.target.result;
-        document.getElementById("contenuto").innerHTML = testo;
-    };*/
-    reader.readAsText(file);
-    /*var text = '[{"x":408,"y":256,"width":110,"height":60,"isDragging":false,"isSelected":false,"resize":-1,"initX":0,"initY":0,"id":"rectangle"}]';
-        var json = JSON.parse(text);
-        for(var i=0;i<json.length;i++)
+    input.addEventListener('change', function() {
+        var fr = new FileReader();
+        fr.onload = function() {
+          var json = JSON.parse(this.result);
+          for(var i=0;i<json.length;i++)
             nodes.push(json[i]);
-        draw();*/
+            selected = null;
+          draw();
+        }
+        fr.readAsText(this.files[0]);
+        document.body.removeChild(element);
+      });
 }
     
 function download(filename) {

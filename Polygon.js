@@ -22,7 +22,7 @@ function newParallelogram(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 120, height: 70, h: 0, isDragging: false, isSelected: false, initX: 0, initY: 0,  id: "parallelogram" });
+    nodes.push({ x: px, y: py, width: 120, height: 70, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0,  id: "parallelogram" });
 }
 
 function newEllipse(px, py) {
