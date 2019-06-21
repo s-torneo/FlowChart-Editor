@@ -5,25 +5,6 @@ var dragok, startX, startY;
 var choice = false; // = true => grid, else false
 var dim = 10; //indicate the dimension of the grid's squares
 var trashX = 1065, trashY = 467, trashW = 30, trashH = 30; //size and position of trash used to delete element on canvas
-var val_scale = 1; // value that indicates how much scale
-
-function zoomin(){
-    if(val_scale < 4)
-        val_scale += 0.5;
-    draw();
-}
-
-function zoomout(){
-    if(val_scale> 0.5)
-        val_scale -= 0.5;
-    draw();
-}
-
-function Scale(r){
-    ctx.save();
-    ctx.translate(r.x, r.y);
-    ctx.scale(val_scale, val_scale);
-}
 
 function aroundTrash(mx, my) {
     if (Math.abs(mx - trashX) < 100 && Math.abs(my - trashY_actual) < 100) {
@@ -42,6 +23,7 @@ function RemoveShape(i){
     nodes[i].y = nodes[i].initY;
     nodes[i].isDragging = false;
     nodes[i].isSelected = false;
+    nodes[i].trasparence = 1.0;
     copy.push(nodes[i]);
     removed = true;
     nodes.splice(i, 1);
@@ -69,6 +51,7 @@ function drawTrash() {
     const trash_up = document.getElementById('trash_up');
     var rid = document.getElementById("myBox").scrollTop;
     trashY_actual = trashY + rid;
+    ctx.globalAlpha = 1.0;
     ctx.save();
     // move to the center of the canvas
     ctx.translate(trashW / 2, trashH / 2);
@@ -154,7 +137,7 @@ function redo() {
 function clear() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.fillStyle = "aliceblue"; //"#FAF7F8"
-    drawRect(0, 0, WIDTH, HEIGHT);
+    drawRect(null, 0);
     ctx.fill();
 }
 
@@ -167,7 +150,7 @@ function draw() {
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
         if (r.id == "rectangle")
-            drawRect(r.x, r.y, r.width, r.height);
+            drawRect(r, 1);
         else if (r.id == "line" || r.id == "arrow")
             drawLine(r);
         else if (r.id == "rhombus")

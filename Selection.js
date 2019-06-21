@@ -17,6 +17,7 @@ function ShapeInsideSelection(flag){
                 r.initX = r.x;
                 r.initY = r.y;
                 r.isSelected = true;
+                r.trasparence = 0.2;
                 //r.isDragging = false;
             }
         }
@@ -42,24 +43,26 @@ function insideRectSelection(x, y){
 function drawSelection(dx,dy){
     sel_w+=dx;
     sel_h+=dy;
-    drawRect(sel_x,sel_y,sel_w,sel_h);
+    drawRect(null, 2);
     border(2, "red");
 }
 
 function moveSelection(r){
     sel_x = r.x;
     sel_y = r.y;
-    drawRect(sel_x,sel_y,sel_w,sel_h);
+    drawRect(null, 2);
     border(2, "red");
 }
 
 function RemoveSelection(){
     for(var i = 0; i < nodes.length; i++){
-        if(nodes[i].id == "selection"){
+        var r = nodes[i];
+        if(r.id == "selection"){
             nodes.splice(i,1);
             selectionok = false;
         }
-        nodes[i].isSelected = false;
+        r.isSelected = false;
+        r.trasparence = 1.0;
     }
     draw();
 }
