@@ -108,8 +108,10 @@ var flag = false, removed = false;
 // reset the canvas
 function reset() {
     for (var i = 0; i < nodes.length; i++){
-        if(nodes[i].id != "selection")
+        if(nodes[i].id != "selection"){
+            nodes[i].trasparence = 1.0;
             copy.push(nodes[i]);
+        }
     }
     nodes.splice(0, nodes.length);
     draw();
@@ -118,6 +120,8 @@ function reset() {
 }
 
 function undo() {
+    if(selectionMode)
+        RemoveSelection();
     if (nodes.length > 0) {
         copy.push(nodes[nodes.length - 1]);
         nodes.pop();

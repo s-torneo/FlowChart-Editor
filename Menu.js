@@ -70,8 +70,6 @@ function Quantity() {
 }
 
 function upload(file){
-    nodes.splice(0,nodes.length);
-    copy.splice(0,copy.length);
     var input = document.createElement('input');
     input.type = "file";
     input.accept = ".json";
@@ -81,11 +79,13 @@ function upload(file){
     input.addEventListener('change', function() {
         var fr = new FileReader();
         fr.onload = function() {
-          var json = JSON.parse(this.result);
-          for(var i=0;i<json.length;i++)
-            nodes.push(json[i]);
-            selected = null;
-          draw();
+            nodes.splice(0,nodes.length);
+            copy.splice(0,copy.length);
+            var json = JSON.parse(this.result);
+            for(var i=0;i<json.length;i++)
+                nodes.push(json[i]);
+                selected = null;
+            draw();
         }
         fr.readAsText(this.files[0]);
         document.body.removeChild(element);
