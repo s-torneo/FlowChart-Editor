@@ -2,6 +2,29 @@
 var mx, my; // indicate the coordinates of mouse
 var input, input_ok = false; // used to manage the input text mode
 
+var saved_mx, saved_my, saved = null; /* used to manage the case in which a text's rectangle is inside a shape and
+                                          it is double-clicked to write something */
+
+// save coordinates to create a new shape later
+function Save(r, mx, my){
+    saved_mx = mx;
+    saved_my = my;
+    saved = r;
+}
+
+function NewShape(){
+    if(saved.id == "rectangle")
+        newRect(saved_mx + saved.width, saved_my);
+    else if (saved.id == "line" || saved.id == "arrow")
+        newLine(saved_mx + saved.width, saved_my, saved.id);
+    else if (saved.id == "parallelogram") 
+        newParallelogram(saved_mx + saved.width, saved_my);
+    else if (saved.id == "ellipse") 
+        newEllipse(saved_mx + saved.radiusX*2, saved_my);
+    else if (saved.id == "rhombus") 
+        newRhombus(saved_mx + saved.width*2, saved_my);
+}
+
 function myDoubleClick(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
@@ -12,27 +35,7 @@ function myDoubleClick(e) {
     //new shape if you press on a shape twice
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
-        if (r.id == "rectangle") {
-            if (insideRect(r, mx, my))
-                newRect(mx + 50, my);
-        }
-        else if (r.id == "line" || r.id == "arrow") {
-            if (insideLine(r, mx, my))
-                newLine(mx + 50, my, r.id);
-        }
-        else if (r.id == "parallelogram") {
-            if (insideParallelogram(r, mx, my))
-                newParallelogram(mx + 50, my);
-        }
-        else if (r.id == "ellipse") {
-            if (insideEllipse(r, mx, my))
-                newEllipse(mx + 50, my);
-        }
-        else if (r.id == "rhombus") {
-            if (insideRhombus(r, mx, my))
-                newRhombus(mx + 100, my);
-        }
-        else if (r.id == "text") {
+        if (r.id == "text") {
             if (insideRect(r, mx, my) && !input_ok) {
                 input = document.createElement("input");
                 input.setAttribute('type', 'text');
@@ -42,8 +45,23 @@ function myDoubleClick(e) {
                 input_ok = true;
             }
         }
-        draw();
+        if (insideRect(r, mx, my))
+            Save(r, mx, my);
+        else if (insideLine(r, mx, my))
+            Save(r, mx, my);
+        else if (insideParallelogram(r, mx, my))
+            Save(r, mx, my);
+        else if (insideEllipse(r, mx, my))
+            Save(r, mx, my);
+        else if (insideRhombus(r, mx, my))
+            Save(r, mx, my);
     }
+    // if a rectangle was double-clicked i make a new rectangle, using coordinates saved previously
+    if(!input_ok && saved!=null){
+        NewShape();
+        saved = null;
+    }
+    draw();
 }
 
 function DragOk(r) {
@@ -183,7 +201,10 @@ function myMove(e) {
                 // check if the shape is a text's rectangle and if mouse is inside it
                 if (r.id == "text" && r.input && insideRect(r, mx, my)) {
                     // if yes, get value from input text and delete it
-                    r.text = document.getElementsByName("text_input")[0].value;
+                    var tmp_text = document.getElementsByName("text_input")[0].value;
+                    // check if value has a length > 0
+                    if (tmp_text.length)
+                        r.text = tmp_text; 
                     document.getElementById("text").removeChild(input);
                     r.input = false;
                     input_ok = false; 
@@ -206,7 +227,7 @@ function myMove(e) {
     }
     // check the number of shape inside selection's rectangle and if the number is 0 => delete it
     ShapeInsideSelection(1);
-    for (var i = 0; i < nodes.length; i++) {
+    for (var i = 0, inside = false; i < nodes.length; i++) {
         var r = nodes[i];
         if (r.id == "parallelogram") {
             if (insideParallelogram(r, mx, my)) {
@@ -214,7 +235,7 @@ function myMove(e) {
                 WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeParallelogram(r, mx, my);
-                return;
+                inside = true;
             }
         }
         else if (r.id == "rectangle" || r.id == "text") {
@@ -225,18 +246,16 @@ function myMove(e) {
                 WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeRect(r, mx, my);
-                return;
+                inside = true;
             }
-            else if (r.id == "text") {
+            else if (r.id == "text")
                 r.borderColor = "white";
-                return;
-            }
         }
         else if (r.id == "selection"){
             if(insideRectSelection(mx,my)){
                 WriteCoordinates(mx, my);
                 ChangeCursor("move");
-                return;
+                inside = true;
             }
         }
         else if (r.id == "line" || r.id == "arrow") {
@@ -246,7 +265,7 @@ function myMove(e) {
                 WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeLine(r, mx, my);
-                return;
+                inside = true;
             }
         }
         else if (r.id == "rhombus") {
@@ -255,7 +274,7 @@ function myMove(e) {
                 WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeRhombus(r, mx, my);
-                return;
+                inside = true;
             }
         }
         else if (r.id == "ellipse") {
@@ -264,11 +283,13 @@ function myMove(e) {
                 WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeEllipse(r, mx, my);
-                return;
+                inside = true;
             }
         }
-        ChangeCursor("default", "");
-        draw(); //redraw in order that i delete the points on the border of polygon
+        if(!inside){
+            ChangeCursor("default");
+            draw(); //redraw in order that i delete the points on the border of polygon
+        }
     }
     WriteCoordinates(mx, my);
 }
