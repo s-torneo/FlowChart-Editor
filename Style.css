@@ -27,14 +27,14 @@
 }
 
 #line_img {
-    width: 115px;
+    width: 110px;
     position: absolute;
     left: 15px;
     top: 160px;
 }
 
 #arrow_img {
-    width: 105px;
+    width: 100px;
     position: absolute;
     left: 25px;
     top: 200px;
@@ -131,6 +131,13 @@
     position: absolute;
     left: 720px;
     top: 547px;
+}
+
+#input_file {
+    width: 25px;
+    position: absolute;
+    left: 750px;
+    top: 550px;
 }
 
 /* Box styles */

@@ -95,7 +95,9 @@ function ManagerSelection(){
                     nodes[i].x = sel_x;
                     nodes[i].y = sel_y;
                 }
+                nodes[i].trasparence = 1.0;
             }
+            draw();
         }
     }
 }

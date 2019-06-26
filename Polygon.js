@@ -8,41 +8,40 @@ function newRect(px, py) {
 function newLine(px, py, id_v) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 40, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, degrees: 0, initX: 0, initY: 0,  id: id_v});
+    nodes.push({ x: px, y: py, width: 40, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, degrees: 0, initX: 0, initY: 0, id: id_v});
 }
 
 function newRhombus(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py, radius: 50, width: 50, height: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0,  id: "rhombus" });
+    nodes.push({ x: px - 15, y: py, radius: 50, width: 50, height: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "rhombus" });
 }
 
 function newParallelogram(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 120, height: 70, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0,  id: "parallelogram" });
+    nodes.push({ x: px, y: py, width: 120, height: 70, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "parallelogram" });
 }
 
 function newEllipse(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0,  id: "ellipse" });
+    nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "ellipse" });
 }
 
 function newText(px, py) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, trasparence: 1.0, borderColor: "green", text: "Text", input: false, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0,  id: "text" });
+    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, trasparence: 1.0, borderColor: "green", text: "Text", input: false, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "text" });
 }
 
 //check if mouse's pointer is inside a parallelogram
 function insideParallelogram(r, mx, my) {
-    //return (mx > r.x && my > (r.height * Math.sin(-45 * Math.PI / 180) + r.y /*- 5*/) && mx < (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width /*- 20*/)));
-    //drawCircle(r, -r.x + r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height / 3, -r.y + r.height * Math.sin(-45 * Math.PI / 180) + r.y + r.height / 3);
-    return (mx > (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height / 3) && my > (r.height * Math.sin(-45 * Math.PI / 180) + r.y - 5) && my < r.y && mx < (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width)));
+    return (mx > r.x && my > (r.height * Math.sin(-45 * Math.PI / 180) + r.y - 20) && mx < (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width + 20/*- 20*/)) && my < r.y );
+    //return (mx > (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height / 3) && my > (r.height * Math.sin(-45 * Math.PI / 180) + r.y - 5) && my < r.y && mx < (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width)));
 }
 
 //check if mouse's pointer is on a line
@@ -64,14 +63,26 @@ function insideLine(r, mx, my) {
 
 function insideRotationIcon(r, mx, my) {
     var inside = false;
-    if(Math.abs(mx - (r.x + (r.width / 2))) <= 10 && Math.abs(my - r.y) >= 12)
-        inside = true;
-    else if(Math.abs(my - (r.y + (r.width / 2))) <= 5 && Math.abs(mx - r.x) >= 15)
-        inside = true;
-    else if(Math.abs(mx - (r.x + (r.width / 2))) <= 5 && Math.abs(my - r.y) >= 12)
-        inside = true;
-    else if(Math.abs(my - (r.y - (r.width / 2))) <= 5 && Math.abs(mx - r.x) >= 10)
-        inside = true;
+    var x = (r.width/2) * Math.cos(r.degrees * Math.PI / 180) + r.x;
+    var y = (r.width/2) * Math.sin(r.degrees * Math.PI / 180) + r.y;
+    switch(r.degrees){
+        case 0: {
+            if(Math.abs(mx - x) <= 10 && Math.abs(my - (y-20)) <= 10)
+                inside = true;
+        }break;
+        case 90: {
+            if(Math.abs(my - y) <= 10 && Math.abs(mx - (x+20)) <= 10)
+                inside = true;
+        }break;
+        case 180: {
+            if(Math.abs(mx - x) <= 10 && Math.abs(my - (y+20)) <= 10)
+                inside = true;
+        }break;
+        case 270: {
+            if(Math.abs(my - y) <= 10 && Math.abs(mx - (x-20)) <= 10)
+                inside = true;
+        }break;
+    }
     return inside;
 }
 
@@ -236,7 +247,7 @@ function CheckSize(r, value) {
 function ResizeRect(r, dx, dy) {
     switch (r.resize) {
         case 0: {
-            if (!CheckSize(r, 20)){ // non basta controllare solo questo (se vado veloce mi sballa tutto il rettangolo)
+            if (!CheckSize(r, 20)){
                 r.y -= dy; 
                 r.width -= dx;
             }
@@ -249,10 +260,7 @@ function ResizeRect(r, dx, dy) {
             }
         } break;
         case 2: {
-            if (r.id == "line") {
-                r.degrees = (r.degrees + dy)%360;
-            }
-            else if (!CheckSize(r, 20)) {
+            if (!CheckSize(r, 20)) {
                 r.x -= dx;
                 r.height -= dy;
             }
@@ -385,7 +393,6 @@ function ResizeParallelogram(r, dx, dy) {
         case 4: {
             if (!CheckSize(r, 50)) {
                 r.x -= dx;
-                r.y -= dy;
                 r.height -= dy;
             }
         } break;
@@ -504,8 +511,6 @@ function CheckResizeRect(r, mx, my) {
         UtilCheckResize(r, 6, "nesw-resize");
     else if (Math.abs(mx - (r.x + r.width)) < 4 && Math.abs(my - (r.y + r.height)) < 4) 
         UtilCheckResize(r, 7, "nwse-resize");
-    else
-        r.resize = -1;
 }
 
 // check if mouse's pointer is on a resizing point
@@ -513,14 +518,6 @@ function CheckResizeLine(r, mx, my) {
     var x1 = r.x, y1 = r.y;
     var x2 = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
     var y2 = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
-    /*if(mx>=x1 && mx<=x2 && Math.abs(my - y1)<5) // 0 
-        inside = true;
-    else if(my>=y1 && my<=y2 && Math.abs(mx - x1)<5) // 90
-        inside = true;
-    else if(mx<=x1 && mx>=x2 && Math.abs(my - y1)<5) // 180
-        inside = true;
-    else if(my<=y1 && my>=y2 && Math.abs(mx - x1)<5) // 270
-        inside = true;*/
     switch(r.degrees){
         case 0 : 
         case 180: {
@@ -528,8 +525,6 @@ function CheckResizeLine(r, mx, my) {
                 UtilCheckResize(r, 0, "e-resize");
             else if (Math.abs(mx - x2) < 4 && Math.abs(my - r.y) < 4) 
                 UtilCheckResize(r, 1, "e-resize");
-            else
-                r.resize = -1;
         }break;
         case 90 : 
         case 270: {
@@ -537,8 +532,6 @@ function CheckResizeLine(r, mx, my) {
                 UtilCheckResize(r, 2, "ns-resize");
             else if (Math.abs(my - y2) < 4 && Math.abs(mx - x1) <4)
                 UtilCheckResize(r, 3, "ns-resize");
-            else
-                r.resize = -1;
         }break;
     }
 }
@@ -553,8 +546,6 @@ function CheckResizeRhombus(r, mx, my) {
         UtilCheckResize(r, 2, "ns-resize");
     else if (Math.abs(mx - r.x) < 4 && Math.abs(my - (r.y - r.height)) < 4) 
         UtilCheckResize(r, 3, "ns-resize");
-    else
-        r.resize = -1;
 }
 
 // check if mouse's pointer is on a resizing point
@@ -567,30 +558,26 @@ function CheckResizeEllipse(r, mx, my) {
         UtilCheckResize(r, 2, "e-resize");
     else if (Math.abs(mx - (r.x - r.radiusX)) < 4 && Math.abs(my - r.y) < 4) // point sx
         UtilCheckResize(r, 3, "e-resize");
-    else
-        r.resize = -1;
 }
 
 // check if mouse's pointer is on a resizing point
 function CheckResizeParallelogram(r, mx, my) {
     if (Math.abs(mx - r.x) < 10 && Math.abs(my - r.y) < 10) 
-        UtilCheckResize(r, 0, "nesw-resize");
+        UtilCheckResize(r, 0, "nesw-resize"); // in basso a sx
     else if (Math.abs(mx - (r.x + r.width)) < 10 && Math.abs(my - r.y) < 10)
-        UtilCheckResize(r, 1, "nwse-resize");
+        UtilCheckResize(r, 1, "nwse-resize"); // in basso a dx
     else if (Math.abs(mx - (r.x + r.width / 2)) < 10 && Math.abs(my - r.y) < 10)
-        UtilCheckResize(r, 2, "ns-resize");
+        UtilCheckResize(r, 2, "ns-resize"); // in basso al cx
     else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width)) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 15) 
-        UtilCheckResize(r, 3, "nwse-resize");
-    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width / 2)) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 16)
-       UtilCheckResize(r, 4, "ns-resize");
-    else if (Math.abs(mx - ((r.height / 2) * Math.cos(-45 * Math.PI / 180) + (r.x + r.width))) < 20 && Math.abs(my - ((r.height / 2) * Math.sin(-45 * Math.PI / 180) + r.y)) < 4)
-        UtilCheckResize(r, 5, "e-resize");
-    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width))) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 15)
-        UtilCheckResize(r, 6, "nesw-resize");
-    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height / 3)) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y + r.height / 4)) < 20)
-        UtilCheckResize(r, 7, "e-resize");
-    else
-        r.resize = -1;
+        UtilCheckResize(r, 3, "nwse-resize"); // in alto a sx
+    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width / 2)) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 10)
+       UtilCheckResize(r, 4, "ns-resize"); // in alto al cx
+    else if (Math.abs(mx - ((r.height / 2) * Math.cos(-45 * Math.PI / 180) + (r.x + r.width))) < 10 && Math.abs(my - ((r.height / 2) * Math.sin(-45 * Math.PI / 180) + r.y)) < 4)
+        UtilCheckResize(r, 5, "e-resize"); // a dx in cx
+    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width))) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 10)
+        UtilCheckResize(r, 6, "nesw-resize"); // in alto a dx
+    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height / 3)) < 5 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y + r.height / 4)) < 5)
+        UtilCheckResize(r, 7, "e-resize"); // a sx in cx
 }
 
 function drawParallelogramPoints(r) {
@@ -651,6 +638,5 @@ function drawEllipsePoints(r) {
     drawCircle(r, r.x, r.y - r.radiusY);
     drawCircle(r, r.x + r.radiusX, r.y);
     drawCircle(r, r.x - r.radiusX, r.y);
-    ctx.restore();
     //drawCircle(r, 0, 0); // center
 }

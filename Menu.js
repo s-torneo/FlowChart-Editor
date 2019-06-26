@@ -10,7 +10,7 @@ function Menu() {
     document.getElementById("undo_img").onclick = function () {if (!flag) undo(); else { redo(); flag = true; } };
     document.getElementById("redo_img").onclick = function () {if (!flag) redo(); else { undo(); flag = true; } };
     document.getElementById("selection_img").onclick = function () { selection() };
-    document.getElementById("download_img").onclick = function () { download("editor.json") };
+    document.getElementById("download_img").onclick = function () { download() };
     document.getElementById("upload_img").onclick = function () { upload() };
     document.getElementById("rect_img").onmouseover = function () { myOver() };
     document.getElementById("line_img").onmouseover = function () { myOver() };
@@ -69,7 +69,12 @@ function Quantity() {
         draw();
 }
 
-function upload(file){
+function upload(){
+    // delete input text for insert name file if it exists
+    if(input_file!=null){
+        document.getElementById("input_file").removeChild(input_file);
+        save = true;
+    }
     var input = document.createElement('input');
     input.type = "file";
     input.accept = ".json";
@@ -92,13 +97,32 @@ function upload(file){
       });
 }
     
-function download(filename) {
-    var data = JSON.stringify(nodes); // Serializzazione
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
-    element.setAttribute('download', filename);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+var save = false;
+var input_file = null;
+
+function download() {
+    if(!save){
+        input_file = document.createElement("input");
+        input_file.setAttribute('type', 'text');
+        input_file.setAttribute('name', 'text_file');
+        document.getElementById("input_file").appendChild(input_file);
+        save = true;
+    }
+    else{
+        var filename = document.getElementsByName("text_file")[0].value;
+        filename += ".json";
+        document.getElementById("input_file").removeChild(input_file);
+        input_file = null;
+        save = false;
+        if(!nodes.length)
+            return;
+        var data = JSON.stringify(nodes); // Serializzazione
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
 }

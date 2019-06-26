@@ -109,6 +109,9 @@ function myDown(e) {
             }
         }
     }
+    // reset resizing mode for all shape
+    for (var i = 0; i < nodes.length; i++)
+        nodes[i].resize = -1;
     // save the current mouse position
     startX = mx;
     startY = my;
@@ -186,8 +189,10 @@ function myMove(e) {
                     input_ok = false; 
                 }
                 // check if a shape can be resized
-                if (r.resize >= 0)
+                if (r.resize >= 0){
+                    res = true;
                     ResizeShapes(r, mx, my, dx, dy);
+                }
                 // check if a polygon is inside or around the "trash"
                 aroundTrash(mx,my);
                 insideTrash(mx, my, i);
@@ -224,6 +229,7 @@ function myMove(e) {
             }
             else if (r.id == "text") {
                 r.borderColor = "white";
+                return;
             }
         }
         else if (r.id == "selection"){

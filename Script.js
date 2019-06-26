@@ -18,13 +18,14 @@ function aroundTrash(mx, my) {
 }
 
 function RemoveShape(i){
+    var r = nodes[i];
     // save it in copy with the initial position x e y and then delete it
-    nodes[i].x =  nodes[i].initX;
-    nodes[i].y = nodes[i].initY;
-    nodes[i].isDragging = false;
-    nodes[i].isSelected = false;
-    nodes[i].trasparence = 1.0;
-    copy.push(nodes[i]);
+    r.x =  r.initX;
+    r.y = r.initY;
+    r.isDragging = false;
+    r.isSelected = false;
+    r.trasparence = 1.0;
+    copy.push(r);
     removed = true;
     nodes.splice(i, 1);
 }
@@ -108,9 +109,10 @@ var flag = false, removed = false;
 // reset the canvas
 function reset() {
     for (var i = 0; i < nodes.length; i++){
-        if(nodes[i].id != "selection"){
-            nodes[i].trasparence = 1.0;
-            copy.push(nodes[i]);
+        var r = nodes[i];
+        if(r.id != "selection"){
+            r.trasparence = 1.0;
+            copy.push(r);
         }
     }
     nodes.splice(0, nodes.length);
@@ -120,8 +122,6 @@ function reset() {
 }
 
 function undo() {
-    if(selectionMode)
-        RemoveSelection();
     if (nodes.length > 0) {
         copy.push(nodes[nodes.length - 1]);
         nodes.pop();
