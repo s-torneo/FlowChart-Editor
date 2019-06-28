@@ -10,20 +10,20 @@
 #menu_horizontal {
     border: 1px solid black;
     border-bottom-width: 0;
-    width: 1124px;
-    height: 54px;
+    width: 90%;
+    height: 8%;
     text-decoration: none;
     color: white;
     background-color: #2175bc;
-    border-bottom: 1px solid #90bade;
-    border-left: 7px solid #1958b7;
+    border-bottom: 1% solid #90bade;
+    border-left: 5% solid #1958b7;
 }
 
 #rect_img {
-    width: 100px;
+    width: 80%;
     position: absolute;
-    left: 20px;
-    top: 45px;
+    left: 12%;
+    top: 8%;
 }
 
 #line_img {
@@ -73,79 +73,93 @@
 
 #coordinates {
     position: absolute;
-    left: 150px;
-    top: 550px;
+    left: 10%;
+    top: 94%;
 }
 
 #reset_img {
-    width: 25px;
+    width: 2%;
     position: absolute;
-    left: 240px;
-    top: 545px;
+    left: 18%;
+    top: 93%;
 }
 
 #undo_img {
-    width: 25px;
+    width: 2%;
     position: absolute;
-    left: 280px;
-    top: 545px;
+    left: 21%;
+    top: 93%;
 }
 
 #redo_img {
-    width: 25px;
+    width: 2%;
     position: absolute;
-    left: 310px;
-    top: 545px;
+    left: 23%;
+    top: 93%;
 }
 
 #selection_img {
-    width: 40px;
+    width: 3%;
     position: absolute;
-    left: 400px;
-    top: 538px;
+    left: 30%;
+    top: 92%;
 }
 
 #text_img {
-    width: 25px;
+    width: 2%;
     position: absolute;
-    left: 470px;
-    top: 545px;
+    left: 37%;
+    top: 93%;
 }
 
 #text {
-    width: 25px;
+    width: 2%;
     position: absolute;
-    left: 500px;
-    top: 550px;
+    left: 40%;
+    top: 94%;
 }
 
 #download_img {
-    width: 25px;
+    width: 2%;
     position: absolute;
-    left: 690px;
-    top: 547px;
+    left: 58%;
+    top: 93%;
 }
 
 #upload_img {
-    width: 25px;
+    width: 2%;
     position: absolute;
-    left: 720px;
-    top: 547px;
+    left: 61%;
+    top: 93%;
 }
 
 #input_file {
-    width: 25px;
+    width: 2%;
     position: absolute;
-    left: 750px;
-    top: 550px;
+    left: 64%;
+    top: 94%;
+}
+
+#lgrid {
+    width: 1%;
+    position: absolute;
+    left: 2%;
+    top: 93%;
+}
+
+#igrid {
+    width: 3%;
+    position: absolute;
+    left: 5%;
+    top: 93%;
 }
 
 /* Box styles */
 #myBox {
     border: none;
     font: 24px/36px sans-serif;
-    width: 1130px;
-    height: 520px;
+    width: 90%;
+    height: 92%;
     overflow: scroll;
 }
 
@@ -174,9 +188,9 @@
     border: 1px solid black;
     border-bottom-width: 0;
     position: absolute;
-    top: 8px;
-    left: 1140px;
-    width: 135px;
+    top: 1%;
+    left: 90%;
+    width: auto;
 }
 
 #menu_vertical ul {
@@ -188,10 +202,10 @@
 
 #menu_vertical li {
     display: block;
-    padding: 3px 0;
+    padding: 3x 0;
     padding-left: 9px;
     width: 120px;
-    height: 104px;
+    height: 115px;
     text-decoration: none;
     color: white;
     background-color: #2175bc;

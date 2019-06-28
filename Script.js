@@ -182,6 +182,8 @@ function init() {
     BB = canvas.getBoundingClientRect();
     offsetX = BB.left;
     offsetY = BB.top;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     WIDTH = canvas.width;
     HEIGHT = canvas.height;
     // drag related variables

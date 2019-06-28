@@ -12,7 +12,7 @@
 
 <body>
     <div id="myBox">
-        <canvas id="canvas" width=1110 height=800>
+        <canvas id="canvas">
             <img src="Images/trash_up.png" id="trash_up" />
             <img src="Images/trash_down.png" id="trash_down" />
             <img src="Images/rotate.png" id="rotate" />
@@ -33,10 +33,9 @@
         </ul>
     </div>
     <div id="menu_horizontal">
-        <br />
         <form name="grid">
-            <label> Grid <input type="checkbox" name="choice" onchange="Choice()"></label>
-            <input type="number" name="quantity" min="1" max="5" onchange="Quantity()" value="1" style="width: 30px;">
+            <label id="lgrid"> Grid <input type="checkbox" name="choice" onchange="Choice()" id="cgrid"></label>
+            <input type="number" name="quantity" min="1" max="5" onchange="Quantity()" value="1" id="igrid">
         </form>
         <div id="coordinates"></div>
         <img src="Images/reset.png" id="reset_img" title="Reset" />
