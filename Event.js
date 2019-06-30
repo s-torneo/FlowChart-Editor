@@ -29,9 +29,10 @@ function myDoubleClick(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
     e.stopPropagation();
+    SetCoordinates();
     // get the current mouse position
     mx = parseInt(e.clientX - offsetX);
-    my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
+    my = parseInt(e.clientY - offsetY);
     //new shape if you press on a shape twice
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
@@ -70,6 +71,7 @@ function DragOk(r) {
     ChangeCursor("move");
     r.initX = r.x;
     r.initY = r.y;
+    r.last = 1;
     if(r.id != "selection")
         RemoveSelection();
 }
@@ -79,9 +81,10 @@ function myDown(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
     e.stopPropagation();
+    SetCoordinates();
     // get the current mouse position
     mx = parseInt(e.clientX - offsetX);
-    my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
+    my = parseInt(e.clientY - offsetY);
     // test each rect to see if mouse is inside
     dragok = false;
     ManagerSelection();
@@ -135,14 +138,23 @@ function myDown(e) {
     startY = my;
 }
 
+function SwapXY(r){
+    var tmpx = r.x;
+    var tmpy = r.y;
+    r.x = r.initX;
+    r.y = r.initY;
+    r.initX = tmpx;
+    r.initY = tmpy;
+}
 
 // handle mouseup events
 function myUp(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
     e.stopPropagation();
+    SetCoordinates();
     mx = parseInt(e.clientX - offsetX);
-    my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
+    my = parseInt(e.clientY - offsetY);
     //check if i have selected an object from menu
     if (selected != null) {
         if (selected == "rectangle")
@@ -168,6 +180,21 @@ function myUp(e) {
     for (var i = 0; i < nodes.length; i++)
         nodes[i].isDragging = dragok;
     ChangeCursor("default");
+    /*var tmp = JSON.parse(JSON.stringify(nodes));
+    var cont = false;
+    for(var i=0; i<tmp.length; i++){
+        if(tmp[i].last){
+            tmp[i].x = mx;
+            tmp[i].y = my;
+            cont=true;
+            //tmp[i].last = 0;
+        }
+    }
+    if(cont){
+        copy.push(tmp);
+        pointer++;
+        //alert(pointer);
+    }*/
 }
 
 // handle mouse moves
@@ -175,9 +202,10 @@ function myMove(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
     e.stopPropagation();
+    SetCoordinates();
     // get the current mouse position
     mx = parseInt(e.clientX - offsetX);
-    my = parseInt(e.clientY - offsetY) + parseInt(document.getElementById("myBox").scrollTop);
+    my = parseInt(e.clientY - offsetY);
     var dx = mx - startX;
     var dy = my - startY;
     // if we're dragging anything...

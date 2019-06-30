@@ -5,9 +5,10 @@ var dragok, startX, startY;
 var choice = false; // = true => grid, else false
 var dim = 10; //indicate the dimension of the grid's squares
 var trashX = 1065, trashY = 467, trashW = 30, trashH = 30; //size and position of trash used to delete element on canvas
+var trashY_actual, trashX_actual, degrees = 0; // used to manage the drawing of trash
 
 function aroundTrash(mx, my) {
-    if (Math.abs(mx - trashX) < 100 && Math.abs(my - trashY_actual) < 100) {
+    if (Math.abs(mx - trashX_actual) < 100 && Math.abs(my - trashY_actual) < 100) {
         degrees = 90;
         draw();
         setTimeout(function () {
@@ -31,7 +32,7 @@ function RemoveShape(i){
 }
 
 function insideTrash(mx, my, i) {
-    if (mx > trashX && mx < trashX + trashW && my > trashY_actual && my < trashY_actual + trashH) {
+    if (mx > trashX_actual && mx < trashX_actual + trashW && my > trashY_actual && my < trashY_actual + trashH) {
         if(selectionMode){
             for(var i = 0; i < nodes.length; i++){
                 var r = nodes[i];
@@ -45,38 +46,28 @@ function insideTrash(mx, my, i) {
     }
 }
 
-var trashY_actual = 467, endY = 767, endY2 = 743, endY3 = -1080, degrees = 0;
 //draw trash
 function drawTrash() {
-    const trash_down = document.getElementById('trash_down');
-    const trash_up = document.getElementById('trash_up');
-    var rid = document.getElementById("myBox").scrollTop;
-    trashY_actual = trashY + rid;
+    const trash_lower = document.getElementById('trash_down');
+    const trash_above = document.getElementById('trash_up');
+    var scrolly = parseInt(document.getElementById("myBox").scrollTop);
+    var scrollx = parseInt(document.getElementById("myBox").scrollLeft);
+    trashY_actual = trashY + scrolly;
+    trashX_actual = trashX + scrollx;
     ctx.globalAlpha = 1.0;
     ctx.save();
-    // move to the center of the canvas
+    // move to the center of the trash image
     ctx.translate(trashW / 2, trashH / 2);
     // rotate the canvas to the specified degrees
     ctx.rotate(degrees*Math.PI / 180);
-    // draw trash_up
-    if (degrees == 90) {
-        if (trashY_actual > (HEIGHT - 40))
-            ctx.drawImage(trash_up, trashX - 334, endY3, 20, 10);
-        else
-            ctx.drawImage(trash_up, 431 + rid, -(trashY * 2 + 145), 20, 10);
-    }
-    else {
-        if (trashY_actual > (HEIGHT - 40))
-            ctx.drawImage(trash_up, trashX - 15, endY2, 20, 10);
-        else
-            ctx.drawImage(trash_up, trashX - 15, trashY - 25 + rid, 20, 10);
-    }
-    ctx.restore();
-    // draw trash_down
-    if (trashY_actual > (HEIGHT - 40))
-        ctx.drawImage(trash_down, trashX, endY, 20,20);
+    // draw the above part of trash
+    if (degrees == 90)
+        ctx.drawImage(trash_above, 431 + scrolly, -(trashY * 2 + 145 + scrollx), 20, 10);
     else
-        ctx.drawImage(trash_down, trashX, trashY + rid, 20,20);
+        ctx.drawImage(trash_above, trashX - 15 + scrollx, trashY - 25 + scrolly, 20, 10);
+    ctx.restore();
+    // draw the lower part of trash
+    ctx.drawImage(trash_lower, trashX + scrollx, trashY + scrolly, 20,20);
 }
 
 function drawGrid() {
@@ -175,13 +166,17 @@ function draw() {
         drawSelection(0,0);
 }
 
+function SetCoordinates(){
+    BB = canvas.getBoundingClientRect();
+    offsetX = BB.left;
+    offsetY = BB.top;
+}
+
 function init() {
     // get canvas related references
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
-    BB = canvas.getBoundingClientRect();
-    offsetX = BB.left;
-    offsetY = BB.top;
+    SetCoordinates();
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     WIDTH = canvas.width;
