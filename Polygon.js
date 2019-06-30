@@ -1,16 +1,8 @@
-function NodesToCopy(){
-    var tmp = JSON.parse(JSON.stringify(nodes));
-    copy.push(tmp);
-    pointer++;
-    alert(pointer);
-}
-
 function newRect(px, py) {
     //check if position of new rectangle go over the canvas
     if (px > WIDTH)
         return;
     nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "rectangle" });
-    NodesToCopy();
 }
 
 function newLine(px, py, id_v) {
@@ -24,7 +16,6 @@ function newRhombus(px, py) {
     if (px > WIDTH)
         return;
     nodes.push({ x: px - 15, y: py, radius: 50, width: 50, height: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "rhombus" });
-    NodesToCopy();
 }
 
 function newParallelogram(px, py) {
@@ -616,7 +607,6 @@ function drawRectPoints(r) {
 // draw a rotation icon
 function drawRotationIcon(r) {
     const image = document.getElementById('rotate');
-    var rid = document.getElementById("myBox").scrollTop;
     ctx.save();
     ctx.translate(r.x, r.y);
     ctx.rotate(r.degrees * Math.PI / 180);

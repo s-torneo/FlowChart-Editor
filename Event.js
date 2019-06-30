@@ -71,7 +71,6 @@ function DragOk(r) {
     ChangeCursor("move");
     r.initX = r.x;
     r.initY = r.y;
-    r.last = 1;
     if(r.id != "selection")
         RemoveSelection();
 }
@@ -138,14 +137,14 @@ function myDown(e) {
     startY = my;
 }
 
-function SwapXY(r){
+/*function SwapXY(r){
     var tmpx = r.x;
     var tmpy = r.y;
     r.x = r.initX;
     r.y = r.initY;
     r.initX = tmpx;
     r.initY = tmpy;
-}
+}*/
 
 // handle mouseup events
 function myUp(e) {
@@ -180,21 +179,6 @@ function myUp(e) {
     for (var i = 0; i < nodes.length; i++)
         nodes[i].isDragging = dragok;
     ChangeCursor("default");
-    /*var tmp = JSON.parse(JSON.stringify(nodes));
-    var cont = false;
-    for(var i=0; i<tmp.length; i++){
-        if(tmp[i].last){
-            tmp[i].x = mx;
-            tmp[i].y = my;
-            cont=true;
-            //tmp[i].last = 0;
-        }
-    }
-    if(cont){
-        copy.push(tmp);
-        pointer++;
-        //alert(pointer);
-    }*/
 }
 
 // handle mouse moves
@@ -238,10 +222,8 @@ function myMove(e) {
                     input_ok = false; 
                 }
                 // check if a shape can be resized
-                if (r.resize >= 0){
-                    res = true;
+                if (r.resize >= 0)
                     ResizeShapes(r, mx, my, dx, dy);
-                }
                 // check if a polygon is inside or around the "trash"
                 aroundTrash(mx,my);
                 insideTrash(mx, my, i);
