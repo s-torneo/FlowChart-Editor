@@ -1,5 +1,5 @@
-
 var mx, my; // indicate the coordinates of mouse
+var dragok, startX, startY; // drag related variables
 var input, input_ok = false; // used to manage the input text mode
 
 var saved_mx, saved_my, saved = null; /* used to manage the case in which a text's rectangle is inside a shape and
@@ -71,6 +71,7 @@ function DragOk(r) {
     ChangeCursor("move");
     r.initX = r.x;
     r.initY = r.y;
+    r.last = 1;
     if(r.id != "selection")
         RemoveSelection();
 }
@@ -97,8 +98,22 @@ function myDown(e) {
         }
         else if (r.id == "rectangle" || r.id == "text") {
             if (insideRect(r, mx, my)) {
-                DragOk(r);
-                CheckResizeRect(r, mx, my);
+                // check if the shape is a text's rectangle
+                if (r.id == "text" && r.input) {
+                    // if yes, get value from input text and delete it
+                    var tmp_text = document.getElementsByName("text_input")[0].value;
+                    // check if value has a length > 0
+                    if (tmp_text.length)
+                        r.text = tmp_text; 
+                    document.getElementById("text").removeChild(input);
+                    r.input = false;
+                    input_ok = false; 
+                    draw();
+                }
+                else{
+                    DragOk(r);
+                    CheckResizeRect(r, mx, my);
+                }
             }
         }
         else if (r.id == "selection"){
@@ -137,15 +152,6 @@ function myDown(e) {
     startY = my;
 }
 
-/*function SwapXY(r){
-    var tmpx = r.x;
-    var tmpy = r.y;
-    r.x = r.initX;
-    r.y = r.initY;
-    r.initX = tmpx;
-    r.initY = tmpy;
-}*/
-
 // handle mouseup events
 function myUp(e) {
     // tell the browser we're handling this mouse event
@@ -179,6 +185,7 @@ function myUp(e) {
     for (var i = 0; i < nodes.length; i++)
         nodes[i].isDragging = dragok;
     ChangeCursor("default");
+    ManagerUR();
 }
 
 // handle mouse moves
@@ -210,17 +217,6 @@ function myMove(e) {
             else if (r.isDragging) {
                 r.x += dx;
                 r.y += dy;
-                // check if the shape is a text's rectangle and if mouse is inside it
-                if (r.id == "text" && r.input && insideRect(r, mx, my)) {
-                    // if yes, get value from input text and delete it
-                    var tmp_text = document.getElementsByName("text_input")[0].value;
-                    // check if value has a length > 0
-                    if (tmp_text.length)
-                        r.text = tmp_text; 
-                    document.getElementById("text").removeChild(input);
-                    r.input = false;
-                    input_ok = false; 
-                }
                 // check if a shape can be resized
                 if (r.resize >= 0)
                     ResizeShapes(r, mx, my, dx, dy);

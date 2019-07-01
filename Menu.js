@@ -1,3 +1,6 @@
+var choice = false; // = true => grid, else false
+var dim = 10; //indicate the dimension of the grid's squares
+
 function Menu() {
     document.getElementById("rect_img").onclick = function () { myClick("rectangle") };
     document.getElementById("line_img").onclick = function () { myClick("line") };
@@ -7,8 +10,8 @@ function Menu() {
     document.getElementById("ellipse_img").onclick = function () { myClick("ellipse") };
     document.getElementById("text_img").onclick = function () { myClick("text") };
     document.getElementById("reset_img").onclick = function () { reset() };
-    document.getElementById("undo_img").onclick = function () {if (!flag) undo(); else { redo(); flag = true; } };
-    document.getElementById("redo_img").onclick = function () {if (!flag) redo(); else { undo(); flag = true; } };
+    document.getElementById("undo_img").onclick = function () { undo() };
+    document.getElementById("redo_img").onclick = function () { redo() };
     document.getElementById("selection_img").onclick = function () { selection() };
     document.getElementById("download_img").onclick = function () { download() };
     document.getElementById("upload_img").onclick = function () { upload() };

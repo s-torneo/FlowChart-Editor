@@ -2,40 +2,46 @@ function newRect(px, py) {
     //check if position of new rectangle go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "rectangle" });
+    nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last: 0, id: "rectangle" });
+    NodesToCopy();
 }
 
 function newLine(px, py, id_v) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 40, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, degrees: 0, initX: 0, initY: 0, id: id_v});
+    nodes.push({ x: px, y: py, width: 40, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, degrees: 0, initX: 0, initY: 0, last:0, id: id_v});
+    NodesToCopy();
 }
 
 function newRhombus(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py, radius: 50, width: 50, height: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "rhombus" });
+    nodes.push({ x: px - 15, y: py, radius: 50, width: 50, height: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last:0, id: "rhombus" });
+    NodesToCopy();
 }
 
 function newParallelogram(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 120, height: 70, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "parallelogram" });
+    nodes.push({ x: px, y: py, width: 120, height: 70, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last:0, id: "parallelogram" });
+    NodesToCopy();
 }
 
 function newEllipse(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "ellipse" });
+    nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last:0, id: "ellipse" });
+    NodesToCopy();
 }
 
 function newText(px, py) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, trasparence: 1.0, borderColor: "green", text: "Text", input: false, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, id: "text" });
+    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, trasparence: 1.0, borderColor: "green", text: "Text", input: false, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last:0, id: "text" });
+    NodesToCopy();
 }
 
 //check if mouse's pointer is inside a parallelogram
@@ -96,6 +102,12 @@ function insideEllipse(r, mx, my) {
 
 //check if mouse's pointer is inside a rectangle
 function insideRect(r, mx, my) {
+    /*var inside = false;
+    var newWidth = WIDTH * scaling;
+    var newHeight = HEIGHT * scaling;
+    ctx.save();
+    var tr2 = 0;//-((newHeight-HEIGHT)/2);
+    var tr1 = 0;//-((newWidth-WIDTH)/2);*/
     return (mx > r.x && mx < (r.x + (r.width) + 10) && my > r.y && my < (r.y + (r.height) + 10));
 }
 
@@ -168,11 +180,6 @@ function drawLine(r) {
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(r.width, 0);
-    //ctx.beginPath();
-    /*ctx.moveTo(r.x, r.y);
-    var x = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
-    var y = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
-    ctx.lineTo(x, y);*/
     ctx.globalAlpha = r.trasparence;
     ctx.stroke();
     border(2, "black");
@@ -189,8 +196,10 @@ function drawRect(r,flag) {
         ctx.rect(0, 0, WIDTH, HEIGHT);
     }
     else if(flag==1) {
+        //Scaling();
         ctx.globalAlpha = r.trasparence;
         ctx.rect(r.x, r.y, r.width, r.height);
+        //ctx.restore();
     }
     else if(flag==2) {
         ctx.globalAlpha = 1.0;

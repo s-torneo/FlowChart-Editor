@@ -17,7 +17,7 @@ function ShapeInsideSelection(flag){
                 r.initX = r.x;
                 r.initY = r.y;
                 r.isSelected = true;
-                r.trasparence = 0.2;
+                r.trasparence = 0.1;
                 //r.isDragging = false;
             }
         }
