@@ -13,6 +13,7 @@ function Save(r, mx, my){
 }
 
 function NewShape(){
+    saved.isClicked = true;
     if(saved.id == "rectangle")
         newRect(saved_mx + saved.width, saved_my);
     else if (saved.id == "line" || saved.id == "arrow")
@@ -23,6 +24,8 @@ function NewShape(){
         newEllipse(saved_mx + saved.radiusX*2, saved_my);
     else if (saved.id == "rhombus") 
         newRhombus(saved_mx + saved.width*2, saved_my);
+    // delete elements created by double-click effect
+    copy.splice(pointer,copy.length-pointer-1); 
 }
 
 function myDoubleClick(e) {
@@ -36,17 +39,16 @@ function myDoubleClick(e) {
     //new shape if you press on a shape twice
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
-        if (r.id == "text") {
-            if (insideRect(r, mx, my) && !input_ok) {
-                input = document.createElement("input");
-                input.setAttribute('type', 'text');
-                input.setAttribute('name', 'text_input');
-                document.getElementById("text").appendChild(input);
-                r.input = true;
-                input_ok = true;
-            }
+        if (r.id == "text" && insideRect(r, mx, my) && !input_ok) {
+            input = document.createElement("input");
+            input.setAttribute('type', 'text');
+            input.setAttribute('name', 'text_input');
+            document.getElementById("text").appendChild(input);
+            r.input = true;
+            input_ok = true;
+            pointer-=2; // decrement pointer for double-click
         }
-        if (insideRect(r, mx, my))
+        else if (insideRect(r, mx, my))
             Save(r, mx, my);
         else if (insideLine(r, mx, my))
             Save(r, mx, my);
@@ -59,6 +61,7 @@ function myDoubleClick(e) {
     }
     // if a rectangle was double-clicked i make a new rectangle, using coordinates saved previously
     if(!input_ok && saved!=null){
+        pointer-=2; // decrement pointer for double-click
         NewShape();
         saved = null;
     }
@@ -180,12 +183,21 @@ function myUp(e) {
         draw();
         return;
     }
-    // clear all the dragging flags
     dragok = false;
-    for (var i = 0; i < nodes.length; i++)
-        nodes[i].isDragging = dragok;
+    var isdrag = false, isclick = false;
+    for (var i = 0; i < nodes.length; i++){
+        if(nodes[i].isDragging){
+            nodes[i].isDragging = dragok; // clear all the dragging flags
+            if(nodes[i].x != nodes[i].initX && nodes[i].y != nodes[i].initY)
+                isdrag = true;
+        }
+        if(nodes[i].id == "text" && insideRect(nodes[i], mx, my)) // if a text's rectangle is clicked
+            isclick = true;
+    }
     ChangeCursor("default");
-    ManagerUR();
+    if(isdrag || isclick){
+        ManagerUR();
+    }
 }
 
 // handle mouse moves

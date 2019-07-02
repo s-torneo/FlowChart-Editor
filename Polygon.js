@@ -40,7 +40,7 @@ function newEllipse(px, py) {
 function newText(px, py) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, trasparence: 1.0, borderColor: "green", text: "Text", input: false, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last:0, id: "text" });
+    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, trasparence: 1.0, borderColor: "green", text: "Text", input: false, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last: 0, id: "text" });
     NodesToCopy();
 }
 

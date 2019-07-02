@@ -12,30 +12,29 @@ function aroundTrash(mx, my) {
     }
 }
 
-function RemoveShape(i){
-    var tmp = JSON.parse(JSON.stringify(nodes));
-    // save it in copy with the initial position x e y and then delete it
-    var r = tmp[i];
-    r.x =  r.initX;
-    r.y = r.initY;
-    r.isDragging = false;
-    r.isSelected = false;
-    r.trasparence = 1.0;
-    copy.push(tmp);
-    nodes.splice(i, 1);
-}
-
 function insideTrash(mx, my, i) {
     if (mx > trashX_actual && mx < trashX_actual + trashW && my > trashY_actual && my < trashY_actual + trashH) {
         if(selectionMode){
-            for(var i = 0; i < nodes.length; i++){
+            var tmp = JSON.parse(JSON.stringify(nodes)), index = [];
+            for(var i = 0; i < nodes.length; i++) {
                 var r = nodes[i];
-                if(insideRectSelection(r.x,r.y) && r.id != "selection" && !selectionok && r.isSelected)
-                    RemoveShape(i);
+                if(insideRectSelection(r.x,r.y) && r.id != "selection" && !selectionok && r.isSelected){
+                    tmp[i].x =  tmp[i].initX;
+                    tmp[i].y = tmp[i].initY;
+                    index.push(i);
+                }
             }
+            copy[pointer] = JSON.parse(JSON.stringify(tmp));
+            for(var i = 0; i < index.length; i++)
+                nodes.splice(index.pop(),1);
+            var tmp2 = JSON.parse(JSON.stringify(nodes));
+            InsertCopy(tmp2);
         }
-        else
-            RemoveShape(i);
+        else{
+            nodes.splice(i, 1);
+            var tmp = JSON.parse(JSON.stringify(nodes));
+            InsertCopy(tmp);
+        }
         ChangeCursor("default");
     }
 }

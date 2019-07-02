@@ -92,7 +92,10 @@ function upload(){
             var json = JSON.parse(this.result);
             for(var i=0;i<json.length;i++)
                 nodes.push(json[i]);
-                selected = null;
+            selected = null;
+            pointer = -1;
+            InsertCopy([]); // add an empty array to the start of array copy
+            NodesToCopy(); // copy all elements of nodes into array copy
             draw();
         }
         fr.readAsText(this.files[0]);
