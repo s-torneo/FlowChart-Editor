@@ -195,10 +195,11 @@ function myUp(e) {
             isclick = true;
         if(insideLine(nodes[i], mx, my) && nodes[i].rotate) // if a line or an arrow is rotated
             isrotate = true;
-        if(nodes[i].resize)
+        if(nodes[i].resize>=0)
             isresize = true;
     }
     if(isdrag || isclick || isrotate || isresize) {
+        alert("ok");
         ManagerUR();
     }
 }
