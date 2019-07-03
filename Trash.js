@@ -15,20 +15,19 @@ function aroundTrash(mx, my) {
 function insideTrash(mx, my, i) {
     if (mx > trashX_actual && mx < trashX_actual + trashW && my > trashY_actual && my < trashY_actual + trashH) {
         if(selectionMode){
-            var tmp = JSON.parse(JSON.stringify(nodes)), index = [];
+            var tmp = JSON.parse(JSON.stringify(nodes)), tmp_nodes = [];
             for(var i = 0; i < nodes.length; i++) {
                 var r = nodes[i];
                 if(insideRectSelection(r.x,r.y) && r.id != "selection" && !selectionok && r.isSelected){
                     tmp[i].x =  tmp[i].initX;
                     tmp[i].y = tmp[i].initY;
-                    index.push(i);
                 }
+                else 
+                    tmp_nodes.push(r);
             }
             copy[pointer] = JSON.parse(JSON.stringify(tmp));
-            for(var i = 0; i < index.length; i++)
-                nodes.splice(index.pop(),1);
-            var tmp2 = JSON.parse(JSON.stringify(nodes));
-            InsertCopy(tmp2);
+            nodes = JSON.parse(JSON.stringify(tmp_nodes));
+            InsertCopy(tmp_nodes);
         }
         else{
             nodes.splice(i, 1);

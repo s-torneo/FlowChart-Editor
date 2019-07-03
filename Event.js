@@ -12,8 +12,7 @@ function Save(r, mx, my){
     saved = r;
 }
 
-function NewShape(){
-    saved.isClicked = true;
+function NewShape() {
     if(saved.id == "rectangle")
         newRect(saved_mx + saved.width, saved_my);
     else if (saved.id == "line" || saved.id == "arrow")
