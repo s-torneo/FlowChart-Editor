@@ -9,7 +9,7 @@ function newRect(px, py) {
 function newLine(px, py, id_v) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 40, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, degrees: 0, initX: 0, initY: 0, last:0, id: id_v});
+    nodes.push({ x: px, y: py, width: 40, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, degrees: 0, initX: 0, initY: 0, last:0, rotate: 0, id: id_v});
     NodesToCopy();
 }
 
@@ -89,6 +89,8 @@ function insideRotationIcon(r, mx, my) {
                 inside = true;
         }break;
     }
+    if(inside)
+        r.rotate = 1;
     return inside;
 }
 

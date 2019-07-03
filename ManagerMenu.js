@@ -15,7 +15,7 @@ function SetMenuEvent() {
     document.getElementById("reset_img").onclick = function () { reset() };
     document.getElementById("undo_img").onclick = function () { undo() };
     document.getElementById("redo_img").onclick = function () { redo() };
-    document.getElementById("selection_img").onclick = function () { alert(selectionMode); selection(); alert(selectionMode); };
+    document.getElementById("selection_img").onclick = function () { selection() };
     document.getElementById("download_img").onclick = function () { download() };
     document.getElementById("upload_img").onclick = function () { upload() };
     document.getElementById("rect_img").onmouseover = function () { myOver() };

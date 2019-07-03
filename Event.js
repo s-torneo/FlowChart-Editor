@@ -182,19 +182,23 @@ function myUp(e) {
         draw();
         return;
     }
+    ChangeCursor("default");
     dragok = false;
-    var isdrag = false, isclick = false;
+    var isdrag = false, isclick = false, isrotate = false, isresize = false;
     for (var i = 0; i < nodes.length; i++){
-        if(nodes[i].isDragging){
+        if(nodes[i].isDragging) {
             nodes[i].isDragging = dragok; // clear all the dragging flags
             if(nodes[i].x != nodes[i].initX && nodes[i].y != nodes[i].initY)
                 isdrag = true;
         }
         if(nodes[i].id == "text" && insideRect(nodes[i], mx, my)) // if a text's rectangle is clicked
             isclick = true;
+        if(insideLine(nodes[i], mx, my) && nodes[i].rotate) // if a line or an arrow is rotated
+            isrotate = true;
+        if(nodes[i].resize)
+            isresize = true;
     }
-    ChangeCursor("default");
-    if(isdrag || isclick){
+    if(isdrag || isclick || isrotate || isresize) {
         ManagerUR();
     }
 }
@@ -236,6 +240,7 @@ function myMove(e) {
                 insideTrash(mx, my, i);
             }
         }
+        /*ManagerUR();*/
         // redraw the scene with the new rect positions
         draw();
         // reset the starting mouse position for the next mousemove
