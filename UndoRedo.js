@@ -14,6 +14,9 @@ function undo() {
         return;
     pointer--;
     MakeUR();
+    /*for(var i = 0; i<nodes.length; i++)
+        if(nodes[i].id == "line")
+            alert(nodes[i].rotate);*/
 }
 
 function redo() {
@@ -46,11 +49,7 @@ function ManagerUR(){
             old_v[i].last = new_v[i].last = 0;
             flag = true;
         }
-        else if(insideLine(new_v[i]) && new_v[i].rotate){
-            new_i[i].rotate = 0;
-            flag = true;
-        }
-        else if(new_v[i].resize>=0)
+        else if(new_v[i].rotate || new_v[i].resize>=0)
             flag = true;
     }
     if(pointer!=copy.length-1){ // in the case in which pointer is not at the end of copy and a shape has been moved

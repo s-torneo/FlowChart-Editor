@@ -32,7 +32,16 @@ function insideTrash(mx, my, i) {
         else{
             nodes.splice(i, 1);
             var tmp = JSON.parse(JSON.stringify(nodes));
+            //if(pointer!=copy.length-1){ // in the case in which pointer is not at the end of copy and a shape has been moved
+              //  alert(pointer);
+              //  copy.splice(pointer+1,copy.length-pointer-1); // delete the following positions of pointer
+                //nodes.splice(0,nodes.length);
+                //nodes = JSON.parse(JSON.stringify(new_v)); // copy the new version of nodes in nodes 
+            //}   
             InsertCopy(tmp);
+            /*if(copy[pointer].length==1)
+                copy.splice(pointer,1);*/ // controllare
+            //InsertCopy(tmp);
         }
         ChangeCursor("default");
     }

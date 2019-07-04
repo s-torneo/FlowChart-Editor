@@ -73,7 +73,8 @@ function DragOk(r) {
     ChangeCursor("move");
     r.initX = r.x;
     r.initY = r.y;
-    r.last = 1;
+    if(r.resize<0 && !r.rotate)
+        r.last = 1;
     if(r.id != "selection")
         RemoveSelection();
 }
@@ -146,7 +147,7 @@ function myDown(e) {
             }
         }
     }
-    // reset resizing mode for all shape
+    // reset flag resize for all shapes
     for (var i = 0; i < nodes.length; i++)
         nodes[i].resize = -1;
     // save the current mouse position
@@ -184,24 +185,26 @@ function myUp(e) {
     }
     ChangeCursor("default");
     dragok = false;
-    var isdrag = false, isclick = false, isrotate = false, isresize = false;
+    var bl = false;
     for (var i = 0; i < nodes.length; i++){
         if(nodes[i].isDragging) {
             nodes[i].isDragging = dragok; // clear all the dragging flags
             if(nodes[i].x != nodes[i].initX && nodes[i].y != nodes[i].initY)
-                isdrag = true;
+                bl = true;
         }
         if(nodes[i].id == "text" && insideRect(nodes[i], mx, my)) // if a text's rectangle is clicked
-            isclick = true;
-        if(insideLine(nodes[i], mx, my) && nodes[i].rotate) // if a line or an arrow is rotated
-            isrotate = true;
+            bl = true;
+        if(nodes[i].rotate) // if a line or an arrow is rotated
+            bl = true;
         if(nodes[i].resize>=0)
-            isresize = true;
+            bl = true;
     }
-    if(isdrag || isclick || isrotate || isresize) {
-        alert("ok");
+    if(bl)
         ManagerUR();
-    }
+    // reset the flag rotate for all shape of type "line" or "arrow"
+    for (var i = 0; i < nodes.length; i++)
+        if(nodes[i].id == "line" || nodes[i].id == "arrow")
+            nodes[i].rotate = 0;
 }
 
 // handle mouse moves

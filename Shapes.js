@@ -56,13 +56,13 @@ function insideLine(r, mx, my) {
     var x1 = r.x, y1 = r.y;
     var x2 = r.width * Math.cos(r.degrees * Math.PI / 180) + r.x;
     var y2 = r.width * Math.sin(r.degrees * Math.PI / 180) + r.y;
-    if(mx>=x1 && mx<=x2 && Math.abs(my - y1)<20) // 0 
+    if(mx>=x1 && mx<=x2 && (y1 - my)<20 && (my-5)<y1) // 0 
         inside = true;
-    else if(my>=y1 && my<=y2 && Math.abs(mx - x1)<20) // 90
+    else if(my>=y1 && my<=y2 && (mx - x1)<20 && mx>(x1-5)) // 90
         inside = true;
-    else if(mx<=x1 && mx>=x2 && Math.abs(my - y1)<20) // 180
+    else if(mx<=x1 && mx>=x2 && (my - y1)<20 && my>(y1-5)) // 180
         inside = true;
-    else if(my<=y1 && my>=y2 && Math.abs(mx - x1)<20) // 270
+    else if(my<=y1 && my>=y2 && (x1 - mx)<20 && (mx-5)<x1) // 270
         inside = true;
     return inside;
 }
@@ -377,7 +377,7 @@ function ResizeParallelogram(r, dx, dy) {
     switch (r.resize) {
         case 0: {
             if (!CheckSize(r,50)) {
-                r.width += dx;
+                r.width -= dx;
                 r.height += dy;
             }
         } break;
@@ -404,6 +404,7 @@ function ResizeParallelogram(r, dx, dy) {
         case 4: {
             if (!CheckSize(r, 50)) {
                 r.x -= dx;
+                r.y -= dy;
                 r.height -= dy;
             }
         } break;
@@ -424,7 +425,7 @@ function ResizeParallelogram(r, dx, dy) {
         } break;
         case 7: {
             if (!CheckSize(r, 50)){
-                r.x -= dy;
+                r.y -= dy;
                 r.width -= dx;
             }
         } break;
@@ -587,7 +588,7 @@ function CheckResizeParallelogram(r, mx, my) {
         UtilCheckResize(r, 5, "e-resize"); // a dx in cx
     else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width))) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 10)
         UtilCheckResize(r, 6, "nesw-resize"); // in alto a dx
-    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height / 3)) < 5 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y + r.height / 4)) < 5)
+    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height / 3)) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y + r.height / 4)) < 10)
         UtilCheckResize(r, 7, "e-resize"); // a sx in cx
 }
 

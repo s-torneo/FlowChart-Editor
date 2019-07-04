@@ -37,14 +37,14 @@
     width: 100px;
     position: absolute;
     left: 25px;
-    top: 200px;
+    top: 213px;
 }
 
 #triangle_img {
     width: 22px;
     position: absolute;
     left: 10px;
-    top: 191px;
+    top: 203px;
 }
 
 #rhombus_img {
@@ -196,6 +196,19 @@
     padding-left: 9px;
     width: 120px;
     height: 104px;
+    text-decoration: none;
+    color: white;
+    background-color: #2175bc;
+    border-bottom: 1px solid #90bade;
+    border-left: 7px solid #1958b7;
+}
+
+#menu_vertical li.line {
+    display: block;
+    padding: 3px 0;
+    padding-left: 9px;
+    width: 120px;
+    height: 50px;
     text-decoration: none;
     color: white;
     background-color: #2175bc;
