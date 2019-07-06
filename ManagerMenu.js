@@ -86,6 +86,7 @@ function reset() {
     }
     nodes.splice(0, nodes.length); // remove all element of nodes
     InsertCopy([]); // insert in copy an empty array
+    alert(pointer);
     selectionok = selectionMode = false;
     draw();
 }

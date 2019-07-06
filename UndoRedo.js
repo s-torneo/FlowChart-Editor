@@ -14,9 +14,6 @@ function undo() {
         return;
     pointer--;
     MakeUR();
-    /*for(var i = 0; i<nodes.length; i++)
-        if(nodes[i].id == "line")
-            alert(nodes[i].rotate);*/
 }
 
 function redo() {
@@ -34,6 +31,8 @@ function InsertCopy(element){
 
 // copy the array nodes into array copy
 function NodesToCopy(){
+    if(pointer!=copy.length-1) // in the case in which pointer is not at the end of copy
+        copy.splice(pointer+1,copy.length-pointer-1);
     var tmp = JSON.parse(JSON.stringify(nodes));
     InsertCopy(tmp);
 }
@@ -54,18 +53,17 @@ function ManagerUR(){
     }
     if(pointer!=copy.length-1){ // in the case in which pointer is not at the end of copy and a shape has been moved
         copy.splice(pointer+1,copy.length-pointer-1); // delete the following positions of pointer
-        copy.push(new_v); // push to copy the new version of nodes
-        pointer++;
+        InsertCopy(new_v); // push to copy the new version of nodes
         nodes.splice(0,nodes.length);
         nodes = JSON.parse(JSON.stringify(new_v)); // copy the new version of nodes in nodes 
     }   
-    else if(!copy[copy.length-1].length){ // in the case in which there was a reset operation
+    /*else if(!copy[copy.length-1].length){ // in the case in which there was a reset operation
         copy.push(old_v); // push to copy the old version of nodes
         copy.push(new_v); // push to copy the new version of nodes
         pointer+=3; // move pointer to 3 position (2(just added) + 1 (current position))
         nodes.splice(0,nodes.length);
         nodes = JSON.parse(JSON.stringify(new_v)); // copy the new version of nodes in nodes 
-    }
+    }*/
     else if(flag) // in the case in which a shape is moved
         InsertCopy(new_v);
 }

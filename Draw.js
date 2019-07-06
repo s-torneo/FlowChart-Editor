@@ -44,7 +44,7 @@ function drawGrid() {
 
 // clear the canvas
 function clear() {
-    ctx.fillStyle = "aliceblue"; //"#FAF7F8"
+    ctx.fillStyle = "white";//"aliceblue"; //"#FAF7F8"
     drawRect(null, 0);
     ctx.fill();
 }
@@ -88,8 +88,8 @@ function init() {
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
     SetCoordinates();
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = 1125; //window.innerWidth;
+    canvas.height = 800; //window.innerHeight;
     WIDTH = canvas.width;
     HEIGHT = canvas.height;
     // drag related variables

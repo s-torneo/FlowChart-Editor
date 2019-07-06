@@ -73,8 +73,8 @@ function DragOk(r) {
     ChangeCursor("move");
     r.initX = r.x;
     r.initY = r.y;
-    if(r.resize<0 && !r.rotate)
-        r.last = 1;
+    //if(r.resize<0 && !r.rotate)
+       // r.last = 1;
     if(r.id != "selection")
         RemoveSelection();
 }
@@ -187,16 +187,19 @@ function myUp(e) {
     dragok = false;
     var bl = false;
     for (var i = 0; i < nodes.length; i++){
-        if(nodes[i].isDragging) {
-            nodes[i].isDragging = dragok; // clear all the dragging flags
-            if(nodes[i].x != nodes[i].initX && nodes[i].y != nodes[i].initY)
+        var r = nodes[i];
+        if(r.isDragging) {
+            r.isDragging = dragok; // clear all the dragging flags
+            if(r.x != r.initX && r.y != r.initY){
+                r.last = 1;
                 bl = true;
+            }
         }
-        if(nodes[i].id == "text" && insideRect(nodes[i], mx, my)) // if a text's rectangle is clicked
+        if(r.id == "text" && insideRect(r, mx, my)) // if a text's rectangle is clicked
             bl = true;
-        if(nodes[i].rotate) // if a line or an arrow is rotated
+        if(r.rotate) // if a line or an arrow is rotated
             bl = true;
-        if(nodes[i].resize>=0)
+        if(r.resize>=0)
             bl = true;
     }
     if(bl)
