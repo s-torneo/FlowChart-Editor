@@ -83,15 +83,23 @@ function SetCoordinates(){
     offsetY = BB.top;
 }
 
+function SetDimension(){
+    canvas.width = /*1125*/document.getElementById('myBox').offsetWidth; 
+    canvas.height = /*800*/document.getElementById('myBox').offsetHeight;
+    document.getElementById("menu_horizontal").style.width = canvas.width - 7;
+    for(var i = 0; i<4; i++)
+        document.getElementsByClassName("div_style")[i].style.height = canvas.height/5 + 2;
+    WIDTH = canvas.width;
+    HEIGHT = canvas.height;
+    draw();
+}
+
 function init() {
     // get canvas related references
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
     SetCoordinates();
-    canvas.width = 1125; //window.innerWidth;
-    canvas.height = 800; //window.innerHeight;
-    WIDTH = canvas.width;
-    HEIGHT = canvas.height;
+    SetDimension();
     // drag related variables
     dragok = false;
     // listen for mouse events
@@ -99,6 +107,7 @@ function init() {
     canvas.onmouseup = myUp;
     canvas.onmousemove = myMove;
     canvas.ondblclick = myDoubleClick;
+    window.onresize = SetDimension;
     InsertCopy([]); // insert into copy an empty array
     // call to draw the scene
     draw();

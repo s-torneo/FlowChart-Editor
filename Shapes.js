@@ -232,6 +232,7 @@ function drawCircle(r, posx, posy) {
 // draw a single rectangle of text
 function drawText(r) {
     ctx.beginPath();
+    ctx.globalAlpha = r.trasparence;
     ctx.rect(r.x, r.y, r.width, r.height);
     border(1, r.borderColor);
     ctx.font = "15px Comic Sans MS";

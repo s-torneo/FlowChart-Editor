@@ -1,4 +1,4 @@
-var trashX = 1065, trashY = 467, trashW = 30, trashH = 30; //size and position of trash used to delete element on canvas
+var trashX, trashY, trashW = 30, trashH = 30; //size and position of trash used to delete element on canvas
 var trashY_actual, trashX_actual, degrees = 0; // used to manage the drawing of trash
 
 function aroundTrash(mx, my) {
@@ -46,6 +46,8 @@ function insideTrash(mx, my, i) {
 
 //draw trash
 function drawTrash() {
+    trashX = parseInt(document.getElementById('myBox').offsetWidth) - 72;
+    trashY = parseInt(document.getElementById('myBox').offsetHeight) - 68;
     const trash_lower = document.getElementById('trash_down');
     const trash_above = document.getElementById('trash_up');
     var scrolly = parseInt(document.getElementById("myBox").scrollTop);
@@ -60,7 +62,7 @@ function drawTrash() {
     ctx.rotate(degrees*Math.PI / 180);
     // draw the above part of trash
     if (degrees == 90)
-        ctx.drawImage(trash_above, 431 + scrolly, -(trashY * 2 + 145 + scrollx), 20, 10);
+        ctx.drawImage(trash_above, (trashY-36) + scrolly, -(trashX + 15 + scrollx), 20, 10);
     else
         ctx.drawImage(trash_above, trashX - 15 + scrollx, trashY - 25 + scrolly, 20, 10);
     ctx.restore();

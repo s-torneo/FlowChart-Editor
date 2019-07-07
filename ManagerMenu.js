@@ -4,13 +4,19 @@ var dim = 10; //indicate the dimension of the grid's squares
 var save = false;
 var input_file = null;
 
+var shapes = new Array("rectangle", "line", "arrow", "rhombus", "parallelogram", "ellipse");
+var operations = new Array("text_img", "reset_img", "undo_img", "redo_img", "selection_img", "upload_img", "download_img");
+
 function SetMenuEvent() {
-    document.getElementById("rectangle").onclick = function () { myClick("rectangle") };
-    document.getElementById("line1").onclick = function () { myClick("line") };
-    document.getElementById("line2").onclick = function () { myClick("arrow") };
-    document.getElementById("rhombus").onclick = function () { myClick("rhombus") };
-    document.getElementById("parallelogram").onclick = function () { myClick("parallelogram") };
-    document.getElementById("ellipse").onclick = function () { myClick("ellipse") };
+    for(var i = 0; i<shapes.length; i++) {
+        document.getElementById(shapes[i]).onclick = function () { myClick(this.id)};
+        document.getElementById(shapes[i]).onmouseover = function () { myOver() };
+        document.getElementById(shapes[i]).onmouseout = function () { myOut() };
+    }
+    for(var i = 0; i<operations.length; i++) {
+        document.getElementById(operations[i]).onmouseover = function () { myOver() };
+        document.getElementById(operations[i]).onmouseout = function () { myOut() };
+    }
     document.getElementById("text_img").onclick = function () { myClick("text") };
     document.getElementById("reset_img").onclick = function () { reset() };
     document.getElementById("undo_img").onclick = function () { undo() };
@@ -18,32 +24,6 @@ function SetMenuEvent() {
     document.getElementById("selection_img").onclick = function () { selection() };
     document.getElementById("download_img").onclick = function () { download() };
     document.getElementById("upload_img").onclick = function () { upload() };
-    document.getElementById("rectangle").onmouseover = function () { myOver() };
-    document.getElementById("line1").onmouseover = function () { myOver() };
-    document.getElementById("line2").onmouseover = function () { myOver() };
-    document.getElementById("rhombus").onmouseover = function () { myOver() };
-    document.getElementById("parallelogram").onmouseover = function () { myOver() };
-    document.getElementById("ellipse").onmouseover = function () { myOver() };
-    document.getElementById("text_img").onmouseover = function () { myOver() };
-    document.getElementById("reset_img").onmouseover = function () { myOver() };
-    document.getElementById("undo_img").onmouseover = function () { myOver() };
-    document.getElementById("redo_img").onmouseover = function () { myOver() }
-    document.getElementById("selection_img").onmouseover = function () { myOver() };
-    document.getElementById("download_img").onmouseover = function () { myOver() };
-    document.getElementById("upload_img").onmouseover = function () { myOver() };
-    document.getElementById("rectangle").onmouseout = function () { myOut() };
-    document.getElementById("line1").onmouseout = function () { myOut() };
-    document.getElementById("line2").onmouseout = function () { myOut() };
-    document.getElementById("rhombus").onmouseout = function () { myOut() };
-    document.getElementById("parallelogram").onmouseout = function () { myOut() };
-    document.getElementById("ellipse").onmouseout = function () { myOut() };
-    document.getElementById("text_img").onmouseout = function () { myOut() };
-    document.getElementById("reset_img").onmouseout = function () { myOut() };
-    document.getElementById("undo_img").onmouseout = function () { myOut() };
-    document.getElementById("redo_img").onmouseout = function () { myOut() };
-    document.getElementById("selection_img").onmouseout = function () { myOut() };
-    document.getElementById("download_img").onmouseout = function () { myOut() };
-    document.getElementById("upload_img").onmouseout = function () { myOut() };
     document.getElementById("myBox").onmouseup = function () { draw() };
     document.getElementById("myBox").onwheel = function () { draw() }; // on wheel is the event associated at the wheel's (of mouse) move
 }
@@ -86,7 +66,6 @@ function reset() {
     }
     nodes.splice(0, nodes.length); // remove all element of nodes
     InsertCopy([]); // insert in copy an empty array
-    alert(pointer);
     selectionok = selectionMode = false;
     draw();
 }

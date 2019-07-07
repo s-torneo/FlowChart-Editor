@@ -7,151 +7,12 @@
     cursor: url('Images/rotate.png');
 }
 
-#menu_horizontal {
-    border: 1px solid black;
-    border-bottom-width: 0;
-    width: 1124px;
-    height: 54px;
-    text-decoration: none;
-    color: white;
-    background-color: #2175bc;
-    border-bottom: 1px solid #90bade;
-    border-left: 7px solid #1958b7;
-}
-
-#rect_img {
-    width: 100px;
-    position: absolute;
-    left: 20px;
-    top: 45px;
-}
-
-#line_img {
-    width: 110px;
-    position: absolute;
-    left: 15px;
-    top: 160px;
-}
-
-#arrow_img {
-    width: 100px;
-    position: absolute;
-    left: 25px;
-    top: 213px;
-}
-
-#triangle_img {
-    width: 22px;
-    position: absolute;
-    left: 10px;
-    top: 203px;
-}
-
-#rhombus_img {
-    width: 90px;
-    height: 90px;
-    position: absolute;
-    left: 25px;
-    top: 250px;
-}
-
-#parallelogram_img {
-    width: 120px;
-    height: 110px;
-    position: absolute;
-    left: 10px;
-    top: 350px;
-}
-
-#ellipse_img {
-    width: 110px;
-    height: 60px;
-    position: absolute;
-    left: 15px;
-    top: 490px;
-}
-
-#grid_style {
-    position: absolute;
-    left: 25px;
-    top: 545px;
-}
-
-#coordinates {
-    position: absolute;
-    left: 150px;
-    top: 550px;
-}
-
-#reset_img {
-    width: 25px;
-    position: absolute;
-    left: 240px;
-    top: 545px;
-}
-
-#undo_img {
-    width: 25px;
-    position: absolute;
-    left: 280px;
-    top: 545px;
-}
-
-#redo_img {
-    width: 25px;
-    position: absolute;
-    left: 310px;
-    top: 545px;
-}
-
-#selection_img {
-    width: 40px;
-    position: absolute;
-    left: 400px;
-    top: 538px;
-}
-
-#text_img {
-    width: 25px;
-    position: absolute;
-    left: 470px;
-    top: 545px;
-}
-
-#text {
-    width: 25px;
-    position: absolute;
-    left: 500px;
-    top: 550px;
-}
-
-#download_img {
-    width: 25px;
-    position: absolute;
-    left: 690px;
-    top: 547px;
-}
-
-#upload_img {
-    width: 25px;
-    position: absolute;
-    left: 720px;
-    top: 547px;
-}
-
-#input_file {
-    width: 25px;
-    position: absolute;
-    left: 750px;
-    top: 550px;
-}
-
 /* Box styles */
 #myBox {
     border: none;
     font: 24px/36px sans-serif;
-    width: 1130px;
-    height: 520px;
+    width: /*1130px*/89%;
+    height: /*520px*/90%;
     overflow: scroll;
 }
 
@@ -173,29 +34,12 @@
     background: #999;
 }
 
-/* Vertical Menu Style*/
-#menu_vertical {
+#menu_horizontal {
     border: 1px solid black;
     border-bottom-width: 0;
     position: absolute;
-    top: 8px;
-    left: 1140px;
-    width: 135px;
-}
-
-#menu_vertical ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    font: normal 90% 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-#menu_vertical li {
-    display: block;
-    padding: 3px 0;
-    padding-left: 9px;
-    width: 120px;
-    height: 104px;
+    /*width: /*1124px*//*90%;*/
+    height: /*54px*/10%;
     text-decoration: none;
     color: white;
     background-color: #2175bc;
@@ -203,7 +47,114 @@
     border-left: 7px solid #1958b7;
 }
 
-#menu_vertical li.line {
+#grid_style {
+    width: 10%;
+    position: absolute;
+    left: 1%;
+    top: 40%
+}
+
+#dim {
+    width: 25%;
+    position: absolute;
+    left: 55%;
+}
+
+#coordinates {
+    width: 10%;
+    position: absolute;
+    left: 13%;
+    top: 43%;
+}
+
+#reset_img {
+    width: 2%;
+    position: absolute;
+    left: 22%;
+    top: 40%;
+}
+
+#undo_img {
+    width: 2%;
+    position: absolute;
+    left: 25%;
+    top: 40%;
+}
+
+#redo_img {
+    width: 2%;
+    position: absolute;
+    left: 27%;
+    top: 40%;
+}
+
+#selection_img {
+    width: 3%;
+    position: absolute;
+    left: 35%;
+    top: 30%;
+}
+
+#text_img {
+    width: 2%;
+    position: absolute;
+    left: 40%;
+    top: 40%;
+}
+
+#text {
+    width: 2%;
+    position: absolute;
+    left: 43%;
+    top: 42%;
+}
+
+#upload_img {
+    width: 2%;
+    position: absolute;
+    left: 60%;
+    top: 40%;
+}
+
+#download_img {
+    width: 2%;
+    position: absolute;
+    left: 63%;
+    top: 40%;
+}
+
+#input_file {
+    width: 2%;
+    position: absolute;
+    left: 66%;
+    top: 42%;
+}
+
+/* Vertical Menu Style*/
+#menu_vertical {
+    border: 1px solid black;
+    border-bottom-width: 0;
+    position: absolute;
+    /*top: 8px;
+    left: 1140px;*/
+    left: 89%;
+    top: 1%;
+}
+
+#menu_vertical div.div_style {
+    display: block;
+    padding: 3px 0;
+    padding-left: 9px;
+    width: 120px;
+    /*height: 104px;*/
+    text-decoration: none;
+    color: white;
+    background-color: #2175bc;
+    border-bottom: 1px solid #90bade;
+    border-left: 7px solid #1958b7;
+}
+
+#menu_vertical div.line_style {
     display: block;
     padding: 3px 0;
     padding-left: 9px;
@@ -216,7 +167,7 @@
     border-left: 7px solid #1958b7;
 }
 
-#menu_vertical li:hover {
+#menu_vertical div:hover {
     background-color: #2586d7;
     border-left-color: #1c64d1;
 }
@@ -229,4 +180,53 @@
     padding-left: 5px;
     background-color: black;
     font: bold 90% 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+
+#rect_img {
+    width: 70%;
+    position: absolute;
+    left: 15%;
+    top: 10%;
+}
+
+#line_img {
+    width: 70%;
+    position: absolute;
+    left: 15%;
+    top: 27%;
+}
+
+#arrow_img {
+    width: 65%;
+    position: absolute;
+    left: 20%;
+    top: 36%;
+}
+
+#triangle_img {
+    width: 13%;
+    position: absolute;
+    left: 11%;
+    top: 35%;
+}
+
+#rhombus_img {
+    width: 70%;
+    position: absolute;
+    left: 15%;
+    top: 43%;
+}
+
+#parallelogram_img {
+    width: 90%;
+    position: absolute;
+    left: 5%;
+    top: 60%;
+}
+
+#ellipse_img {
+    width: 80%;
+    position: absolute;
+    left: 13%;
+    top: 85%;
 }
