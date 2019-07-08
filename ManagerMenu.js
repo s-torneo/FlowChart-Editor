@@ -108,6 +108,7 @@ function download() {
         input_file = document.createElement("input");
         input_file.setAttribute('type', 'text');
         input_file.setAttribute('name', 'text_file');
+        input_file.style.width = "100%";
         document.getElementById("input_file").appendChild(input_file);
         save = true;
     }

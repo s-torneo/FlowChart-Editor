@@ -42,6 +42,7 @@ function myDoubleClick(e) {
             input = document.createElement("input");
             input.setAttribute('type', 'text');
             input.setAttribute('name', 'text_input');
+            input.style.width = "100%";
             document.getElementById("text").appendChild(input);
             r.input = true;
             input_ok = true;

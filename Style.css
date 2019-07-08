@@ -103,7 +103,7 @@
 }
 
 #text {
-    width: 2%;
+    width: 15%;
     position: absolute;
     left: 43%;
     top: 42%;
@@ -124,7 +124,7 @@
 }
 
 #input_file {
-    width: 2%;
+    width: 15%;
     position: absolute;
     left: 66%;
     top: 42%;
@@ -139,13 +139,15 @@
     left: 1140px;*/
     left: 89%;
     top: 1%;
+    width: 10%;
+    height: 98%;
 }
 
 #menu_vertical div.div_style {
     display: block;
     padding: 3px 0;
     padding-left: 9px;
-    width: 120px;
+    width: 90%;
     /*height: 104px;*/
     text-decoration: none;
     color: white;
@@ -158,7 +160,7 @@
     display: block;
     padding: 3px 0;
     padding-left: 9px;
-    width: 120px;
+    width: 90%;
     height: 50px;
     text-decoration: none;
     color: white;
