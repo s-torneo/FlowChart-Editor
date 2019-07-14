@@ -3,6 +3,7 @@
     <title>FlowChart Editor</title>
     <link rel="icon" href="Images/favicon.ico" />
     <link href="Style.css" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="Draw.js"></script>
     <script type="text/javascript" src="ManagerMenu.js"></script>
     <script type="text/javascript" src="Shapes.js"></script>
@@ -13,6 +14,7 @@
 </head>
 
 <body>
+    <div id="tutto">
     <div id="container">
         <ul>
             <li><a id="rectangle"><img src="Images/rectangle.png" id="rect_img"/></a></li>
@@ -47,6 +49,7 @@
             <li><a id="upload_img"><img src="Images/upload.png" class="funct" title="Upload" /></a></li>
             <li><a id="download_img"></a></li>
         </ul>
+    </div>
     </div>
     <div id="input_div"></div> <!-- this div will contain an input type="file" created in js -->
 </body>

@@ -10,10 +10,9 @@
 /* Box styles */
 #myBox {
     border: none;
-    position: absolute;
+    position: relative;
     width: /*1130px*/99%;
     height: /*520px*/83%;
-    top: 8%;
     overflow: scroll;
 }
 
@@ -67,6 +66,10 @@ img {
 
 /************************************/
 
+#tutto{
+    position: absolute;
+    width: 100%;
+}
 .funct{
     position: relative;
     width: 15%;
@@ -74,15 +77,12 @@ img {
 }
 
 #container{
-    position: absolute;
     width: 99%;
-    top: 0%;
+    top: -2%;
 }
 
 #container2{
-    position: absolute;
     width: 99%;
-    bottom: 1%;
 }
 
 label {
