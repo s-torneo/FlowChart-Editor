@@ -2,9 +2,7 @@
 <head>
     <title>FlowChart Editor</title>
     <link rel="icon" href="Images/favicon.ico" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link href="Style.css" rel="stylesheet" type="text/css">
-    <link href="Style2.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="Draw.js"></script>
     <script type="text/javascript" src="ManagerMenu.js"></script>
     <script type="text/javascript" src="Shapes.js"></script>
@@ -19,8 +17,8 @@
         <ul>
             <li><a id="rectangle"><img src="Images/rectangle.png" id="rect_img"/></a></li>
             <li><a id="line"><img src="Images/line.png" id="line_img"/></a></li>
-            <li><a id="arrow"><img src="Images/arrow.png"/></a></li>
-            <li><a id="rhombus"><img src="Images/rhombus.png"/></a></li>
+            <li><a id="arrow"><img src="Images/arrow.png" id="arrow_img"/></a></li>
+            <li><a id="rhombus"><img src="Images/rhombus.png" id="rhombus_img"/></a></li>
             <li><a id="parallelogram"><img src="Images/parallelogram.png" id="parallelogram_img"/></a></li>
             <li><a id="ellipse"><img src="Images/ellipse.png" id="ellipse_img"/></a></li>
         </ul>
@@ -34,18 +32,19 @@
     </div>
     <div id="container2">
         <ul>
-            <li><a class="grid_style">
+            <li><a>
                 <form name="grid">
-                    <label> Grid <input type="checkbox" name="choice" onchange="Choice()" ></label>
-                    <input type="number" name="quantity" min="1" max="5" onchange="Quantity()" value="1">
+                    <label id="l">Grid</label>
+                    <input type="checkbox" name="choice" onchange="Choice()" id="flag">
+                    <input type="number" name="quantity" min="1" max="5" onchange="Quantity()" value="1" id="dim">
                 </form>
             </a></li>
-            <li><a id="reset_img"><img src="Images/reset.png" title="Reset" /></a></li>
-            <li><a class="undo" id="undo_img"><img src="Images/undo.png" title="Undo" /></a></li>
-            <li><a id="redo_img"><img src="Images/redo.png" title="Redo" /></a></li>
-            <li><a id="selection_img"><img src="Images/selection.png" title="Selection" /></a></li>
+            <li><a id="reset_img"><img src="Images/reset.png" class="funct" title="Reset" /></a></li>
+            <li><a id="undo_img"><img src="Images/undo.png" class="funct" title="Undo" /></a></li>
+            <li><a id="redo_img"><img src="Images/redo.png" class="funct" title="Redo" /></a></li>
+            <li><a id="selection_img"><img src="Images/selection.png" class="funct" title="Selection" /></a></li>
             <li><a id="text_img"></a></li>
-            <li><a id="upload_img"><img src="Images/upload.png" title="Upload" /></a></li>
+            <li><a id="upload_img"><img src="Images/upload.png" class="funct" title="Upload" /></a></li>
             <li><a id="download_img"></a></li>
         </ul>
     </div>

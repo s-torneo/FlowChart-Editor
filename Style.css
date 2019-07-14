@@ -10,7 +10,6 @@
 /* Box styles */
 #myBox {
     border: none;
-    font: 24px/36px sans-serif;
     position: absolute;
     width: /*1130px*/99%;
     height: /*520px*/83%;
@@ -36,169 +35,145 @@
     background: #999;
 }
 
-#menu_horizontal {
-    border: 1px solid black;
-    border-bottom-width: 0;
-    position: absolute;
-    /*width: /*1124px*//*90%;*/
-    height: /*54px*/10%;
-    text-decoration: none;
-    color: white;
-    background-color: #2175bc;
-    border-bottom: 1px solid #90bade;
-    border-left: 7px solid #1958b7;
-}
-
-/*#grid_style {
-    width: 10%;
-    position: absolute;
-    left: 1%;
-    top: 40%
-}
-
-#dim {
-    width: 30%;
-    position: absolute;
-    left: 55%;
-}
-
-#coordinates {
-    width: 10%;
-    position: absolute;
-    left: 13%;
-    top: 43%;
-}*/
-
-/*#reset_img {
-    width: 40px;
-}
-
-#undo_img {
-    width: 2%;
-    position: absolute;
-    left: 25%;
-    top: 40%;
-}
-
-#redo_img {
-    width: 2%;
-    position: absolute;
-    left: 27%;
-    top: 40%;
-}
-
-#selection_img {
-    width: 3%;
-    position: absolute;
-    left: 35%;
-    top: 30%;
-}
-
-#text_img {
-    width: 50px;
-}
-
-#text {
-    width: 15%;
-    position: absolute;
-    left: 43%;
-    top: 42%;
-}
-
-#upload_img {
-    width: 2%;
-    position: absolute;
-    left: 60%;
-    top: 40%;
-}
-
-#download_img {
-    width: 2%;
-    position: absolute;
-    left: 63%;
-    top: 40%;
-}
-
-#input_file {
-    width: 15%;
-    position: absolute;
-    left: 66%;
-    top: 42%;
-}*/
-
-/* Vertical Menu Style*/
-#menu_vertical {
-    border: 1px solid black;
-    border-bottom-width: 0;
-    position: absolute;
-    /*top: 8px;
-    left: 1140px;*/
-    left: 89%;
-    top: 1%;
-    width: 10%;
-    height: 98%;
-}
-
-#menu_vertical div.div_style {
-    display: block;
-    padding: 3px 0;
-    padding-left: 9px;
-    width: 88%;
-    height: 18%;
-    /*height: 104px;*/
-    text-decoration: none;
-    color: white;
-    background-color: #2175bc;
-    border-bottom: 1px solid #90bade;
-    border-left: 7px solid #1958b7;
-}
-
-#menu_vertical div.line_style {
-    display: block;
-    padding: 3px 0;
-    padding-left: 9px;
-    width: 88%;
-    height: 9%;
-    /*height: 50px;*/
-    text-decoration: none;
-    color: white;
-    background-color: #2175bc;
-    border-bottom: 1px solid #90bade;
-    border-left: 7px solid #1958b7;
-}
-
-#menu_vertical div:hover {
-    background-color: #2586d7;
-    border-left-color: #1c64d1;
-}
-
-#menu_vertical div.menutitle {
-    text-align: center;
-    color: white;
-    border-bottom: 1px solid black;
-    padding: 1px 0;
-    padding-left: 5px;
-    background-color: black;
-    font: bold 90% 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+img {
+    position: relative;
+    width: 30px;
+    top: 20%;
 }
 
 #rect_img {
     position: relative;
-    top: 30%;
+    top: 35%;
 }
 
 #line_img {
     position: relative;
+    width: 50px;
     top: 50%;
 }
 
 #parallelogram_img {
     position: relative;
-    top: 20%;
+    width: 50px;
+    top: 3%;
 }
 
 #ellipse_img {
     position: relative;
+    width: 40px;
     top: 25%;
 }
 
+
+/************************************/
+
+.funct{
+    position: relative;
+    width: 15%;
+    top: 25%;
+}
+
+#container{
+    position: absolute;
+    width: 99%;
+    top: 0%;
+}
+
+#container2{
+    position: absolute;
+    width: 99%;
+    bottom: 1%;
+}
+
+label {
+    position: absolute;
+    top: -35%;
+    left: 35%;
+}
+
+#dim {
+    position: relative;
+    min-width: 5%;
+    max-width: 40%;
+    left: -10%;
+}
+
+#flag {
+    position: relative;
+    left: -15%;
+}
+
+/*Strip the ul of padding and list styling*/
+ul {
+    list-style-type:none;
+    margin:0;
+    padding:0;
+}
+/*Create a horizontal list with spacing*/
+li {
+    display:inline-block;
+    float: left;
+    margin-right: 0%;
+    position: relative;
+    width: 16.66%;
+    height: auto;
+}
+
+#container2 li {
+    display:inline-block;
+    float: left;
+    margin-right: 0%;
+    position: relative;
+    width: 12.5%;
+    height: auto;
+}
+
+/*Style for menu links*/
+li a {
+    display:block;
+    width: 99%;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #fff;
+    background: #2175bc;
+    text-decoration: none;
+}
+
+/*li a.grid_style {
+    height: auto;
+}*/
+
+/*Hover state for top level links*/
+li:hover a {
+    background: #19c589;
+}
+
+/*Style for dropdown links*/
+li:hover ul a {
+    background: #f3f3f3;
+    color: #2f3036;
+    height: 80px;
+    line-height: 40px;
+}
+/*Hover state for dropdown links*/
+li:hover ul a:hover {
+    background: #19c589;
+    color: #fff;
+}
+/*Hide dropdown links until they are needed*/
+li ul {
+    display: none;
+}
+/*Make dropdown links vertical*/
+li ul li {
+    display: block;
+    float: none;
+}
+/*Prevent text wrapping*/
+li ul li a {
+    width: auto;
+    min-width: 100px;
+    padding: 0 20px;
+}
