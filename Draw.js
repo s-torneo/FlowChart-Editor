@@ -39,6 +39,7 @@ function draw() {
     // redraw each shapes in the nodes array
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
+        ctx.setLineDash([0]);
         if (r.id == "rectangle")
             drawRect(r, 1);
         else if (r.id == "line" || r.id == "arrow")
@@ -66,8 +67,9 @@ function SetCoordinates(){
 }
 
 function SetDimension(){
-    canvas.width = 2000/*document.getElementById('myBox').offsetWidth*/; 
-    canvas.height = 2000/*document.getElementById('myBox').offsetHeight*/;
+    canvas.width = 2000; 
+    canvas.height = 2000;
+    document.getElementById('myBox').style.height = window.innerHeight - $('li').height()*2 - 25;
     WIDTH = canvas.width;
     HEIGHT = canvas.height;
     draw();
@@ -86,6 +88,7 @@ function init() {
     canvas.onmouseup = myUp;
     canvas.onmousemove = myMove;
     canvas.ondblclick = myDoubleClick;
+    window.onresize = SetDimension;
     InsertCopy([]); // insert into copy an empty array
     // call to draw the scene
     draw();

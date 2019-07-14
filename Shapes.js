@@ -9,7 +9,7 @@ function newRect(px, py) {
 function newLine(px, py, id_v) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 40, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, degrees: 0, initX: 0, initY: 0, last:0, rotate: 0, id: id_v});
+    nodes.push({ x: px, y: py, width: 40, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, degrees: 0, initX: 0, initY: 0, last:0, rotate: 180, id: id_v});
     NodesToCopy();
 }
 
@@ -601,8 +601,6 @@ function drawRectPoints(r) {
     drawCircle(r, r.x + r.width, r.y + r.height / 2);
     drawCircle(r, r.x + r.width / 2, r.y);
     drawCircle(r, r.x + r.width / 2, r.y + r.height);
-    /*if (r.id != "text")
-        drawCircle(r, r.width / 2, r.height / 2); // center*/
     drawCircle(r, r.x, r.y); // angle sx-up
     drawCircle(r, r.x + r.width, r.y); // angle dx
     drawCircle(r, r.x, r.y + r.height); // angle sx-down
@@ -625,7 +623,6 @@ function drawLinePoints(r) {
     ctx.rotate(r.degrees * Math.PI / 180);
     drawCircle(r, 0, 0);
     drawCircle(r, r.width, 0);
-    //drawCircle(r, -r.x + r.width / 2, -r.y); // center
     ctx.restore();
 }
 
@@ -634,7 +631,6 @@ function drawRhombusPoints(r) {
     drawCircle(r, r.x, r.y - r.height);
     drawCircle(r, r.x + r.width, r.y);
     drawCircle(r, r.x - r.width, r.y);
-    //drawCircle(r, 0, 0); // center
 }
 
 function drawEllipsePoints(r) {
@@ -642,5 +638,4 @@ function drawEllipsePoints(r) {
     drawCircle(r, r.x, r.y - r.radiusY);
     drawCircle(r, r.x + r.radiusX, r.y);
     drawCircle(r, r.x - r.radiusX, r.y);
-    //drawCircle(r, 0, 0); // center
 }

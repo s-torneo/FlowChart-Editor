@@ -42,7 +42,9 @@ function myDoubleClick(e) {
             input = document.createElement("input");
             input.setAttribute('type', 'text');
             input.setAttribute('name', 'text_input');
-            input.style.width = "80%";
+            input.setAttribute('class', 'funct');
+            input.setAttribute('placeholder', 'Click on text rect to confirm');
+            input.style.width = "90%";
             var text = document.getElementById("insert_text");
             text.style.display = "none";
             //document.getElementById("text_img").removeChild(text);
@@ -111,11 +113,8 @@ function myDown(e) {
                     // check if value has a length > 0
                     if (tmp_text.length)
                         r.text = tmp_text; 
-                    document.getElementById("text_img").removeChild(input);
-                    var text = document.getElementById("insert_text");
-                    text.style.display = "inline";
+                    RemoveInputText();
                     r.input = false;
-                    input_ok = false; 
                     draw();
                 }
                 else{

@@ -3,7 +3,6 @@
 }
 
 #canvas {
-    /*border: 3px solid black;*/
     cursor: url('Images/rotate.png');
 }
 
@@ -11,8 +10,7 @@
 #myBox {
     border: none;
     position: relative;
-    width: /*1130px*/99%;
-    height: /*520px*/83%;
+    width: 100%;
     overflow: scroll;
 }
 
@@ -63,28 +61,17 @@ img {
     top: 25%;
 }
 
-
-/************************************/
-
-#tutto{
-    position: absolute;
-    width: 100%;
-}
 .funct{
     position: relative;
-    width: 15%;
-    top: 25%;
+    width: 30px;
+    top: 15%;
 }
 
-#container{
-    width: 99%;
-    top: -2%;
+.menu{
+    width: 100%;
 }
 
-#container2{
-    width: 99%;
-}
-
+/* menu_down */
 label {
     position: absolute;
     top: -35%;
@@ -103,12 +90,21 @@ label {
     left: -15%;
 }
 
+#reset {
+    width: 35px;
+}
+
+#selection {
+    width: 35px;
+}
+
 /*Strip the ul of padding and list styling*/
 ul {
     list-style-type:none;
     margin:0;
     padding:0;
 }
+
 /*Create a horizontal list with spacing*/
 li {
     display:inline-block;
@@ -119,7 +115,7 @@ li {
     height: auto;
 }
 
-#container2 li {
+#menu_down li {
     display:inline-block;
     float: left;
     margin-right: 0%;
@@ -128,7 +124,7 @@ li {
     height: auto;
 }
 
-/*Style for menu links*/
+/*Style for each element of menu*/
 li a {
     display:block;
     width: 99%;
@@ -141,39 +137,7 @@ li a {
     text-decoration: none;
 }
 
-/*li a.grid_style {
-    height: auto;
-}*/
-
-/*Hover state for top level links*/
+/*Hover state*/
 li:hover a {
     background: #19c589;
-}
-
-/*Style for dropdown links*/
-li:hover ul a {
-    background: #f3f3f3;
-    color: #2f3036;
-    height: 80px;
-    line-height: 40px;
-}
-/*Hover state for dropdown links*/
-li:hover ul a:hover {
-    background: #19c589;
-    color: #fff;
-}
-/*Hide dropdown links until they are needed*/
-li ul {
-    display: none;
-}
-/*Make dropdown links vertical*/
-li ul li {
-    display: block;
-    float: none;
-}
-/*Prevent text wrapping*/
-li ul li a {
-    width: auto;
-    min-width: 100px;
-    padding: 0 20px;
 }

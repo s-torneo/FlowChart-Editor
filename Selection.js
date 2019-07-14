@@ -42,15 +42,17 @@ function insideRectSelection(x, y){
 function drawSelection(dx,dy){
     sel_w+=dx;
     sel_h+=dy;
+    ctx.setLineDash([5]);
     drawRect(null, 2);
-    border(2, "red");
+    border(2, "black");
 }
 
 function moveSelection(r){
     sel_x = r.x;
     sel_y = r.y;
+    ctx.setLineDash([5]);
     drawRect(null, 2);
-    border(2, "red");
+    border(2, "black");
 }
 
 function RemoveSelection(){

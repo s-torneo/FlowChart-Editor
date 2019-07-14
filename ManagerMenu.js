@@ -11,19 +11,29 @@ function CreateText(){
     var text = document.createElement("img");
     text.src = "Images/text.png";
     text.setAttribute('id', 'insert_text');
-    text.setAttribute('title', 'Insert Text');
+    text.setAttribute('class', 'funct');
     document.getElementById("text_img").appendChild(text);
 }
 
 function CreateDownload(){
-    var text = document.createElement("img");
-    text.src = "Images/download.png";
-    text.setAttribute('id', 'download');
-    text.setAttribute('title', 'Download');
-    document.getElementById("download_img").appendChild(text);
+    var tmp = document.createElement("img");
+    tmp.src = "Images/download.png";
+    tmp.setAttribute('id', 'download');
+    tmp.setAttribute('class', 'funct');
+    document.getElementById("download_img").appendChild(tmp);
+}
+
+function CheckInputText(){
+    selected = null;
+    if(input_ok)
+        RemoveInputText(); // delete input text to insert text inside text's rectangle
+    if(input_file!=null)
+        RemoveInputDownload(); // delete input text to insert filename
 }
 
 function SetMenuEvent() {
+    $('input:checkbox').removeAttr('checked'); // reset input checkbox
+    document.getElementsByName("quantity")[0].value = 1; // reset quantity of grid
     CreateText();
     CreateDownload();
     window.onkeypress = function (e) { if(e.keyCode==13 && save) download(); }
@@ -37,12 +47,12 @@ function SetMenuEvent() {
         document.getElementById(operations[i]).onmouseout = function () { myOut() };
     }
     document.getElementById("text_img").onclick = function () { myClick("text") };
-    document.getElementById("reset_img").onclick = function () { reset() };
-    document.getElementById("undo_img").onclick = function () { undo() };
-    document.getElementById("redo_img").onclick = function () { redo() };
-    document.getElementById("selection_img").onclick = function () { selection() };
+    document.getElementById("reset_img").onclick = function () { CheckInputText(); reset() };
+    document.getElementById("undo_img").onclick = function () { CheckInputText(); undo() };
+    document.getElementById("redo_img").onclick = function () { CheckInputText(); redo() };
+    document.getElementById("selection_img").onclick = function () { CheckInputText(); selection() };
     document.getElementById("download_img").onclick = function () { ManagerDownload() };
-    document.getElementById("upload_img").onclick = function () { upload() };
+    document.getElementById("upload_img").onclick = function () { CheckInputText(); upload() };
     document.getElementById("myBox").onmouseup = function () { draw() };
     document.getElementById("myBox").onwheel = function () { draw() }; // on wheel is the event associated at the wheel's (of mouse) move
 }
@@ -52,11 +62,6 @@ function myClick(t) {
     selected = t;
     if(t == "text" && input_ok)
         selected = null;
-    else if(input_ok){
-        document.getElementById("text_img").removeChild(input);
-    }
-    if(input_file!=null)
-        RemoveInputDonwload();
 }
 
 function myOver(t) {
@@ -96,18 +101,22 @@ function reset() {
     draw();
 }
 
-function RemoveInputDonwload(){
+function RemoveInputDownload(){
     document.getElementById("download_img").removeChild(input_file);
     var tmp = document.getElementById("download");
     tmp.style.display = "inline";
     save = false;
 }
 
+function RemoveInputText(){
+    document.getElementById("text_img").removeChild(input);
+    var text = document.getElementById("insert_text");
+    text.style.display = "inline";
+    input_ok = false; 
+}
+
 // handle the upload functionality
 function upload(){
-    // delete input text for insert name file if it exists
-    if(input_file!=null)
-        RemoveInputDonwload();
     var input = document.createElement('input');
     input.type = "file";
     input.accept = ".json";
@@ -134,6 +143,7 @@ function upload(){
 }
 
 function ManagerDownload(){
+    selected = null;
     if(!save)
         download();
 }
@@ -144,7 +154,9 @@ function download() {
         input_file = document.createElement("input");
         input_file.setAttribute('type', 'text');
         input_file.setAttribute('name', 'text_file');
-        input_file.style.width = "80%";
+        input_file.setAttribute('class', 'funct');
+        input_file.setAttribute('placeholder', 'Click Enter to confirm');
+        input_file.style.width = "90%";
         var tmp = document.getElementById("download");
         tmp.style.display = "none";
         document.getElementById("download_img").appendChild(input_file);
