@@ -67,5 +67,13 @@ function drawTrash() {
         ctx.drawImage(trash_above, trashX - 15 + scrollx, trashY - 25 + scrolly, 20, 10);
     ctx.restore();
     // draw the lower part of trash
-    ctx.drawImage(trash_lower, trashX + scrollx, trashY + scrolly, 20,20);
+    ctx.drawImage(trash_lower, trashX_actual, trashY_actual, 20,20);
+    ctx.font = "15px Comic Sans MS";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    if(mx == null)
+        coordinates = "";
+    else 
+        coordinates = GetCoordinates()
+    ctx.fillText(GetCoordinates(), trashX_actual, trashY_actual + 45);
 }

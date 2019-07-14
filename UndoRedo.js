@@ -57,13 +57,8 @@ function ManagerUR(){
         nodes.splice(0,nodes.length);
         nodes = JSON.parse(JSON.stringify(new_v)); // copy the new version of nodes in nodes 
     }   
-    /*else if(!copy[copy.length-1].length){ // in the case in which there was a reset operation
-        copy.push(old_v); // push to copy the old version of nodes
-        copy.push(new_v); // push to copy the new version of nodes
-        pointer+=3; // move pointer to 3 position (2(just added) + 1 (current position))
-        nodes.splice(0,nodes.length);
-        nodes = JSON.parse(JSON.stringify(new_v)); // copy the new version of nodes in nodes 
-    }*/
-    else if(flag) // in the case in which a shape is moved
+    else if(flag || doubleclick){ // in the case in which a shape is moved
         InsertCopy(new_v);
+        doubleclick = false;
+    }
 }

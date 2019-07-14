@@ -1,23 +1,5 @@
 var canvas, ctx, nodes = [], copy = [], BB, offsetX, offsetY, WIDTH, HEIGHT; // canvas related references
 
-/*var scaling = 1;
-
-function Scale(){
-    scaling += 0.1;
-}
-
-function Scale2(){
-    scaling -= 0.1;
-}
-
-function Scaling(){
-    var newWidth = WIDTH * scaling;
-    var newHeight = HEIGHT * scaling;
-    ctx.save();
-    ctx.translate(-((newWidth-WIDTH)/2), -((newHeight-HEIGHT)/2));
-    ctx.scale(scaling, scaling);
-}*/
-
 function drawGrid() {
     //grid width and height
     var bw = WIDTH;
@@ -44,7 +26,7 @@ function drawGrid() {
 
 // clear the canvas
 function clear() {
-    ctx.fillStyle = "white";//"aliceblue"; //"#FAF7F8"
+    ctx.fillStyle = "white";
     drawRect(null, 0);
     ctx.fill();
 }
@@ -54,7 +36,7 @@ function draw() {
     clear();
     if (choice)
         drawGrid();
-    // redraw each rect in the rects[] array
+    // redraw each shapes in the nodes array
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
         if (r.id == "rectangle")
@@ -84,11 +66,8 @@ function SetCoordinates(){
 }
 
 function SetDimension(){
-    canvas.width = /*1125*/document.getElementById('myBox').offsetWidth; 
-    canvas.height = /*800*/document.getElementById('myBox').offsetHeight;
-    document.getElementById("menu_horizontal").style.width = canvas.width - 7;
-    for(var i = 0; i<4; i++)
-        document.getElementsByClassName("div_style")[i].style.height = canvas.height/5 + 2;
+    canvas.width = 2000/*document.getElementById('myBox').offsetWidth*/; 
+    canvas.height = 2000/*document.getElementById('myBox').offsetHeight*/;
     WIDTH = canvas.width;
     HEIGHT = canvas.height;
     draw();
@@ -107,7 +86,6 @@ function init() {
     canvas.onmouseup = myUp;
     canvas.onmousemove = myMove;
     canvas.ondblclick = myDoubleClick;
-    window.onresize = SetDimension;
     InsertCopy([]); // insert into copy an empty array
     // call to draw the scene
     draw();

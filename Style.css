@@ -11,8 +11,10 @@
 #myBox {
     border: none;
     font: 24px/36px sans-serif;
-    width: /*1130px*/89%;
-    height: /*520px*/90%;
+    position: absolute;
+    width: /*1130px*/99%;
+    height: /*520px*/83%;
+    top: 8%;
     overflow: scroll;
 }
 
@@ -47,7 +49,7 @@
     border-left: 7px solid #1958b7;
 }
 
-#grid_style {
+/*#grid_style {
     width: 10%;
     position: absolute;
     left: 1%;
@@ -55,7 +57,7 @@
 }
 
 #dim {
-    width: 25%;
+    width: 30%;
     position: absolute;
     left: 55%;
 }
@@ -65,13 +67,10 @@
     position: absolute;
     left: 13%;
     top: 43%;
-}
+}*/
 
-#reset_img {
-    width: 2%;
-    position: absolute;
-    left: 22%;
-    top: 40%;
+/*#reset_img {
+    width: 40px;
 }
 
 #undo_img {
@@ -96,10 +95,7 @@
 }
 
 #text_img {
-    width: 2%;
-    position: absolute;
-    left: 40%;
-    top: 40%;
+    width: 50px;
 }
 
 #text {
@@ -128,7 +124,7 @@
     position: absolute;
     left: 66%;
     top: 42%;
-}
+}*/
 
 /* Vertical Menu Style*/
 #menu_vertical {
@@ -147,7 +143,8 @@
     display: block;
     padding: 3px 0;
     padding-left: 9px;
-    width: 90%;
+    width: 88%;
+    height: 18%;
     /*height: 104px;*/
     text-decoration: none;
     color: white;
@@ -160,8 +157,9 @@
     display: block;
     padding: 3px 0;
     padding-left: 9px;
-    width: 90%;
-    height: 50px;
+    width: 88%;
+    height: 9%;
+    /*height: 50px;*/
     text-decoration: none;
     color: white;
     background-color: #2175bc;
@@ -185,45 +183,36 @@
 }
 
 #rect_img {
-    width: 70%;
-    position: absolute;
-    left: 15%;
-    top: 10%;
+    width: 30%;
+    position: relative;
 }
 
 #line_img {
-    width: 70%;
-    position: absolute;
-    left: 15%;
-    top: 27%;
+    width: 30%;
+    position: relative;
+    top: 50%;
 }
 
 #arrow_img {
-    width: 65%;
+    width: 80%;
+    height: 7%;
     position: absolute;
-    left: 20%;
-    top: 36%;
-}
-
-#triangle_img {
-    width: 13%;
-    position: absolute;
-    left: 11%;
-    top: 35%;
+    left: 10%;
+    top: 34%;
 }
 
 #rhombus_img {
     width: 70%;
     position: absolute;
     left: 15%;
-    top: 43%;
+    top: 45%;
 }
 
 #parallelogram_img {
     width: 90%;
     position: absolute;
     left: 5%;
-    top: 60%;
+    top: 62%;
 }
 
 #ellipse_img {

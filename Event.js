@@ -1,6 +1,6 @@
 var mx, my; // indicate the coordinates of mouse
 var dragok, startX, startY; // drag related variables
-var input, input_ok = false; // used to manage the input text mode
+var input, input_ok = false, doubleclick = false; // used to manage the input text mode
 
 var saved_mx, saved_my, saved = null; /* used to manage the case in which a text's rectangle is inside a shape and
                                           it is double-clicked to write something */
@@ -42,11 +42,14 @@ function myDoubleClick(e) {
             input = document.createElement("input");
             input.setAttribute('type', 'text');
             input.setAttribute('name', 'text_input');
-            input.style.width = "100%";
-            document.getElementById("text").appendChild(input);
+            input.style.width = "80%";
+            var text = document.getElementById("insert_text");
+            text.style.display = "none";
+            //document.getElementById("text_img").removeChild(text);
+            document.getElementById("text_img").appendChild(input);
             r.input = true;
             input_ok = true;
-            pointer-=2; // decrement pointer for double-click
+            doubleclick = true;
         }
         else if (insideRect(r, mx, my))
             Save(r, mx, my);
@@ -61,7 +64,6 @@ function myDoubleClick(e) {
     }
     // if a rectangle was double-clicked i make a new rectangle, using coordinates saved previously
     if(!input_ok && saved!=null){
-        pointer-=2; // decrement pointer for double-click
         NewShape();
         saved = null;
     }
@@ -109,7 +111,9 @@ function myDown(e) {
                     // check if value has a length > 0
                     if (tmp_text.length)
                         r.text = tmp_text; 
-                    document.getElementById("text").removeChild(input);
+                    document.getElementById("text_img").removeChild(input);
+                    var text = document.getElementById("insert_text");
+                    text.style.display = "inline";
                     r.input = false;
                     input_ok = false; 
                     draw();
@@ -196,11 +200,11 @@ function myUp(e) {
                 bl = true;
             }
         }
-        if(r.id == "text" && insideRect(r, mx, my)) // if a text's rectangle is clicked
+        if(doubleclick) // if a text's rectangle was clicked
             bl = true;
-        if(r.rotate) // if a line or an arrow is rotated
+        if(r.rotate) // if a line or an arrow was rotated
             bl = true;
-        if(r.resize>=0)
+        if(r.resize>=0) // if a shape was resized
             bl = true;
     }
     if(bl)
@@ -248,7 +252,6 @@ function myMove(e) {
                 insideTrash(mx, my, i);
             }
         }
-        /*ManagerUR();*/
         // redraw the scene with the new rect positions
         draw();
         // reset the starting mouse position for the next mousemove
@@ -262,7 +265,6 @@ function myMove(e) {
         if (r.id == "parallelogram") {
             if (insideParallelogram(r, mx, my)) {
                 drawParallelogramPoints(r);
-                WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeParallelogram(r, mx, my);
                 inside = true;
@@ -273,7 +275,6 @@ function myMove(e) {
                 if (r.id == "text")
                     r.borderColor = "green";
                 drawRectPoints(r);
-                WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeRect(r, mx, my);
                 inside = true;
@@ -283,7 +284,6 @@ function myMove(e) {
         }
         else if (r.id == "selection"){
             if(insideRectSelection(mx,my)){
-                WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 inside = true;
             }
@@ -292,7 +292,6 @@ function myMove(e) {
             if (insideLine(r, mx, my)) {
                 drawRotationIcon(r);
                 drawLinePoints(r);
-                WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeLine(r, mx, my);
                 inside = true;
@@ -301,7 +300,6 @@ function myMove(e) {
         else if (r.id == "rhombus") {
             if (insideRhombus(r, mx, my)) {
                 drawRhombusPoints(r);
-                WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeRhombus(r, mx, my);
                 inside = true;
@@ -310,7 +308,6 @@ function myMove(e) {
         else if (r.id == "ellipse") {
             if (insideEllipse(r, mx, my)) {
                 drawEllipsePoints(r);
-                WriteCoordinates(mx, my);
                 ChangeCursor("move");
                 CheckResizeEllipse(r, mx, my);
                 inside = true;
@@ -321,13 +318,13 @@ function myMove(e) {
             draw(); //redraw in order that i delete the points on the border of polygon
         }
     }
-    WriteCoordinates(mx, my);
+
 }
 
-// show coordinates of mouse
-function WriteCoordinates(mx, my) {
-    var text = mx + ", " + my;
-    document.getElementById("coordinates").innerHTML = text;
+// return coordinates of mouse
+function GetCoordinates() {
+    var coordinates = (mx == null) ? "" : (mx + ", " + my);
+    return coordinates;
 }
 
 // change the mouse's icon

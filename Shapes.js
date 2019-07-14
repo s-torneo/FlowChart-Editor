@@ -104,12 +104,6 @@ function insideEllipse(r, mx, my) {
 
 //check if mouse's pointer is inside a rectangle
 function insideRect(r, mx, my) {
-    /*var inside = false;
-    var newWidth = WIDTH * scaling;
-    var newHeight = HEIGHT * scaling;
-    ctx.save();
-    var tr2 = 0;//-((newHeight-HEIGHT)/2);
-    var tr1 = 0;//-((newWidth-WIDTH)/2);*/
     return (mx > r.x && mx < (r.x + (r.width) + 10) && my > r.y && my < (r.y + (r.height) + 10));
 }
 
@@ -198,10 +192,8 @@ function drawRect(r,flag) {
         ctx.rect(0, 0, WIDTH, HEIGHT);
     }
     else if(flag==1) {
-        //Scaling();
         ctx.globalAlpha = r.trasparence;
         ctx.rect(r.x, r.y, r.width, r.height);
-        //ctx.restore();
     }
     else if(flag==2) {
         ctx.globalAlpha = 1.0;
@@ -589,7 +581,7 @@ function CheckResizeParallelogram(r, mx, my) {
         UtilCheckResize(r, 5, "e-resize"); // a dx in cx
     else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width))) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y)) < 10)
         UtilCheckResize(r, 6, "nesw-resize"); // in alto a dx
-    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height / 3)) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y + r.height / 4)) < 10)
+    else if (Math.abs(mx - (r.height * Math.cos(-45 * Math.PI / 180) + (r.x + r.width) - r.width - r.height / 3)) < 10 && Math.abs(my - (r.height * Math.sin(-45 * Math.PI / 180) + r.y + r.height / 3)) < 10)
         UtilCheckResize(r, 7, "e-resize"); // a sx in cx
 }
 
