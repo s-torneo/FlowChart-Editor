@@ -38,7 +38,7 @@ function SetMenuEvent() {
     CreateDownload();
     window.onkeypress = function (e) { if(e.keyCode==13 && save) download(); }
     for(var i = 0; i<shapes.length; i++) {
-        document.getElementById(shapes[i]).onclick = function () { myClick(this.id)};
+        document.getElementById(shapes[i]).onclick = function () { CheckInputText(); myClick(this.id)};
         document.getElementById(shapes[i]).onmouseover = function () { myOver() };
         document.getElementById(shapes[i]).onmouseout = function () { myOut() };
     }
@@ -60,6 +60,8 @@ function SetMenuEvent() {
 // handle onclick events
 function myClick(t) {
     selected = t;
+    if(t == "text" && (input_file!=null))
+        RemoveInputDownload(); // delete input text to insert filename
     if(t == "text" && input_ok)
         selected = null;
 }
@@ -113,6 +115,10 @@ function RemoveInputText(){
     var text = document.getElementById("insert_text");
     text.style.display = "inline";
     input_ok = false; 
+    doubleclick = false;
+    for(var i = 0; i<nodes.length; i++)
+        if(nodes[i].id == "text")
+            nodes[i].input = false;
 }
 
 // handle the upload functionality
@@ -143,7 +149,8 @@ function upload(){
 }
 
 function ManagerDownload(){
-    selected = null;
+    if(input_ok)
+        RemoveInputText(); // delete input text to insert text inside text's rectangle
     if(!save)
         download();
 }
@@ -155,7 +162,9 @@ function download() {
         input_file.setAttribute('type', 'text');
         input_file.setAttribute('name', 'text_file');
         input_file.setAttribute('class', 'funct');
-        input_file.setAttribute('placeholder', 'Click Enter to confirm');
+        input_file.setAttribute('placeholder', 'Press Enter to confirm');
+        input_file.setAttribute("autofocus","true");
+        input_file.style.fontSize = "70%";
         input_file.style.width = "90%";
         var tmp = document.getElementById("download");
         tmp.style.display = "none";
@@ -164,6 +173,8 @@ function download() {
     }
     else{
         var filename = document.getElementsByName("text_file")[0].value;
+        if(!filename.length)
+            filename = "prova";
         filename += ".json";
         document.getElementById("download_img").removeChild(input_file);
         var tmp = document.getElementById("download");

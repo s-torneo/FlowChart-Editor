@@ -14,28 +14,30 @@
 </head>
 
 <body>
-	<div class="menu">
-		<ul>
+	<!--<div class="menu">
 		    <li><a title="Rectangle" id="rectangle"><img src="Images/rectangle.png" id="rect_img"/></a></li>
 		    <li><a title="Line" id="line"><img src="Images/line.png" id="line_img"/></a></li>
 		    <li><a title="Arrow" id="arrow"><img src="Images/arrow.png" id="arrow_img"/></a></li>
 		    <li><a title="Rhombus" id="rhombus"><img src="Images/rhombus.png" id="rhombus_img"/></a></li>
 		    <li><a title="Parallelogram" id="parallelogram"><img src="Images/parallelogram.png" id="parallelogram_img"/></a></li>
 		    <li><a title="Ellipse" id="ellipse"><img src="Images/ellipse.png" id="ellipse_img"/></a></li>
-		</ul>
-	    </div>
-	    <div id="myBox">
-		<canvas id="canvas">
-		    <img src="Images/trash_up.png" id="trash_up" />
-		    <img src="Images/trash_down.png" id="trash_down" />
-		    <img src="Images/rotate.png" id="rotate" />
-		</canvas>
-	    </div>
-	    <div class="menu" id="menu_down">
+	   </div> -->
+	   <div class="menu">
 		<ul>
+				<li>
+						<a><label id="label_shapes">Shapes</label></a>
+						<ul class="hidden">
+							<li><a title="Rectangle" id="rectangle"><img src="Images/rectangle.png" id="rect_img"/></a></li>
+							<li><a title="Line" id="line"><img src="Images/line.png" id="line_img"/></a></li>
+							<li><a title="Arrow" id="arrow"><img src="Images/arrow.png" id="arrow_img"/></a></li>
+							<li><a title="Rhombus" id="rhombus"><img src="Images/rhombus.png" id="rhombus_img"/></a></li>
+							<li><a title="Parallelogram" id="parallelogram"><img src="Images/parallelogram.png" id="parallelogram_img"/></a></li>
+							<li><a title="Ellipse" id="ellipse"><img src="Images/ellipse.png" id="ellipse_img"/></a></li>
+						</ul>
+					</li>
 		    <li><a>
 		        <form name="grid">
-		            <label id="l">Grid</label>
+		            <label id="label_grid">Grid</label>
 		            <input type="checkbox" name="choice" onchange="Choice()" id="flag">
 		            <input type="number" name="quantity" min="1" max="5" onchange="Quantity()" value="1" id="dim">
 		        </form>
@@ -46,9 +48,16 @@
 		    <li><a title="Selection" id="selection_img"><img src="Images/selection.png" id="selection" class="funct"/></a></li>
 		    <li><a title="Insert Text" id="text_img"></a></li>
 		    <li><a title="Upload" id="upload_img"><img src="Images/upload.png" class="funct"/></a></li>
-		    <li><a title="Download" id="download_img"></a></li>
+			<li><a title="Download" id="download_img"></a></li>
 		</ul>
 	</div>
+		<div id="myBox">
+		<canvas id="canvas">
+		    <img src="Images/trash_up.png" id="trash_up" />
+		    <img src="Images/trash_down.png" id="trash_down" />
+		    <img src="Images/rotate.png" id="rotate" />
+		</canvas>
+	    </div>
 	<div id="input_div"></div> <!-- this div will contain an input type="file" created in js -->
 </body>
 </html>

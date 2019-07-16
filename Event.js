@@ -44,6 +44,8 @@ function myDoubleClick(e) {
             input.setAttribute('name', 'text_input');
             input.setAttribute('class', 'funct');
             input.setAttribute('placeholder', 'Click on text rect to confirm');
+            input.setAttribute("autofocus","true");
+            input.style.fontSize = "63%";
             input.style.width = "90%";
             var text = document.getElementById("insert_text");
             text.style.display = "none";

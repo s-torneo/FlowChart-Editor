@@ -44,7 +44,7 @@ function drawSelection(dx,dy){
     sel_h+=dy;
     ctx.setLineDash([5]);
     drawRect(null, 2);
-    border(2, "black");
+    border(1, "black");
 }
 
 function moveSelection(r){
@@ -52,7 +52,7 @@ function moveSelection(r){
     sel_y = r.y;
     ctx.setLineDash([5]);
     drawRect(null, 2);
-    border(2, "black");
+    border(1, "black");
 }
 
 function RemoveSelection(){
@@ -69,8 +69,9 @@ function RemoveSelection(){
 }
 
 function selection(){
-    if(!selectionMode) 
+    if(!selectionMode) {
         selectionMode = true;
+    }
     else {
         selectionMode = false;
         RemoveSelection();
