@@ -10,9 +10,8 @@ function MakeUR(){
 }
 
 function undo() {
-    if (pointer <= 0){
+    if (pointer <= 0)
         return;
-    }
     pointer--;
     MakeUR();
 }

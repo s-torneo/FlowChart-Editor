@@ -69,7 +69,7 @@ img {
 
 #label_grid {
     position: absolute;
-    top: -40%;
+    top: -45%;
     left: 35%;
     font-family: "Times New Roman", Times, serif;
 }
@@ -82,8 +82,7 @@ img {
 
 #dim {
     position: relative;
-    min-width: 5%;
-    max-width: 40%;
+    width: 30%;
     left: -10%;
 }
 
@@ -93,11 +92,15 @@ img {
 }
 
 #reset {
+    position: relative;
     width: 30px;
+    top: 15%;
 }
 
 #selection {
+    position: relative;
     width: 30px;
+    top: 15%;
 }
 
 /*Strip the ul of padding and list styling*/
@@ -161,8 +164,8 @@ li ul li {
 /*Prevent text wrapping*/
 li ul li a {
     width: auto;
-    min-width: 100px;
-    padding: 0 20px;
+    /*width: 139px;*/
+    /*padding: 0 20px;*/
 }
 /*Display the dropdown on hover*/
 ul li a:hover + .hidden, .hidden:hover {

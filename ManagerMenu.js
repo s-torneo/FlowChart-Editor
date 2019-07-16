@@ -48,8 +48,8 @@ function SetMenuEvent() {
     }
     document.getElementById("text_img").onclick = function () { myClick("text") };
     document.getElementById("reset_img").onclick = function () { CheckInputText(); reset() };
-    document.getElementById("undo_img").onclick = function () { CheckInputText(); undo() };
-    document.getElementById("redo_img").onclick = function () { CheckInputText(); redo() };
+    document.getElementById("undo_img").onclick = function () {  undo(); CheckInputText() };
+    document.getElementById("redo_img").onclick = function () {  redo(); CheckInputText() };
     document.getElementById("selection_img").onclick = function () { CheckInputText(); selection() };
     document.getElementById("download_img").onclick = function () { ManagerDownload() };
     document.getElementById("upload_img").onclick = function () { CheckInputText(); upload() };
@@ -117,7 +117,7 @@ function RemoveInputText(){
     input_ok = false; 
     doubleclick = false;
     for(var i = 0; i<nodes.length; i++)
-        if(nodes[i].id == "text")
+        if(nodes[i].id == "text") 
             nodes[i].input = false;
 }
 

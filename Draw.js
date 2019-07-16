@@ -71,6 +71,7 @@ function SetDimension(){
     canvas.height = 2000;
     document.getElementById('myBox').style.height = window.innerHeight - $('li').height() - 20;
     //document.getElementById('myBox').style.width = $('li').width()*9;
+    $('li ul li a').css('width', $('li a').width());
     WIDTH = canvas.width;
     HEIGHT = canvas.height;
     draw();
