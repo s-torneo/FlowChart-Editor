@@ -161,12 +161,7 @@ li ul li {
     display: block;
     float: none;
 }
-/*Prevent text wrapping*/
-li ul li a {
-    width: auto;
-    /*width: 139px;*/
-    /*padding: 0 20px;*/
-}
+
 /*Display the dropdown on hover*/
 ul li a:hover + .hidden, .hidden:hover {
     display: block;

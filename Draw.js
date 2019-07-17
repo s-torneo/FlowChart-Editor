@@ -67,10 +67,10 @@ function SetCoordinates(){
 }
 
 function SetDimension(){
-    canvas.width = 2000; 
-    canvas.height = 2000;
     document.getElementById('myBox').style.height = window.innerHeight - $('li').height() - 20;
     //document.getElementById('myBox').style.width = $('li').width()*9;
+    canvas.width = document.getElementById('myBox').offsetWidth + 1000; 
+    canvas.height = document.getElementById('myBox').offsetHeight + 1000;
     $('li ul li a').css('width', $('li a').width());
     WIDTH = canvas.width;
     HEIGHT = canvas.height;
