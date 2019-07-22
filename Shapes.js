@@ -214,6 +214,7 @@ function drawEllipse(r) {
 // draw a single circle
 function drawCircle(r, posx, posy) {
     ctx.beginPath();
+    ctx.setLineDash([0]);
     ctx.ellipse(posx, posy, 3, 3, Math.PI / 2, 0, 2 * Math.PI);
     ctx.stroke();
     border(1, "black");

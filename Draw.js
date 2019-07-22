@@ -12,6 +12,7 @@ function drawGrid() {
     ctx.beginPath();
     ctx.lineWidth = "1";
     ctx.strokeStyle = "grey";
+    ctx.setLineDash([0]);
     for (var x = 0; x <= bw; x += dim) {
         ctx.moveTo(0.5 + x + p, p);
         ctx.lineTo(0.5 + x + p, bh + p);
@@ -34,12 +35,12 @@ function clear() {
 // redraw the scene
 function draw() {
     clear();
-    ctx.setLineDash([0]);
     if (choice)
         drawGrid();
     // redraw each shapes in the nodes array
     for (var i = 0; i < nodes.length; i++) {
         var r = nodes[i];
+        ctx.setLineDash([0]);
         if (r.id == "rectangle")
             drawRect(r, 1);
         else if (r.id == "line" || r.id == "arrow")
@@ -52,8 +53,9 @@ function draw() {
             drawEllipse(r);
         else if (r.id == "text")
             drawText(r);
-        else if (r.id == "selection")
+        else if (r.id == "selection"){
             moveSelection(r);
+        }
     }
     drawTrash();
     if(selectionok)

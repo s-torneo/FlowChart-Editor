@@ -163,7 +163,7 @@ function download() {
         input_file.setAttribute('name', 'text_file');
         input_file.setAttribute('class', 'funct');
         input_file.setAttribute('placeholder', 'Press Enter to confirm');
-        input_file.setAttribute("autofocus","true");
+        input_file.setAttribute('autofocus','true');
         input_file.style.fontSize = "70%";
         input_file.style.width = "90%";
         var tmp = document.getElementById("download");

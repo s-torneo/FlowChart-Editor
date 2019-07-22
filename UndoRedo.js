@@ -4,6 +4,8 @@ function MakeUR(){
     var tmp = JSON.parse(JSON.stringify(copy[pointer]));
     nodes.splice(0,nodes.length);
     nodes = JSON.parse(JSON.stringify(tmp));
+    for (var i = 0; i<nodes.length; i++)
+      nodes[i].trasparence = 1.0;
     RemoveSelection();
     selectionMode = false;
     draw();
@@ -57,8 +59,6 @@ function ManagerUR(){
         nodes.splice(0,nodes.length);
         nodes = JSON.parse(JSON.stringify(new_v)); // copy the new version of nodes in nodes 
     }   
-    else if(flag || doubleclick){ // in the case in which a shape is moved
+    else if(flag) // in the case in which a shape is moved, resized or rotated
         InsertCopy(new_v);
-        doubleclick = false;
-    }
 }

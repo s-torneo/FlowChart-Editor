@@ -1,6 +1,6 @@
 var mx, my; // indicate the coordinates of mouse
 var dragok, startX, startY; // drag related variables
-var input, input_ok = false, doubleclick = false; // used to manage the input text mode
+var input, input_ok = false; // used to manage the input text mode
 
 var saved_mx, saved_my, saved = null; /* used to manage the case in which a text's rectangle is inside a shape and
                                           it is double-clicked to write something */
@@ -44,16 +44,17 @@ function myDoubleClick(e) {
             input.setAttribute('name', 'text_input');
             input.setAttribute('class', 'funct');
             input.setAttribute('placeholder', 'Click on text rect to confirm');
-            input.setAttribute("autofocus","true");
+            input.setAttribute('autofocus','true');
             input.style.fontSize = "63%";
             input.style.width = "90%";
             var text = document.getElementById("insert_text");
             text.style.display = "none";
-            //document.getElementById("text_img").removeChild(text);
             document.getElementById("text_img").appendChild(input);
             r.input = true;
             input_ok = true;
-            doubleclick = true;
+            nodes.splice(i,1);
+            nodes.unshift(r);
+            ManagerUR(); // to save the text
         }
         else if (insideRect(r, mx, my))
             Save(r, mx, my);
@@ -80,8 +81,6 @@ function DragOk(r) {
     ChangeCursor("move");
     r.initX = r.x;
     r.initY = r.y;
-    //if(r.resize<0 && !r.rotate)
-       // r.last = 1;
     if(r.id != "selection")
         RemoveSelection();
 }
@@ -98,12 +97,13 @@ function myDown(e) {
     // test each rect to see if mouse is inside
     dragok = false;
     ManagerSelection();
-    for (var i = 0; i < nodes.length; i++) {
+    for (var i = 0; i<nodes.length; i++) {
         var r = nodes[i];
         if (r.id == "parallelogram") {
             if (insideParallelogram(r, mx, my)) {
                 DragOk(r);
                 CheckResizeParallelogram(r, mx, my);
+                break;
             }
         }
         else if (r.id == "rectangle" || r.id == "text") {
@@ -117,12 +117,15 @@ function myDown(e) {
                         r.text = tmp_text; 
                     RemoveInputText();
                     r.input = false;
+                    ManagerUR(); // to save the changing of text
                     draw();
+                    break;
                 }
                 else{
                     DragOk(r);
                     CheckResizeRect(r, mx, my);
                 }
+                break;
             }
         }
         else if (r.id == "selection"){
@@ -138,18 +141,21 @@ function myDown(e) {
                     drawLinePoints(r);
                     draw();
                 }
+                break;
             }
         }
         else if (r.id == "rhombus") {
             if (insideRhombus(r, mx, my)) {
                 DragOk(r);
                 CheckResizeRhombus(r, mx, my);
+                break;
             }
         }
         else if (r.id == "ellipse") {
             if (insideEllipse(r, mx, my)) {
                 DragOk(r);
                 CheckResizeEllipse(r, mx, my);
+                break;
             }
         }
     }
@@ -196,13 +202,13 @@ function myUp(e) {
         var r = nodes[i];
         if(r.isDragging) {
             r.isDragging = dragok; // clear all the dragging flags
+            nodes.splice(i,1);
+            nodes.unshift(r);
             if(r.x != r.initX && r.y != r.initY){
                 r.last = 1;
                 bl = true;
             }
         }
-        if(doubleclick) // if a text's rectangle was clicked
-            bl = true;
         if(r.rotate) // if a line or an arrow was rotated
             bl = true;
         if(r.resize>=0) // if a shape was resized
@@ -238,7 +244,7 @@ function myMove(e) {
         // since the last mousemove
         for (var i = 0; i < nodes.length; i++) {
             var r = nodes[i];
-            if(insideRectSelection(r.x,r.y) && r.id != "selection" && !selectionok && r.isSelected){
+            if(insideRectSelection(r.x,r.y) && r.id != "selection" && !selectionok && r.isSelected) {
                 r.x += dx;
                 r.y += dy;
             }
@@ -319,7 +325,6 @@ function myMove(e) {
             draw(); //redraw in order that i delete the points on the border of polygon
         }
     }
-
 }
 
 // return coordinates of mouse
