@@ -52,6 +52,7 @@ function myDoubleClick(e) {
             document.getElementById("text_img").appendChild(input);
             r.input = true;
             input_ok = true;
+            // put element on head
             nodes.splice(i,1);
             nodes.unshift(r);
             ManagerUR(); // to save the text
@@ -202,6 +203,7 @@ function myUp(e) {
         var r = nodes[i];
         if(r.isDragging) {
             r.isDragging = dragok; // clear all the dragging flags
+            // put element on head
             nodes.splice(i,1);
             nodes.unshift(r);
             if(r.x != r.initX && r.y != r.initY){
@@ -274,7 +276,7 @@ function myMove(e) {
                 drawParallelogramPoints(r);
                 ChangeCursor("move");
                 CheckResizeParallelogram(r, mx, my);
-                inside = true;
+                break;
             }
         }
         else if (r.id == "rectangle" || r.id == "text") {
@@ -284,7 +286,7 @@ function myMove(e) {
                 drawRectPoints(r);
                 ChangeCursor("move");
                 CheckResizeRect(r, mx, my);
-                inside = true;
+                break;
             }
             else if (r.id == "text")
                 r.borderColor = "white";
@@ -292,7 +294,7 @@ function myMove(e) {
         else if (r.id == "selection"){
             if(insideRectSelection(mx,my)){
                 ChangeCursor("move");
-                inside = true;
+                break;
             }
         }
         else if (r.id == "line" || r.id == "arrow") {
@@ -301,7 +303,7 @@ function myMove(e) {
                 drawLinePoints(r);
                 ChangeCursor("move");
                 CheckResizeLine(r, mx, my);
-                inside = true;
+                break;
             }
         }
         else if (r.id == "rhombus") {
@@ -309,7 +311,7 @@ function myMove(e) {
                 drawRhombusPoints(r);
                 ChangeCursor("move");
                 CheckResizeRhombus(r, mx, my);
-                inside = true;
+                break;
             }
         }
         else if (r.id == "ellipse") {
@@ -317,13 +319,11 @@ function myMove(e) {
                 drawEllipsePoints(r);
                 ChangeCursor("move");
                 CheckResizeEllipse(r, mx, my);
-                inside = true;
+                break;
             }
         }
-        if(!inside){
-            ChangeCursor("default");
-            draw(); //redraw in order that i delete the points on the border of polygon
-        }
+        ChangeCursor("default");
+        draw(); //redraw in order that i delete the points on the border of polygon
     }
 }
 

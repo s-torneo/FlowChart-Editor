@@ -83,6 +83,7 @@ img {
 #dim {
     position: relative;
     width: 30%;
+    height: auto;
     left: -10%;
 }
 
