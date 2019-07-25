@@ -1,6 +1,6 @@
 # FlowChart-Editor
 
-Final Project of Interface Programming
+Final Project of Interface Programming course
 
 To run it:
 - Download all files
