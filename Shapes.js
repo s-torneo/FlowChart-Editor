@@ -2,14 +2,14 @@ function newRect(px, py) {
     //check if position of new rectangle go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 110, height: 60, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last: 0, id: "rectangle" });
+    nodes.unshift({ x: px - 15, y: py - 15, width: 110, height: 60, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last: 0, id: "rectangle" });
     NodesToCopy();
 }
 
 function newLine(px, py, id_v) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 40, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, degrees: 0, initX: 0, initY: 0, last:0, rotate: 180, id: id_v});
+    nodes.unshift({ x: px, y: py, width: 40, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, degrees: 0, initX: 0, initY: 0, last:0, rotate: 180, id: id_v});
     NodesToCopy();
 }
 
@@ -17,7 +17,7 @@ function newRhombus(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py, radius: 50, width: 50, height: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last:0, id: "rhombus" });
+    nodes.unshift({ x: px - 15, y: py, radius: 50, width: 50, height: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last:0, id: "rhombus" });
     NodesToCopy();
 }
 
@@ -25,7 +25,7 @@ function newParallelogram(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, width: 120, height: 70, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last:0, id: "parallelogram" });
+    nodes.unshift({ x: px, y: py, width: 120, height: 70, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last:0, id: "parallelogram" });
     NodesToCopy();
 }
 
@@ -33,14 +33,14 @@ function newEllipse(px, py) {
     //check if position of new rhombus go over the canvas
     if (px > WIDTH)
         return;
-    nodes.push({ x: px, y: py, radiusY: 25, radiusX: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last:0, id: "ellipse" });
+    nodes.unshift({ x: px, y: py, radiusY: 25, radiusX: 50, trasparence: 1.0, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last:0, id: "ellipse" });
     NodesToCopy();
 }
 
 function newText(px, py) {
     if (px > WIDTH)
         return;
-    nodes.push({ x: px - 15, y: py - 15, width: 40, height: 30, trasparence: 1.0, borderColor: "green", text: "Text", input: false, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last: 0, id: "text" });
+    nodes.unshift({ x: px - 15, y: py - 15, width: 40, height: 30, trasparence: 1.0, borderColor: "green", text: "Text", input: false, isDragging: false, isSelected: false, resize: -1, initX: 0, initY: 0, last: 0, id: "text" });
     NodesToCopy();
 }
 

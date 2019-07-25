@@ -43,6 +43,8 @@ function myDoubleClick(e) {
             input.setAttribute('type', 'text');
             input.setAttribute('name', 'text_input');
             input.setAttribute('class', 'funct');
+            if(r.text!="Text")
+              input.setAttribute('value', r.text);
             input.setAttribute('placeholder', 'Click on text rect to confirm');
             input.setAttribute('autofocus','true');
             input.style.fontSize = "63%";
@@ -55,7 +57,7 @@ function myDoubleClick(e) {
             // put element on head
             nodes.splice(i,1);
             nodes.unshift(r);
-            ManagerUR(); // to save the text
+            ManagerUR(); // to save the changing of text in copy
         }
         else if (insideRect(r, mx, my))
             Save(r, mx, my);
