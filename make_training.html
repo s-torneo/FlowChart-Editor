@@ -1,0 +1,64 @@
+<html>
+<head>
+    <title>Make Training</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="data.json"></script>
+    <script type="text/javascript" src="management.js"></script>
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <nav>    
+        <ul class="clearfix">       
+            <li><a onclick="NewSheet()">Nuova</a></li>       
+            <li><a onclick="OpenFile()">Apri</a></li>      
+            <li><a onclick="SaveFile()" id="download">Salva</a></li>      
+            <li><a onclick="About()">About</a></li>        
+        </ul>     
+    </nav>
+<div id="namebox">
+    Allenamento di <br>
+    <input type="text" id="name" placeholder="Nome"> <br>
+    <input type="text" id="surname" placeholder="Cognome">
+</div>
+<br><br>
+<div id="namebox">
+    Circuito<input type="checkbox" id="circuit" onchange="ManageCircuit()"> <br>
+    <input type="text" id="name_circuit" placeholder="Nome"> <br>
+    <input type="text" id="note_circuit" placeholder="Note">
+</div>
+<div id="shadowbox">
+    <input type="text" id="exercise" placeholder="Nome Esercizio"> <br> <br>
+    <div id="input_img"><button id="choose_img" onclick="ChooseImage()">Scegli immagine</button></div>
+    <div id="area_img"></div> <br>
+    <table>
+        <tr>
+            <td>Ripetizioni</td>
+            <td><input type="text" id="repetition"></td>
+        </tr>
+        <tr>
+            <td>Durata</td>
+            <td><input type="text" id="duration"></td> 
+        </tr>
+        <tr>
+            <td>Recupero</td>
+            <td><input type="text" id="rest"></td>
+        </tr>
+        <tr>
+            <td>Altro</td>
+            <td><input type="text" id="note"></td>
+        </tr>
+    </table>
+    <br>
+    <div id="buttonbox">
+        <button onclick="NewExercise()">Aggiungi</button>
+        <button onclick="Confirm()">Conferma</button>
+        <button onclick="Delete()">Elimina</button> <br> <br>
+        <button onclick="Back()">Indietro</button>
+        <button onclick="CreatePDF()">Download</button>
+        <button onclick="Next()">Avanti</button> <br> <br>
+    </div>
+</div>
+<div id="input_div"></div> <!-- this div will contain an input type="file" created in js -->
+<!-- <footer>&copy; Copyright 2020 - Torneo Stefano</footer> -->
+</body>
+</html>
